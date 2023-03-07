@@ -1,8 +1,5 @@
 #include "includes/coup.h"
 
-#include<iostream>
-using namespace std;
-
 Coup::Coup() : coup_droit(false), revers(false), puissance(0.0), precision(0.0) {}
 
 Coup::Coup(bool c, bool r, float puis, float prec) :
