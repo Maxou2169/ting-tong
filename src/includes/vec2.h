@@ -39,6 +39,12 @@ class Vec2
         void set_y(float y);
 
         /**
+         * \brief This function returns the norm of the vector
+         * \returns The norm of the vector
+        */
+        float norm() const;
+
+        /**
          * \brief This function adds a second vector and returns it
          * 
          * \returns A new Vec2

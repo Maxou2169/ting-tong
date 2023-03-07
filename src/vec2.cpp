@@ -1,4 +1,5 @@
 #include "includes/vec2.h"
+#include <math.h>
 
 Vec2::Vec2() : x(0), y(0) {}
 Vec2::Vec2(float x, float y) : x(x), y(y) {}
@@ -22,6 +23,11 @@ void Vec2::set_x(float x)
 void Vec2::set_y(float y)
 {
     this->y = y;
+}
+
+float Vec2::norm() const
+{
+    return sqrt(this->x * this->x + this->y * this->y);
 }
 
 Vec2 Vec2::operator+(Vec2 const &to_add) const
