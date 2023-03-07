@@ -7,22 +7,22 @@ Coup::Coup(bool c, bool r, float puis, float prec) :
 
 Coup::~Coup() {}
 
-bool Coup::getCoupDroit()
+bool Coup::getCoupDroit() const
 {
     return this->coup_droit;
 }
 
-bool Coup::getRevers()
+bool Coup::getRevers() const
 {
     return this->revers;
 }
 
-float Coup::getPuissance()
+float Coup::getPuissance() const
 {
     return this->puissance;
 }
 
-float Coup::getPrecision()
+float Coup::getPrecision() const
 {
     return this->precision;
 }
