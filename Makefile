@@ -28,7 +28,7 @@ mkdir:
 	mkdir -p $(BIN_DIR) $(OBJ_DIR)
 
 clean: fclean
-	rm -f ${BIN_DIR}/altitude
+	rm -f ${BIN_DIR}/ting-tong
 
 fclean: # fclean only removes the .o files, while clean removes the .o AND the binaries
 	rm -f ${OBJS} ${DEP}
