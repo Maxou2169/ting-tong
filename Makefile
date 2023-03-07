@@ -1,4 +1,4 @@
-SRCS		=  #3dto2d.cpp exporter.cpp file_processing.cpp main.cpp
+SRCS		=  # main.cpp
 HEADERS		= src/includes
 CXX			= g++
 CXX_FLAGS	= -Wall -Werror -Wextra
@@ -11,7 +11,7 @@ SRC_DIR = src
 OBJS = ${SRCS:%.cpp=$(OBJ_DIR)/%.o}
 DEP = $(OBJS:%.o=%.d)
 
-all: mkdir ting-rong
+all: mkdir ting-tong
 
 # affichage builds bin/affichage, and it's the same for all the others
 
