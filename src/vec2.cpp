@@ -61,6 +61,12 @@ void Vec2::operator*=(const float f)
     this->y *= f;
 }
 
+void Vec2::operator+=(Vec2 const & to_add)
+{
+    this->x = to_add.get_x();
+    this->y = to_add.get_y();
+}
+
 bool test()
 {
     return true;
