@@ -3,19 +3,23 @@
 
 #include <iostream>
 
+typedef enum Jeux {
+    UN_JEU = 1,
+    TROIS_JEUX = 3,
+    SIX_JEUX = 6
+} Jeux;
+
+
 class Format
 {
     private :
-        bool un_jeu;
-        bool trois_jeux;
-        bool six_jeux;
+        Jeux nb_jeux;
 
     public :
 
         /**
          * \brief Initalise un format de match à trois jeu
         */
-
         Format();
 
         /**
@@ -24,47 +28,21 @@ class Format
          * \param trois : Booléen pour un match à trois jeux
          * \param six : Booléen pour un match à six jeux
         */
-
-        Format(bool un, bool trois, bool six);
+        Format(Jeux nb_jeux);
 
         ~Format();
 
         /**
-         * \brief Permet de savoir si on est dans un format de match à un jeu
+         * \brief Permet de savoir dans quel format de jeu on est
+         * \returns Le nombre de jeux, représenté par l'enum correspondante
         */
-
-        bool get_un_jeu() const;
+        Jeux get_jeux() const;
 
         /**
-         * \brief Permet de savoir si on est dans un format de match à trois jeux
+         * \brief Modifie le statut du format de match correspondant aux nombre de jeux
+         * \param Le nombre de jeux (1,3,6), représenté par l'enum Jeux ou par un cast de types.
         */
-
-        bool get_trois_jeux() const;
-
-        /**
-         * \brief Permet de savoir si on est dans un format de match à six jeux
-        */
-
-        bool get_six_jeux() const;
-
-        /**
-         * \brief Modifie le statut du format de match correspondant à un jeu
-        */
-
-        void set_un_jeu(bool un);
-
-        /**
-         * \brief Modifie le statut du format de match correspondant à trois jeux
-        */
-
-        void set_trois_jeux(bool trois);
-
-        /**
-         * \brief Modifie le statut du format de match correspondant à six jeux
-        */
-
-        void set_six_jeux(bool six);
-
+        void set_jeux(Jeux nb_jeux);
 
 
 };
