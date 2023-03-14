@@ -21,6 +21,7 @@ class Balle
         float descente; /**< Pour chaque unité du plan parcourue (projeté au sol), le nombre d'unités du plan descendues*/
 
     public:
+        Balle();
         Balle(Vec2 pos, Vec2 traj, Vec2 atter);
         ~Balle();
 
