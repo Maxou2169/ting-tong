@@ -3,16 +3,17 @@
 
 #include <iostream>
 
+typedef enum Points 
+{
+    ZERO = 0,
+    QUINZE = 15,
+    TRENTE = 30, 
+    QUARANTE = 40
+} Points;
+
 class Score
 {
     private : 
-        enum Points 
-        {
-            ZERO = 0,
-            QUINZE = 15,
-            TRENTE = 30, 
-            QUARANTE = 40
-        };
         Points points;
         bool avantage;
         bool egalite; // une égalité est défini quand il y a 40 - 40
