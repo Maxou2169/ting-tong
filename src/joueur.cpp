@@ -1,6 +1,6 @@
 #include "includes/joueur.h"
 
-Joueur::Joueur(string n, Vec2 p, Coup c) : nom(n), pos(p), coup(c) {}
+Joueur::Joueur(string n, Vec2 p) : nom(n), pos(p) {}
 
 Joueur::~Joueur() {}
 
@@ -14,11 +14,6 @@ Vec2 Joueur::get_pos() const
     return this->pos;
 }
 
-Coup Joueur::get_coup() const
-{
-    return this->coup;
-}
-
 void Joueur::set_nom(string n)
 {
     this->nom=n;
@@ -27,11 +22,6 @@ void Joueur::set_nom(string n)
 void Joueur::set_pos(Vec2 p)
 {
     this->pos=p;
-}
-
-void Joueur::set_coup(Coup c)
-{
-    this->coup=c;
 }
 
 void Joueur::haut_joueur()
