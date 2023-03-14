@@ -8,17 +8,17 @@ Terrain::Terrain(Joueur x, Joueur y, Balle b) : joueur_a(x), joueur_b(y), balle(
 
 Terrain::~Terrain() {};
 
-Joueur Terrain::get_joueur_a() const
+Joueur& Terrain::get_joueur_a() const
 {
     return this->joueur_a;
 }
 
-Joueur Terrain::get_joueur_b() const
+Joueur& Terrain::get_joueur_b() const
 {
     return this->joueur_b;
 }
 
-Balle Terrain::get_balle() const
+Balle& Terrain::get_balle() const
 {
     return this->balle;
 }
