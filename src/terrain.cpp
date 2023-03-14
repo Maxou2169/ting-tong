@@ -1,6 +1,6 @@
-#include "terrain.h"
-#include "joueur.h"
-#include "balle.h"
+#include "includes/terrain.h"
+#include "includes/joueur.h"
+#include "includes/balle.h"
 
 #include <iostream>
 
@@ -8,17 +8,17 @@ Terrain::Terrain(Joueur x, Joueur y, Balle b) : joueur_a(x), joueur_b(y), balle(
 
 Terrain::~Terrain() {};
 
-Joueur& Terrain::get_joueur_a() const
+Joueur& Terrain::get_joueur_a()
 {
     return this->joueur_a;
 }
 
-Joueur& Terrain::get_joueur_b() const
+Joueur& Terrain::get_joueur_b() 
 {
     return this->joueur_b;
 }
 
-Balle& Terrain::get_balle() const
+Balle& Terrain::get_balle()
 {
     return this->balle;
 }
