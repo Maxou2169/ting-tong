@@ -15,7 +15,7 @@ all: mkdir ting-tong
 
 # affichage builds bin/affichage, and it's the same for all the others
 
-altitude: ${BIN_DIR}/ting-tong
+ting-tong: ${BIN_DIR}/ting-tong
 ${BIN_DIR}/ting-tong: ${OBJS} # Build for affichage
 	${CXX} ${CXX_FLAGS} -o $@ $^ ${LD_FLAGS} 
 

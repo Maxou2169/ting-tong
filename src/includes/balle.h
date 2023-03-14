@@ -19,11 +19,9 @@ class Balle
         
         Vec2 aterrisage; /**< Une position d'aterissage en unités du plan*/
         float descente; /**< Pour chaque unité du plan parcourue (projeté au sol), le nombre d'unités du plan descendues*/
-        bool a_rebondi;
-
 
     public:
-        Balle(Vec2 pos, Vec2 traj, Vec2 atter, float v);
+        Balle(Vec2 pos, Vec2 traj, Vec2 atter);
         ~Balle();
 
         Vec2 get_pos() const;
