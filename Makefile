@@ -1,4 +1,4 @@
-SRCS		=  # main.cpp
+SRCS		= balle.cpp coup.cpp format.cpp joueur.cpp score.cpp vec2.cpp vec3.cpp # main.cpp
 HEADERS		= src/includes
 CXX			= g++
 CXX_FLAGS	= -Wall -Werror -Wextra
