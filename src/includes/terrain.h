@@ -32,19 +32,19 @@ class Terrain
          * \brief Retourne le joueur a
         */
 
-        Joueur get_joueur_a() const;
+        Joueur & get_joueur_a() const;
 
         /**
          * \brief Retourne le joueur b
         */
 
-        Joueur get_joueur_b() const;
+        Joueur & get_joueur_b() const;
 
         /**
          * \brief Retourne la balle du terrain
         */
 
-        Balle get_balle() const;
+        Balle & get_balle() const;
 
         /**
          * \brief Modifie le joueur a par le joueur j
