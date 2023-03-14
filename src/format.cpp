@@ -6,7 +6,7 @@ Format::Format(Jeux nb_jeux) : nb_jeux(nb_jeux) {}
 
 Format::~Format() {}
 
-bool Format::get_jeu() const
+Jeux Format::get_jeux() const
 {
     return this->nb_jeux;
 }
