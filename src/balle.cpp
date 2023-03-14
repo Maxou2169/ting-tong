@@ -1,7 +1,7 @@
 #include "includes/balle.h"
 #include "includes/vec2.h"
 
-Balle::Balle(Vec2 pos, Vec2 traj, Vec2 atter, float v) : pos(pos), traj(traj), aterrisage(atter) {}
+Balle::Balle(Vec2 pos, Vec2 traj, Vec2 atter) : pos(pos), traj(traj), aterrisage(atter) {}
 Balle::~Balle() {}
 
 Vec2 Balle::get_pos() const
