@@ -1,6 +1,6 @@
-#include "terrain.h"
-#include "joueur.h"
-#include "balle.h"
+#include "includes/terrain.h"
+#include "includes/joueur.h"
+#include "includes/balle.h"
 
 #include <iostream>
 
