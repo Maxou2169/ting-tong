@@ -1,12 +1,14 @@
 #include "includes/score.h"
 
+#include "assert.h"
+
 Score::Score() : points(ZERO), avantage(false), egalite(false), jeu(0) {}
 
 Score::Score(Points p, bool av, bool e, int j) : points(p), avantage(av), egalite(e), jeu(j) {}
 
 Score::~Score() {}
 
-Score::Points Score::get_points() const
+Points Score::get_points() const
 {
     return this->points;
 }
@@ -29,6 +31,7 @@ int Score::get_jeu() const
 
 void Score::set_points(Points p)
 {
+    assert(points == ZERO || points == QUINZE || points == TRENTE || points == QUARANTE);
     this->points = p;
 }
 
@@ -75,3 +78,47 @@ void Score::gagner_points()
             break;
     }
 }
+
+void Score::test()
+{
+    // Création d'un score nul
+    Score score;
+    assert(score.get_points() == ZERO);
+    assert(score.get_avantage() == false);
+    assert(score.get_egalite() == false);
+    assert(score.get_jeu() == 0);
+
+    // Gagner le premier point du match
+    score.gagner_points();
+    assert(score.get_points() == QUINZE);
+    assert(score.get_avantage() == false);
+    assert(score.get_egalite() == false);
+    assert(score.get_jeu() == 0);
+
+    // Modification des valeurs du score
+    score.set_points(QUARANTE);
+    score.set_avantage(true);
+    assert(score.get_points() == QUARANTE);
+    assert(score.get_avantage() == true);
+
+    // Gagner des points
+    score.gagner_points();
+    assert(score.get_points() == ZERO);
+    assert(score.get_avantage() == false);
+    assert(score.get_jeu() == 1);
+
+    score.set_points(QUARANTE);
+    score.set_egalite(true);
+    score.gagner_points();
+    assert(score.get_points() == QUARANTE);
+    assert(score.get_avantage() == true);
+    assert(score.get_egalite() == false);
+
+    score.set_points(QUARANTE);
+    score.set_avantage(true);
+    score.gagner_points();
+    assert(score.get_points() == ZERO);
+    assert(score.get_avantage() == false);
+    assert(score.get_jeu() == 2);
+}
+
