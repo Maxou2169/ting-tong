@@ -47,9 +47,9 @@ void Score::set_jeu(int j)
     this->jeu = j;
 }
 
-void Score::gagner_points(Points p)
+void Score::gagner_points()
 {
-    switch(p)
+    switch(this->points)
     {
         case ZERO :
             this->points = QUINZE;
@@ -61,28 +61,17 @@ void Score::gagner_points(Points p)
             this->points = QUARANTE;
             break;
         case QUARANTE :
-            if(this->egalite == true)
+            if(this->egalite == true) // 40-40 -> AV-40
             {
                 this->avantage = true;
                 this->egalite = false;
-                if(avantage == true)
-                {
-                    this->points = ZERO;
-                    this->jeu ++;
-                    this->avantage = false;
-                }
-                else
-                {
-                    this->avantage = false;
-                    this->egalite = true;
-                }
-                break;
             }
-            else
+            else if(avantage == true) // AV - 40 -> 0 - 0, jeu +1
             {
                 this->points = ZERO;
-                this->jeu ++;
-                break;
+                this->jeu++;
+                this->avantage = false;
             }
+            break;
     }
 }
