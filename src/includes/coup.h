@@ -36,25 +36,25 @@ class Coup
          * \brief Retourne le booléen correspond au coup droit
         */
 
-        bool getCoupDroit();
+        bool getCoupDroit() const;
         
         /**
          * \brief Retourne le booléen correspond au revers
         */
 
-        bool getRevers();
+        bool getRevers() const;
 
         /**
          * \brief Retourne un réel correspondant à la puissance
         */
 
-        float getPuissance();
+        float getPuissance() const ;
 
         /**
          * Retourne un réel correspondant à la précision
         */
 
-        float getPrecision();
+        float getPrecision() const;
 
         /**
          * \brief Modifie un coup droit
