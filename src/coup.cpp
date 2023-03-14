@@ -1,58 +1,50 @@
 #include "includes/coup.h"
+#include "includes/joueur.h"
+#include "includes/balle.h"
+#include "includes/vec2.h"
 
-Coup::Coup() : coup_droit(false), revers(false), puissance(0.0), precision(0.0) {}
+const float MAX_X = 5.0;
+const float MAX_Y = 5.0;
 
-Coup::Coup(bool c, bool r, float puis, float prec) :
-    coup_droit(coup_droit), revers(revers), puissance(puis), precision(prec) {}
+
+Coup::Coup(Joueur & j, Balle& b) : joueur(j), balle(b) 
+{
+    if (this->peut_faire_coup())
+        this->faire_coup();
+}
 
 Coup::~Coup() {}
 
-bool Coup::getCoupDroit() const
+bool Coup::peut_faire_coup()
 {
-    return this->coup_droit;
+    float pos_joueur_x = joueur.get_pos().get_x();
+    float pos_joueur_y = joueur.get_pos().get_y();
+
+    float pos_balle_x = balle.get_pos().get_x();
+    float pos_balle_y = balle.get_pos().get_y();
+
+    if(
+        (pos_balle_x > pos_joueur_x - MAX_X) && 
+        (pos_balle_x < pos_joueur_x + MAX_X) && 
+        (pos_balle_y > pos_joueur_y - MAX_Y) && 
+        (pos_balle_y < pos_joueur_y + MAX_Y)
+    )
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
-bool Coup::getRevers() const
+void Coup::faire_coup()
 {
-    return this->revers;
-}
-
-float Coup::getPuissance() const
-{
-    return this->puissance;
-}
-
-float Coup::getPrecision() const
-{
-    return this->precision;
-}
-
-void Coup::setCoupDroit(bool c)
-{
-    this->coup_droit = c;
-}
-
-void Coup::setRevers(bool r)
-{
-    this->revers = r;
-}
-
-void Coup::setPuissance(float p)
-{
-    this->puissance = p;
-}
-
-void Coup::setPrecision(float p)
-{
-    this->precision = p;
-}
-
-void Coup::AugmenterDiminuerPuissance(float p)
-{
-    this->puissance *= p;
-}
-
-void Coup::AugmenterDiminuerPrecision(float p)
-{
-    this->precision *= p;
+    // Calculer la position opposée de la balle
+    float pos_balle_x = balle.get_pos().get_x();
+    float pos_balle_y = balle.get_pos().get_y();
+    Vec2 pos_opposee(-pos_balle_x, -pos_balle_y);
+    // Modifier la trajectoire de la balle pour qu'elle se dirige vers la position opposée
+    Vec2 nouvelle_traj = pos_opposee - balle.get_pos();
+    balle.set_traj(nouvelle_traj);
 }
