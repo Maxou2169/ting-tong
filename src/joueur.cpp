@@ -44,3 +44,7 @@ void Joueur::droite_joueur()
     this->pos.set_x(pos.get_x() + 1);
 }
 
+bool Joueur::test()
+{
+    return (true);
+}

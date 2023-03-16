@@ -21,8 +21,8 @@ class Affichage
         void sdl_init();
         void sdl_destroy();
 
-        void draw_joueur(Joueur &j);
-        void draw_balle(Balle &b);
+        void draw_joueur(const Joueur & j);
+        void draw_balle(const Balle & b);
 
         // Those functions are really close to the SDL and would merit a separate module in the utils/
         /**
@@ -38,7 +38,13 @@ class Affichage
         Affichage(Terrain &t, unsigned int window_size_x = 800, unsigned int window_size_y = 600);
         ~Affichage();
 
+        /**
+         * \brief This function draws inside the SDL Window and handles the events
+         * \note This function is "blocking"
+        */
         void render_loop();
+
+        bool test();
 };
 
 #endif

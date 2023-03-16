@@ -37,3 +37,8 @@ void Terrain::set_balle(Balle b)
 {
     this->balle = b;
 }
+
+bool Terrain::test()
+{
+    return (true);
+}
