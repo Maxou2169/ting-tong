@@ -2,7 +2,6 @@
 # define BALLE_H
 
 # include "vec2.h"
-# include "vec3.h"
 
 /**
  * \brief Cette classe implémente une simple balle
