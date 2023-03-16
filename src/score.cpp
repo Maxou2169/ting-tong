@@ -13,7 +13,6 @@ Points Score::get_points() const
     return this->points;
 }
 
-
 bool Score::get_avantage() const
 {
     return this->avantage;
@@ -79,7 +78,7 @@ void Score::gagner_points()
     }
 }
 
-void Score::test()
+bool Score::test()
 {
     // Création d'un score nul
     Score score;
@@ -120,5 +119,7 @@ void Score::test()
     assert(score.get_points() == ZERO);
     assert(score.get_avantage() == false);
     assert(score.get_jeu() == 2);
+
+    return (true);
 }
 
