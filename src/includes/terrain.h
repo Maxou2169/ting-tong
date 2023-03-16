@@ -67,6 +67,12 @@ class Terrain
 
         void set_balle(Balle b);
 
+        /**
+         * \brief Effectue un test des différentes fonctions membres de la classe
+        */
+
+        void test();
+
 
 
 

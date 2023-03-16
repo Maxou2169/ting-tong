@@ -44,6 +44,12 @@ class Format
         */
         void set_jeux(Jeux nb_jeux);
 
+        /**
+         * \brief Effectue un test des différentes fonctions membres de la classe
+        */
+
+        void test();
+
 
 };
 

@@ -81,6 +81,12 @@ class Joueur
         */
 
         void droite_joueur();
+
+        /**
+        * \brief Effectue un test des différentes fonctions membres de la classe
+        */
+        
+        void test();
         
 
 
