@@ -46,7 +46,7 @@ void Joueur::droite_joueur()
     this->pos.set_x(pos.get_x() + 1.0);
 }
 
-void Joueur::test()
+bool Joueur::test()
 {
     Joueur j("Nadal", Vec2(50.0,50.0));
     float j_pos_x = j.get_pos().get_x();
@@ -69,9 +69,5 @@ void Joueur::test()
 
     j.set_pos(Vec2(25.0,25.0));
     assert(j.get_pos().get_x() == 25.0 && j.get_pos().get_y() == 25.0);
-}
-
-bool Joueur::test()
-{
     return (true);
 }

@@ -102,7 +102,7 @@ class Score
      * \brief Effectue un test des différentes fonctions membres de la classe
     */
 
-    void test();
+    bool test();
 };
 
 #endif

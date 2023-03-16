@@ -3,6 +3,9 @@
 #include "includes/joueur.h"
 #include "includes/terrain.h"
 #include "includes/affichage.h"
+#include "includes/score.h"
+#include "includes/coup.h"
+#include "includes/format.h"
 
 bool run_test(void);
 
@@ -33,5 +36,13 @@ bool run_test(void)
     Affichage a(t,1,1);
     a.test();
 
+    Score sc = Score();
+    sc.test();
+
+    Coup c = Coup(j, b);
+    c.test();
+
+    Format f = Format();
+    f.test();
     return (true);
 }

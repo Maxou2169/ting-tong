@@ -62,20 +62,9 @@ class Terrain
         void set_balle(Balle b);
 
         /**
-<<<<<<< src/includes/terrain.h
          * \brief Cette fonction teste que le terrain soit bien défini et que celui-ci fonctionne
         */
         bool test();
-=======
-         * \brief Effectue un test des différentes fonctions membres de la classe
-        */
-
-        void test();
-
-
-
-
->>>>>>> src/includes/terrain.h
 };
 
 

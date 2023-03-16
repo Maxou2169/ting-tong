@@ -19,7 +19,7 @@ void Format::set_jeux(Jeux nb_jeux)
     this->nb_jeux = nb_jeux;
 }
 
-void Format::test()
+bool Format::test()
 {
     Format format;
     assert(format.get_jeux() == TROIS_JEUX);
@@ -35,4 +35,5 @@ void Format::test()
 
     format.set_jeux((Jeux)3); // cast d'un entier en enum
     assert(format.get_jeux() == TROIS_JEUX);
+    return true;
 }
