@@ -68,6 +68,18 @@ class Joueur
          * et inversement pour le joueur en haut de l'écran
         */
         void droite_joueur();
+<<<<<<< src/includes/joueur.h
+=======
+
+        /**
+        * \brief Effectue un test des différentes fonctions membres de la classe
+        */
+        
+        void test();
+        
+
+
+>>>>>>> src/includes/joueur.h
 
         /**
          * \brief Cette fonction execute les tests de régression
