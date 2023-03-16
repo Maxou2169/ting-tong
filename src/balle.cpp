@@ -1,8 +1,7 @@
 #include "includes/balle.h"
 #include "includes/vec2.h"
 
-Balle::Balle() : pos(Vec2(0.0,0.0)), traj(Vec2(0.0,0.0)), aterrisage(Vec2(0.0,0.0)) {}
-Balle::Balle(Vec2 pos, Vec2 traj, Vec2 atter) : pos(pos), traj(traj), aterrisage(atter) {}
+Balle::Balle(Vec2 pos, Vec2 traj) : pos(pos), traj(traj) {}
 Balle::~Balle() {}
 
 Vec2 Balle::get_pos() const
@@ -43,13 +42,20 @@ void Balle::calcule_aterissage()
 {
     this->aterrisage = pos + traj * (this->hauteur / this->descente);
 }
+
 bool Balle::a_rebondi() const
 {
     return (hauteur <= 0);
 }
 
+
 void Balle::avancer_temps(float t)
 {
     this->pos += this->traj * t;
     this->hauteur -= this->descente * t;
+}
+
+bool Balle::test(void)
+{
+    return (true);
 }

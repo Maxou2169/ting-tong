@@ -26,16 +26,24 @@ class Coup
 
         void faire_coup();
 
+       
+    public :
+        
         /**
          * \brief Initialise un coup
          * \param j : Un joueur
          * \param b : Une balle
         */
-    public :
         
         Coup(Joueur & j, Balle &b);
 
         ~Coup();
+
+        /**
+         * \brief Effectue un test des différentes fonctions membres de la classe
+        */
+
+        bool test();
 };
 
 

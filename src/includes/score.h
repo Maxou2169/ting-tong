@@ -96,7 +96,13 @@ class Score
      * \param p : Le score du joueur avant qu'il gagne le point
     */
 
-    void gagner_points(Points p);
+    void gagner_points();
+
+    /**
+     * \brief Effectue un test des différentes fonctions membres de la classe
+    */
+
+    bool test();
 };
 
 #endif
