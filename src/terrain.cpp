@@ -38,7 +38,13 @@ void Terrain::set_balle(Balle b)
     this->balle = b;
 }
 
+<<<<<<< src/terrain.cpp
+bool Terrain::test()
+{
+    return (true);
+=======
 void Terrain::test()
 {
     
+>>>>>>> src/terrain.cpp
 }

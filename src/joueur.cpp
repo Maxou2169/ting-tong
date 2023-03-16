@@ -71,3 +71,7 @@ void Joueur::test()
     assert(j.get_pos().get_x() == 25.0 && j.get_pos().get_y() == 25.0);
 }
 
+bool Joueur::test()
+{
+    return (true);
+}

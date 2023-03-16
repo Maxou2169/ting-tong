@@ -3,6 +3,7 @@
 #include "includes/balle.h"
 #include "includes/joueur.h"
 
+#include <chrono>
 #include <SDL2/SDL.h>
 #include <iostream>
 
@@ -46,12 +47,11 @@ void Affichage::sdl_destroy()
     SDL_Quit();
 }
 
-#include <iostream>
-
 void Affichage::render_loop()
 {
     SDL_Event events;
     bool quit = false;
+    auto last_time = chrono::high_resolution_clock::now();
     while (!quit)
     {
         while (SDL_PollEvent(&events))
@@ -62,6 +62,9 @@ void Affichage::render_loop()
             {
                 switch (SDL_GetKeyFromScancode(events.key.keysym.scancode)) // Beacause Scancode are "physical" and mapped to qwerty, Keycode is mapping-dependant
                 {
+                    case SDLK_ESCAPE:
+                        quit = true;
+                        break;
                     case SDLK_z:
                         this->terrain.get_joueur_a().haut_joueur();
                         break;
@@ -85,7 +88,7 @@ void Affichage::render_loop()
                         break;
                     case SDLK_RIGHT:
                         this->terrain.get_joueur_b().droite_joueur();
-                        break;                      
+                        break;
                     default: break;
                 }
                 
@@ -97,6 +100,11 @@ void Affichage::render_loop()
         // Here we render
         SDL_SetRenderDrawColor(this->sdl_renderer, 255, 255, 255, 255);
 
+        auto now = chrono::high_resolution_clock::now();
+        auto duration_between = chrono::duration_cast<chrono::microseconds>(now - last_time);
+        this->terrain.get_balle().avancer_temps((double) duration_between.count() / 1000000.0);
+        last_time = now; // Puts the current time into prev_frame_ts
+
         this->draw_balle(this->terrain.get_balle());
         this->draw_joueur(this->terrain.get_joueur_a());
         this->draw_joueur(this->terrain.get_joueur_b());
@@ -106,7 +114,7 @@ void Affichage::render_loop()
     }
 }
 
-void Affichage::draw_joueur(Joueur & j)
+void Affichage::draw_joueur(const Joueur & j)
 {
     SDL_Rect rect = {(int) j.get_pos().get_x(), (int) j.get_pos().get_y(), (int) j.get_pos().get_x() + 15, (int) j.get_pos().get_y() + 30};
     SDL_SetRenderDrawColor(this->sdl_renderer, 255,0,0,255);
@@ -131,7 +139,7 @@ void Affichage::draw_circle(int x, int y, int radius, SDL_Color color)
     }
 }
 
-void Affichage::draw_balle(Balle & b)
+void Affichage::draw_balle(const Balle & b)
 {
     SDL_Color yellow = {255,255,0, 255};
     this->draw_circle(
@@ -140,4 +148,9 @@ void Affichage::draw_balle(Balle & b)
         10,
         yellow
     );
+}
+
+bool Affichage::test()
+{
+    return (true);
 }
