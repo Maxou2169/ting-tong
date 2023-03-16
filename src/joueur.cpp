@@ -65,7 +65,7 @@ bool Joueur::test()
     assert(j.get_pos().get_x() == 51.0);
 
     j.gauche_joueur();
-    assert(j.get_pos().get_x() == 50);
+    assert(j.get_pos().get_x() == 50.0);
 
     j.set_pos(Vec2(25.0,25.0));
     assert(j.get_pos().get_x() == 25.0 && j.get_pos().get_y() == 25.0);

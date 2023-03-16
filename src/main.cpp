@@ -6,14 +6,17 @@
 #include "includes/score.h"
 #include "includes/coup.h"
 #include "includes/format.h"
+#include "includes/texte.h"
 
 bool run_test(void);
 
 int main(void)
 {
     run_test();
-    Terrain t(Joueur("J1", Vec2(60,150)), Joueur("J2", Vec2(60,60)), Balle(Vec2(60, 60), Vec2(10, 10)));
+    Terrain t(Joueur("J1", Vec2(60.0,150.0)), Joueur("J2", Vec2(60.0,60.0)), Balle(Vec2(60.0, 60.0), Vec2(10.0, 10.0)));
     //t.get_balle().set_traj(Vec2(0, 2));
+    Texte tx(t);
+    tx.texte();
     Affichage a(t);
     a.render_loop();
     return (0);

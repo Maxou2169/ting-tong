@@ -56,7 +56,7 @@ bool Coup::test()
 {
     Joueur j1("Nadal", Vec2(145.0, 205.0));
     Joueur j2("Djokovic", Vec2(250.0, 50.0));
-    Balle b(Vec2(150.0, 200.0), Vec2(0.0, 0.0));
+    Balle b(Vec2(148.0, 202.0), Vec2(0.0, 0.0));
 
     Coup c1(j1, b);
     Coup c2(j2, b);
@@ -68,10 +68,10 @@ bool Coup::test()
 
     // Le joueur 1 effectue son coup
     c1.faire_coup();
-    assert(b.get_pos().get_x() == -145.0 && b.get_pos().get_y() == -205.0);
+    assert(b.get_traj().get_x() == -296.0 && b.get_traj().get_y() == -404.0);
 
     // Le joueur 1 ne peut pas faire de coup car la balle est trop loin
     c1.faire_coup();
-    assert(b.get_pos().get_x() == -145.0 && b.get_pos().get_y() == -205.0);
+    assert(b.get_traj().get_x() == -296.0 && b.get_traj().get_y() == -404.0);
     return (true);
 }
