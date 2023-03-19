@@ -6,6 +6,8 @@
 
 /**
  * \brief La classe coup correspond au coup d'un joueur, que ce soit un coup droit ou un revers
+ * Il suffit d'instancier cette classe pour pouvoir jouer un coup,
+ * la classe décidera de quel côté il faut tirer
 */
 
 class Coup

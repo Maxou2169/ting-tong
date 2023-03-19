@@ -21,6 +21,7 @@ class Balle
 
     public:
         Balle();
+        Balle(Vec2 pos, Vec2 traj);
         Balle(Vec2 pos, Vec2 traj, Vec2 atter);
         ~Balle();
 
@@ -48,6 +49,12 @@ class Balle
          * \brief This function updates the position and speed of the ball according to where it is
         */
         void avancer_temps(float temps);
+
+        /**
+         * \brief This function performs tests on the Balle class
+         * \note This function might crash the program
+        */
+        bool test();
 };
 
 #endif
