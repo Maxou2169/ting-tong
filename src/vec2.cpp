@@ -68,6 +68,12 @@ void Vec2::operator+=(Vec2 const & to_add)
     this->y += to_add.get_y();
 }
 
+bool Vec2::operator==(Vec2 const & to_compare) const
+{
+    return (this->x == to_compare.get_x() && this->y == to_compare.get_y());
+}
+
+
 bool Vec2::test()
 {
     Vec2 v0(14,11); // getters / setters
@@ -77,6 +83,10 @@ bool Vec2::test()
     v0.set_y(6);
     assert(v0.get_x() == 0);
     assert(v0.get_y() == 6); 
+    
+    Vec2 v00(0,6); // operator ==
+    assert(v0 == v0);
+    assert(v0 == v00);
 
     Vec2 v1(3,1); // opeator * float
     Vec2 v1_01 = v1 * 0.01;
