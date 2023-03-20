@@ -81,6 +81,8 @@ class Vec2
         */
 
         void operator+=(Vec2 const& to_add);
+
+        bool operator==(Vec2 const & to_compare) const;
         bool test();
 };
 
