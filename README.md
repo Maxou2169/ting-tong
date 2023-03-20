@@ -22,3 +22,9 @@ Pour quitter le programme, faire ECHAP en version graphique, T en version texte 
 - Toutes les classes ont une fonction `bool test()` qui est publique
 - Les protections contre la double inclusion sont de la forme du nom du fichier avec les `.` transformés en `_`
 - Les fonctions sont nommées suivant la convention `snake_case`
+
+## Quelques notes et points importants
+
+### Classe Balle
+- Il y a maintenant des valeurs par défaut sur tous les éléments de la balle, pour éviter les problèmes de division par 0 sur des `Balle::descente` non définis ou autre
+- Il faut donc bien penser à personnaliser ces valeurs à chaque fois

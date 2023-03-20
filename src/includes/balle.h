@@ -12,17 +12,19 @@
 class Balle
 {
     private:
-        Vec2 pos;
-        float hauteur;
-        Vec2 traj; /**< La trajectoire est en unités/seconde */
+        Vec2 pos = Vec2(0,0);
+        float hauteur = 1;
+        Vec2 traj = Vec2(0,0); /**< La trajectoire est en unités/seconde */
         
-        Vec2 aterrisage; /**< Une position d'aterissage en unités du plan*/
-        float descente; /**< Pour chaque unité du plan parcourue (projeté au sol), le nombre d'unités du plan descendues*/
+        Vec2 aterrisage = Vec2(0,0); /**< Une position d'aterissage en unités du plan*/
+        float descente = 0.1; /**< Pour chaque unité du plan parcourue (projeté au sol), le nombre d'unités du plan descendues*/
 
     public:
         Balle();
         Balle(Vec2 pos, Vec2 traj);
+        Balle(Vec2 pos, Vec2 traj, float descente);
         Balle(Vec2 pos, Vec2 traj, Vec2 atter);
+        Balle(Vec2 pos, Vec2 traj, Vec2 atter, float descente);
         ~Balle();
 
         Vec2 get_pos() const;

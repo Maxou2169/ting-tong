@@ -1,9 +1,14 @@
 #include "includes/balle.h"
 #include "includes/vec2.h"
+#include <assert.h>
 
 Balle::Balle() : pos(Vec2(0,0)), traj(Vec2(0,0)) {}
 Balle::Balle(Vec2 pos, Vec2 traj) : pos(pos), traj(traj) {}
+Balle::Balle(Vec2 pos, Vec2 traj, float descente) : pos(pos), traj(traj), descente(descente) {}
 Balle::Balle(Vec2 pos, Vec2 traj, Vec2 atter) : pos(pos), traj(traj), aterrisage(atter) {}
+Balle::Balle(Vec2 pos, Vec2 traj, Vec2 atter, float descente)
+: pos(pos), traj(traj), aterrisage(atter), descente(descente) {}
+
 Balle::~Balle() {}
 
 Vec2 Balle::get_pos() const
@@ -56,8 +61,26 @@ void Balle::avancer_temps(float t)
     this->pos += this->traj * t;
     this->hauteur -= this->descente * t;
 }
+#include <iostream>
+
+using namespace std;
 
 bool Balle::test(void)
 {
+    Balle b = Balle(); // Constructeur vide
+    assert(b.get_pos().get_x() == 0 && b.get_pos().get_y() == 0);
+    assert(b.get_traj().get_x() == 0 && b.get_traj().get_y() == 0);
+
+    b.calcule_aterissage();
+    cout << b.get_aterissage().get_x() << " " << b.get_aterissage().get_y() << endl;
+    assert(b.get_aterissage().get_x() == 0.0 && b.get_aterissage().get_y() == 0.0);
+
+    b.set_traj(Vec2(1,2));
+    b.calcule_aterissage();
+    assert(b.get_aterissage().get_x() == 10 && b.get_aterissage().get_y() == 20);
+
+    b.avancer_temps(3);
+    assert(b.get_pos().get_x() == 3 && b.get_pos().get_y() == 6);
+
     return (true);
 }
