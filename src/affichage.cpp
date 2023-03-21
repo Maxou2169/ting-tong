@@ -2,6 +2,7 @@
 #include "includes/affichage.h"
 #include "includes/balle.h"
 #include "includes/joueur.h"
+#include "includes/coup.h"
 
 #include <chrono>
 #include <SDL2/SDL.h>
@@ -60,38 +61,30 @@ void Affichage::render_loop()
                 quit = true; // Si l'utilisateur a clique sur la croix de fermeture
             else if (events.type == SDL_KEYDOWN)
             {
-                switch (SDL_GetKeyFromScancode(events.key.keysym.scancode)) // Beacause Scancode are "physical" and mapped to qwerty, Keycode is mapping-dependant
-                {
-                    case SDLK_ESCAPE:
-                        quit = true;
-                        break;
-                    case SDLK_z:
-                        this->terrain.get_joueur_a().haut_joueur();
-                        break;
-                    case SDLK_s:
-                        this->terrain.get_joueur_a().bas_joueur();
-                        break;
-                    case SDLK_q:
-                        this->terrain.get_joueur_a().gauche_joueur();
-                        break;
-                    case SDLK_d:
-                        this->terrain.get_joueur_a().droite_joueur();
-                        break;
-                    case SDLK_UP:
-                        this->terrain.get_joueur_b().haut_joueur();
-                        break;
-                    case SDLK_DOWN:
-                        this->terrain.get_joueur_b().bas_joueur();
-                        break;
-                    case SDLK_LEFT:
-                        this->terrain.get_joueur_b().gauche_joueur();
-                        break;
-                    case SDLK_RIGHT:
-                        this->terrain.get_joueur_b().droite_joueur();
-                        break;
-                    default: break;
-                }
-                
+                const Uint8* state = SDL_GetKeyboardState(NULL);
+                if (state[SDL_SCANCODE_ESCAPE])
+                    quit = true;
+                if (state[SDL_SCANCODE_W])
+                    this->terrain.get_joueur_a().haut_joueur();
+                if (state[SDL_SCANCODE_S])
+                    this->terrain.get_joueur_a().bas_joueur();
+                if (state[SDL_SCANCODE_A])
+                    this->terrain.get_joueur_a().gauche_joueur();
+                if (state[SDL_SCANCODE_D])
+                    this->terrain.get_joueur_a().droite_joueur();
+                if (state[SDL_SCANCODE_E])
+                    Coup c(this->terrain.get_joueur_a(), this->terrain.get_balle());
+
+                if (state[SDL_SCANCODE_O])
+                    this->terrain.get_joueur_b().haut_joueur();
+                if (state[SDL_SCANCODE_L])
+                    this->terrain.get_joueur_b().bas_joueur();
+                if (state[SDL_SCANCODE_K])
+                    this->terrain.get_joueur_b().gauche_joueur();
+                if (state[SDL_SCANCODE_SEMICOLON])
+                    this->terrain.get_joueur_b().droite_joueur();
+                if (state[SDL_SCANCODE_P])
+                    Coup c(this->terrain.get_joueur_a(), this->terrain.get_balle());
             }
         }
         // Render at each frame
@@ -116,9 +109,13 @@ void Affichage::render_loop()
 
 void Affichage::draw_joueur(const Joueur & j)
 {
+    /*
     SDL_Rect rect = {(int) j.get_pos().get_x(), (int) j.get_pos().get_y(), (int) j.get_pos().get_x() + 15, (int) j.get_pos().get_y() + 30};
+    */
+    SDL_Colour red = {255, 0, 0, 255};
     SDL_SetRenderDrawColor(this->sdl_renderer, 255,0,0,255);
-    SDL_RenderDrawRect(this->sdl_renderer, &rect);
+    this->draw_circle(j.get_pos().get_x(), j.get_pos().get_y(), 10, red);
+    //SDL_RenderDrawRect(this->sdl_renderer, &rect);
 }
 
 void Affichage::draw_circle(int x, int y, int radius, SDL_Color color)
