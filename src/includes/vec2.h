@@ -81,6 +81,12 @@ class Vec2
         */
 
         void operator+=(Vec2 const& to_add);
+
+        /**
+         * \brief This function compares two vectors. Those vectors are equal if x1 = x2 and y1 = y2
+         * \returns A boolean, representing the (in)equality
+        */
+        bool operator==(Vec2 const & to_compare) const;
         bool test();
 };
 
