@@ -72,7 +72,6 @@ bool Balle::test(void)
     assert(b.get_traj().get_x() == 0 && b.get_traj().get_y() == 0);
 
     b.calcule_aterissage();
-    cout << b.get_aterissage().get_x() << " " << b.get_aterissage().get_y() << endl;
     assert(b.get_aterissage().get_x() == 0.0 && b.get_aterissage().get_y() == 0.0);
 
     b.set_traj(Vec2(1,2));
