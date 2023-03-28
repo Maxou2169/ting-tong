@@ -98,7 +98,7 @@ void Affichage::render_loop()
         auto duration_between = chrono::duration_cast<chrono::microseconds>(now - last_time);
         this->terrain.get_balle().avancer_temps((double) duration_between.count() / 1000000.0);
         last_time = now; // Puts the current time into prev_frame_ts
-
+        this->terrain.repousser();
         this->draw_balle(this->terrain.get_balle());
         this->draw_joueur(this->terrain.get_joueur_a());
         this->draw_joueur(this->terrain.get_joueur_b());
@@ -152,8 +152,8 @@ void Affichage::draw_balle(const Balle & b)
 
 Vec2 Affichage::get_screen_coords(const Vec2 & v, float x_margin, float y_margin)
 {
-    float scale_x = (float) this->x_size / BORDER_X_SIZE;
-    float scale_y = (float) this->y_size / BORDER_Y_SIZE;
+    float scale_x = (float) this->x_size / TERRAIN_X_TOTAL;
+    float scale_y = (float) this->y_size / TERRAIN_Y_TOTAL;
 
     float origin_x = x_margin + (this->x_size - x_margin) / (float) 2;
     float origin_y = y_margin + (this->y_size - y_margin) / (float) 2;

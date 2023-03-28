@@ -5,8 +5,8 @@
 # include "terrain.h"
 # include "joueur.h"
 
-const float BORDER_X_SIZE = 10; // TODO REMOVE AT MERGE
-const float BORDER_Y_SIZE = 30;
+const float TERRAIN_X_TOTAL = 2.0* BORDER_X_SIZE;
+const float TERRAIN_Y_TOTAL = 2.0* BORDER_Y_SIZE;
 
 /**
  * \brief La classe qui gère les différents affichages de joueurs et du terrain

@@ -18,6 +18,18 @@ class Terrain
         Joueur joueur_a;
         Joueur joueur_b;
         Balle balle;
+        
+        void repousser_x_positif(Joueur &j);
+
+        void repousser_x_negatif(Joueur &j);
+
+        void repousser_y_positif(Joueur &j);
+
+        void repousser_y_negatif(Joueur &j);
+
+        void repousser_filet_joueur_a();
+
+        void repousser_filet_joueur_b();
     
     public:
 
@@ -69,19 +81,10 @@ class Terrain
         */
         bool test();
 
+        /**
+         * \brief Cette fonction vérifie la position des joueurs, et les "repousse" si nécessaire
+        */
         void repousser();
-
-        void repousser_x_positif(Joueur &j);
-
-        void repousser_x_negatif(Joueur &j);
-
-        void repousser_y_positif(Joueur &j);
-
-        void repousser_y_negatif(Joueur &j);
-
-        void repousser_filet_joueur_a();
-
-        void repousser_filet_joueur_b();
 };
 
 
