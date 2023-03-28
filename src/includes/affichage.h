@@ -4,6 +4,10 @@
 # include <SDL2/SDL.h>
 # include "terrain.h"
 # include "joueur.h"
+
+const float BORDER_X_SIZE = 10; // TODO REMOVE AT MERGE
+const float BORDER_Y_SIZE = 30;
+
 /**
  * \brief La classe qui gère les différents affichages de joueurs et du terrain
 */
@@ -21,8 +25,29 @@ class Affichage
         void sdl_init();
         void sdl_destroy();
 
+        /**
+         * \brief This function takes a Joueur and draws it on the SDL_Window
+         * \param j : The Joueur to draw
+         * 
+         * \note Les coordonnées du joueur sont en unités du terrain
+        */
         void draw_joueur(const Joueur & j);
+
+        /**
+         * \brief This function takes a Balle and draws it on the SDL_Window
+         * \param b : The Balle to draw
+         * 
+         * \note Les coordonnées du joueur sont en unités du terrain
+        */
         void draw_balle(const Balle & b);
+
+        /**
+         * \brief Cette fonction traduit des coordonnées du terrain en des coordonnées-écran
+         * \param v : Les coordonnées à traduire
+         * \param x_margin : L'espace total à laisser sur l'axe x autour du terrain
+         * \param y_margin : L'espace total à laisser sur l'axe y autour du terrain
+        */
+        Vec2 get_screen_coords(const Vec2 & v, float x_margin = 0, float y_margin = 0);
 
         // Those functions are really close to the SDL and would merit a separate module in the utils/
         /**

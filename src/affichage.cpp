@@ -7,6 +7,7 @@
 #include <chrono>
 #include <SDL2/SDL.h>
 #include <iostream>
+#include <assert.h>
 
 Affichage::Affichage(Terrain &t, unsigned int x, unsigned int y)
     : terrain(t), x_size(x), y_size(y)
@@ -65,9 +66,9 @@ void Affichage::render_loop()
                 if (state[SDL_SCANCODE_ESCAPE])
                     quit = true;
                 if (state[SDL_SCANCODE_W])
-                    this->terrain.get_joueur_a().haut_joueur();
-                if (state[SDL_SCANCODE_S])
                     this->terrain.get_joueur_a().bas_joueur();
+                if (state[SDL_SCANCODE_S])
+                    this->terrain.get_joueur_a().haut_joueur();
                 if (state[SDL_SCANCODE_A])
                     this->terrain.get_joueur_a().gauche_joueur();
                 if (state[SDL_SCANCODE_D])
@@ -76,15 +77,15 @@ void Affichage::render_loop()
                     Coup c(this->terrain.get_joueur_a(), this->terrain.get_balle());
 
                 if (state[SDL_SCANCODE_O])
-                    this->terrain.get_joueur_b().haut_joueur();
-                if (state[SDL_SCANCODE_L])
                     this->terrain.get_joueur_b().bas_joueur();
+                if (state[SDL_SCANCODE_L])
+                    this->terrain.get_joueur_b().haut_joueur();
                 if (state[SDL_SCANCODE_K])
                     this->terrain.get_joueur_b().gauche_joueur();
                 if (state[SDL_SCANCODE_SEMICOLON])
                     this->terrain.get_joueur_b().droite_joueur();
                 if (state[SDL_SCANCODE_P])
-                    Coup c(this->terrain.get_joueur_a(), this->terrain.get_balle());
+                    Coup c(this->terrain.get_joueur_b(), this->terrain.get_balle());
             }
         }
         // Render at each frame
@@ -112,9 +113,10 @@ void Affichage::draw_joueur(const Joueur & j)
     /*
     SDL_Rect rect = {(int) j.get_pos().get_x(), (int) j.get_pos().get_y(), (int) j.get_pos().get_x() + 15, (int) j.get_pos().get_y() + 30};
     */
+    Vec2 pos_proj = this->get_screen_coords(j.get_pos());
     SDL_Colour red = {255, 0, 0, 255};
     SDL_SetRenderDrawColor(this->sdl_renderer, 255,0,0,255);
-    this->draw_circle(j.get_pos().get_x(), j.get_pos().get_y(), 10, red);
+    this->draw_circle(pos_proj.get_x(), pos_proj.get_y(), 10, red);
     //SDL_RenderDrawRect(this->sdl_renderer, &rect);
 }
 
@@ -138,16 +140,34 @@ void Affichage::draw_circle(int x, int y, int radius, SDL_Color color)
 
 void Affichage::draw_balle(const Balle & b)
 {
+    Vec2 pos_proj = this->get_screen_coords(b.get_pos());
     SDL_Color yellow = {255,255,0, 255};
     this->draw_circle(
-        b.get_pos().get_x(),
-        b.get_pos().get_y(),
+        pos_proj.get_x(),
+        pos_proj.get_y(),
         10,
         yellow
     );
 }
 
+Vec2 Affichage::get_screen_coords(const Vec2 & v, float x_margin, float y_margin)
+{
+    float scale_x = (float) this->x_size / BORDER_X_SIZE;
+    float scale_y = (float) this->y_size / BORDER_Y_SIZE;
+
+    float origin_x = x_margin + (this->x_size - x_margin) / (float) 2;
+    float origin_y = y_margin + (this->y_size - y_margin) / (float) 2;
+    return Vec2(
+        origin_x + (v.get_x() * scale_x),
+        origin_y + (v.get_y() * scale_y)
+    );
+}
+
 bool Affichage::test()
 {
+    Vec2 v(0,0);
+    Vec2 v_proj = this->get_screen_coords(v, 0, 0);
+    //assert(v_proj == Vec2(this->x_size / 2, this->y_size / 2));
+
     return (true);
 }

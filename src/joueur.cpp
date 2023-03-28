@@ -2,6 +2,8 @@
 
 #include "assert.h"
 
+# define EPSILON 0.0001
+
 Joueur::Joueur(string n, Vec2 p) : nom(n), pos(p) {}
 
 Joueur::~Joueur() {}
@@ -28,22 +30,22 @@ void Joueur::set_pos(Vec2 p)
 
 void Joueur::haut_joueur()
 {
-    this->pos.set_y(pos.get_y() + 1.0);
+    this->pos.set_y(pos.get_y() + 0.1);
 }
 
 void Joueur::bas_joueur()
 {
-    this->pos.set_y(pos.get_y() - 1.0);
+    this->pos.set_y(pos.get_y() - 0.1);
 }
 
 void Joueur::gauche_joueur()
 {
-    this->pos.set_x(pos.get_x() - 1.0);
+    this->pos.set_x(pos.get_x() - 0.1);
 }
 
 void Joueur::droite_joueur()
 {
-    this->pos.set_x(pos.get_x() + 1.0);
+    this->pos.set_x(pos.get_x() + 0.1);
 }
 
 bool Joueur::test()
@@ -56,16 +58,16 @@ bool Joueur::test()
     assert(j_pos_x == 50.0 && j_pos_y == 50.0);
 
     j.haut_joueur();
-    assert(j.get_pos().get_y() == 51.0);
+    assert((j.get_pos().get_y() - 50.1) < EPSILON);
 
     j.bas_joueur();
-    assert(j.get_pos().get_y()== 50.0);
+    assert((j.get_pos().get_y() - 50.0) < EPSILON);
 
     j.droite_joueur();
-    assert(j.get_pos().get_x() == 51.0);
+    assert((j.get_pos().get_x() - 50.1) < EPSILON);
 
     j.gauche_joueur();
-    assert(j.get_pos().get_x() == 50.0);
+    assert((j.get_pos().get_x() - 50) < EPSILON);
 
     j.set_pos(Vec2(25.0,25.0));
     assert(j.get_pos().get_x() == 25.0 && j.get_pos().get_y() == 25.0);
