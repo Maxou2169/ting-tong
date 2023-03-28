@@ -28,3 +28,11 @@ Pour quitter le programme, faire ECHAP en version graphique, T en version texte 
 ### Classe Balle
 - Il y a maintenant des valeurs par défaut sur tous les éléments de la balle, pour éviter les problèmes de division par 0 sur des `Balle::descente` non définis ou autre
 - Il faut donc bien penser à personnaliser ces valeurs à chaque fois
+
+### Classe Terrain
+- Le centre du terrain est en (0,0)
+- Il est de taille 8 de large, 24 de long (au total)
+- Il y a des "bordures" en 10 de long, 30 de large
+
+### Classe affichage
+- On fait un "scale" entre les coordonnées du terrain et celle de la fenêtre
