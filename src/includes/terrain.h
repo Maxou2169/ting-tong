@@ -5,6 +5,9 @@
 #include "joueur.h"
 #include "balle.h"
 
+const float BORDER_X_SIZE = 5.0;
+const float BORDER_Y_SIZE = 15.0;
+
 /**
  * \brief Une classe Terrain qui possède deux joueurs et une balle
 */
@@ -65,6 +68,20 @@ class Terrain
          * \brief Cette fonction teste que le terrain soit bien défini et que celui-ci fonctionne
         */
         bool test();
+
+        void repousser();
+
+        void repousser_x_positif(Joueur &j);
+
+        void repousser_x_negatif(Joueur &j);
+
+        void repousser_y_positif(Joueur &j);
+
+        void repousser_y_negatif(Joueur &j);
+
+        void repousser_filet_joueur_a();
+
+        void repousser_filet_joueur_b();
 };
 
 
