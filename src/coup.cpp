@@ -36,8 +36,7 @@ bool Coup::peut_faire_coup()
         (pos_balle_x >= pos_joueur_x - HITBOX_X) && 
         (pos_balle_x <= pos_joueur_x + HITBOX_X) && 
         (pos_balle_y >= pos_joueur_y - HITBOX_Y) && 
-        (pos_balle_y <= pos_joueur_y + HITBOX_Y) &&
-        (pos_balle_y > 0.0) //Vérifie que la balle n'est pas au sol
+        (pos_balle_y <= pos_joueur_y + HITBOX_Y)
     ); // Simplifie un if (a == true) then true else false en (a)
 }
 
@@ -49,13 +48,13 @@ void Coup::faire_coup()
     if (this->joueur.get_pos().get_y() > 0)
     { // C'est le joueur du haut
         if (this->balle.get_pos().get_x() > this->joueur.get_pos().get_x())
-            // Alors la balle est à droite, c'est un revers
+            // Alors la balle est à gauche du joueur - droite de l'écran, c'est un revers
             this->balle.set_traj(
-                revers_haut * vitesse_actuelle * COEFF_VITESSE
+                vitesse_actuelle == 0 ? revers_haut : revers_haut * vitesse_actuelle * COEFF_VITESSE 
             );
         else 
             this->balle.set_traj(
-                coup_droit_haut * vitesse_actuelle * COEFF_VITESSE
+                vitesse_actuelle == 0 ? coup_droit_haut : coup_droit_haut * vitesse_actuelle * COEFF_VITESSE
             );
     }
     else
@@ -63,11 +62,11 @@ void Coup::faire_coup()
         if (this->balle.get_pos().get_x() > this->joueur.get_pos().get_x())
             // Alors la balle est à droite, c'est un coup droit
             this->balle.set_traj(
-                coup_droit_haut * vitesse_actuelle * COEFF_VITESSE
+                vitesse_actuelle == 0 ? coup_droit_bas : coup_droit_bas * vitesse_actuelle * COEFF_VITESSE 
             );
         else 
             this->balle.set_traj(
-                coup_droit_bas * vitesse_actuelle * COEFF_VITESSE
+                vitesse_actuelle == 0 ? revers_bas : revers_bas * vitesse_actuelle * COEFF_VITESSE 
             );
     }
 }
@@ -79,13 +78,13 @@ bool Coup::test()
     Balle b(Vec2(1.0, -9.0), Vec2(0.0, 0.0), 1.5); // Coup droit du joueur bas
 
     Coup c1(j1, b);
-    Coup c2(j2, b);
-
     // J1 est trop loin, il ne peut pas taper la balle
     assert(!c1.peut_faire_coup());
     assert(b.get_traj() == Vec2(0,0));
 
+    Coup c2(j2, b);
+    // J2 peut faire le coup et le fait
     assert(c2.peut_faire_coup());
-    assert(b.get_traj() == coup_droit_bas * COEFF_VITESSE);
+    assert(b.get_traj() == coup_droit_bas);
     return (true);
 }
