@@ -13,7 +13,7 @@ bool run_test(void);
 int main(void)
 {
     run_test();
-    Terrain t(Joueur("J1", Vec2(60.0,150.0)), Joueur("J2", Vec2(60.0,60.0)), Balle(Vec2(61.0, 61.0), Vec2(3.0, 3.0)));
+    Terrain t(Joueur("J1", Vec2(0,8)), Joueur("J2", Vec2(0,-8)), Balle(Vec2(0.0, 0.0), Vec2(1.0, 1.0)));
     //t.get_balle().set_traj(Vec2(0, 2));
     Texte tx(t);
     //tx.texte();
