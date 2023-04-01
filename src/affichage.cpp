@@ -98,6 +98,9 @@ void Affichage::render_loop()
         auto duration_between = chrono::duration_cast<chrono::microseconds>(now - last_time);
         this->terrain.get_balle().avancer_temps((double) duration_between.count() / 1000000.0);
         last_time = now; // Puts the current time into prev_frame_ts
+
+        this->terrain.maj_points_service();
+
         this->terrain.repousser();
         this->draw_balle(this->terrain.get_balle());
         this->draw_joueur(this->terrain.get_joueur_a());
