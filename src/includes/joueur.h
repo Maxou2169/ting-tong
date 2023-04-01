@@ -39,7 +39,7 @@ class Joueur
          * \brief Permet d'obtenir le score du joueur
         */
 
-        Score get_score() const;
+        Score& get_score();
 
         /**
          * \brief Permet de modifier le nom d'un joueur
@@ -56,7 +56,7 @@ class Joueur
         /**
          * \brief Permet de modifier le score du joueur
         */
-        void set_score(Score s);
+        void set_score(const Score s);
 
         /**
          * \brief Permet d'effectuer le déplacement d'un joueur vers le haut de l'écran pour le joueur en bas de l'écran

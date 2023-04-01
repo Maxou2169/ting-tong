@@ -154,9 +154,9 @@ bool Terrain::joueur_a_gagne_point()
 
     if(pos_balle_y <= BORDER_Y_SIZE * -1.0 - 1.0 || pos_balle_x <= BORDER_X_SIZE *1.0 - 1.0 || pos_balle_x >= BORDER_X_SIZE + 1.0)
     {
-        cout<<"score a"<<joueur_a.get_score().get_points()<<endl;
+        cout<<"[DEBUG TERRAIN] score Joueur A avant gain "<<joueur_a.get_score().get_points()<<endl;
         joueur_a.get_score().gagner_points();
-        cout<<"score aa"<<joueur_a.get_score().get_points()<<endl;
+        cout<<"[DEBUG TERRAIN] score joueur A après gain "<<joueur_a.get_score().get_points()<<endl;
         return true;
     }
     else
@@ -172,7 +172,7 @@ bool Terrain::joueur_b_gagne_point()
 
     if(pos_balle_y >= BORDER_Y_SIZE + 1.0 || pos_balle_x <= BORDER_X_SIZE * -1.0 - 1.0 || pos_balle_x >= BORDER_X_SIZE + 1.0)
     {
-        joueur_b.get_score().gagner_points();
+        this->joueur_b.get_score().gagner_points();
         return true;
     }
     else
@@ -189,8 +189,6 @@ bool Terrain::test()
     Balle b;
     
     Terrain t(j1,j2,b);
-    j1.test();
-    j2.test();
     t.repousser();
 
     float new_pos_x_joueur_a = t.joueur_a.get_pos().get_x();
@@ -207,7 +205,7 @@ bool Terrain::test()
 
     b.set_pos(Vec2(-7.0,-17.0));
     assert(t.joueur_a_gagne_point() == true);
-    assert(j1.get_score().get_points() == QUINZE);
+    assert(t.get_joueur_a().get_score().get_points() == QUINZE);
 
     return true;
 }

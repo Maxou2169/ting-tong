@@ -21,7 +21,7 @@ Vec2 Joueur::get_pos() const
     return this->pos;
 }
 
-Score Joueur::get_score() const
+Score& Joueur::get_score()
 {
     return this->score;
 }
@@ -36,7 +36,7 @@ void Joueur::set_pos(Vec2 p)
     this->pos=p;
 }
 
-void Joueur::set_score(Score s)
+void Joueur::set_score(const Score s)
 {
     this->score=s;
 }
