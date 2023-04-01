@@ -152,14 +152,13 @@ void Affichage::draw_balle(const Balle & b)
 
 Vec2 Affichage::get_screen_coords(const Vec2 & v, float x_margin, float y_margin)
 {
-    float scale_x = (float) this->x_size / TERRAIN_X_TOTAL;
-    float scale_y = (float) this->y_size / TERRAIN_Y_TOTAL;
+    float scale = (float) this->y_size / TERRAIN_Y_TOTAL;
 
     float origin_x = x_margin + (this->x_size - x_margin) / (float) 2;
     float origin_y = y_margin + (this->y_size - y_margin) / (float) 2;
     return Vec2(
-        origin_x + (v.get_x() * scale_x),
-        origin_y + (v.get_y() * scale_y)
+        origin_x + (v.get_x() * scale),
+        origin_y + (v.get_y() * scale)
     );
 }
 
