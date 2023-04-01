@@ -13,7 +13,7 @@ bool run_test(void);
 int main(void)
 {
     run_test();
-    Terrain t(Joueur("J1", Vec2(0,8)), Joueur("J2", Vec2(0,-8)), Balle(Vec2(0.0, 0.0), Vec2(0.1, 0.1)));
+    Terrain t(Joueur("J1", Vec2(0,8), Score()), Joueur("J2", Vec2(0,-8), Score()), Balle(Vec2(0.0, 0.0), Vec2(0.1, 0.1)));
     //t.get_balle().set_traj(Vec2(0, 2));
     Texte tx(t);
     //tx.texte();
@@ -30,10 +30,10 @@ bool run_test(void)
     Balle b(Vec2(0, 0), Vec2(0, 0));
     b.test();
 
-    Joueur j("J1", Vec2(0, 0));
+    Joueur j("J1", Vec2(0, 0), Score());
     j.test();
 
-    Terrain t(Joueur("J1", Vec2(0, 0)), Joueur("J2", Vec2(0, 0)), Balle(Vec2(0, 0), Vec2(0, 0)));
+    Terrain t(Joueur("J1", Vec2(0, 0), Score()), Joueur("J2", Vec2(0, 0), Score()), Balle(Vec2(0, 0), Vec2(0, 0)));
     t.test();
 
     Affichage a(t,1,1);

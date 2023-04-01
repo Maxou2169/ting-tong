@@ -1,10 +1,13 @@
 #include "includes/joueur.h"
-
+#include "includes/score.h"
+#include <iostream>
 #include "assert.h"
+
+using namespace std;
 
 # define EPSILON 0.0001
 
-Joueur::Joueur(string n, Vec2 p) : nom(n), pos(p) {}
+Joueur::Joueur(string n, Vec2 p, Score s) : nom(n), pos(p), score(s) {}
 
 Joueur::~Joueur() {}
 
@@ -18,6 +21,11 @@ Vec2 Joueur::get_pos() const
     return this->pos;
 }
 
+Score& Joueur::get_score()
+{
+    return this->score;
+}
+
 void Joueur::set_nom(string n)
 {
     this->nom=n;
@@ -26,6 +34,11 @@ void Joueur::set_nom(string n)
 void Joueur::set_pos(Vec2 p)
 {
     this->pos=p;
+}
+
+void Joueur::set_score(const Score s)
+{
+    this->score=s;
 }
 
 void Joueur::haut_joueur()
@@ -50,7 +63,7 @@ void Joueur::droite_joueur()
 
 bool Joueur::test()
 {
-    Joueur j("Nadal", Vec2(50.0,50.0));
+    Joueur j("Nadal", Vec2(50.0,50.0), Score());
     float j_pos_x = j.get_pos().get_x();
     float j_pos_y = j.get_pos().get_y();
     

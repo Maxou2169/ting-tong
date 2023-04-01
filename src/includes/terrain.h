@@ -85,6 +85,20 @@ class Terrain
          * \brief Cette fonction vérifie la position des joueurs, et les "repousse" si nécessaire
         */
         void repousser();
+
+        /**
+         * \brief Cette fonction permet de retourner vraie dans le cas où le joueur a a gagné le point
+         * \note Cette fonction mets AUSSI à jour le score sans intervention de l'utilisateur
+        */
+
+        bool joueur_a_gagne_point();
+
+        /**
+         * \brief Cette fonction permet de retourner vraie dans le cas où le joueur b a gagné le point
+         * \note Cette fonction mets AUSSI à jour le score sans intervention de l'utilisateur
+        */
+
+        bool joueur_b_gagne_point();
 };
 
 

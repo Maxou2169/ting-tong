@@ -73,8 +73,8 @@ void Coup::faire_coup()
 
 bool Coup::test()
 {
-    Joueur j1("Nadal", Vec2(0.0, 10.0)); // AU dessus
-    Joueur j2("Djokovic", Vec2(0.0, -10.0)); // EN bas
+    Joueur j1("Nadal", Vec2(0.0, 10.0), Score()); // AU dessus
+    Joueur j2("Djokovic", Vec2(0.0, -10.0), Score()); // EN bas
     Balle b(Vec2(1.0, -9.0), Vec2(0.0, 0.0), 1.5); // Coup droit du joueur bas
 
     Coup c1(j1, b);

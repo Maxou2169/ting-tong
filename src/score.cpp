@@ -1,6 +1,9 @@
 #include "includes/score.h"
+#include <iostream>
 
 #include "assert.h"
+
+using namespace std;
 
 Score::Score() : points(ZERO), avantage(false), egalite(false), jeu(0) {}
 
@@ -74,6 +77,11 @@ void Score::gagner_points()
                 this->jeu++;
                 this->avantage = false;
             }
+            else
+            {
+                this->points = ZERO;
+                this->jeu++;
+            }
             break;
     }
 }
@@ -119,6 +127,11 @@ bool Score::test()
     assert(score.get_points() == ZERO);
     assert(score.get_avantage() == false);
     assert(score.get_jeu() == 2);
+
+    score.set_points(QUARANTE);
+    score.gagner_points();
+    assert(score.get_points() == ZERO);
+    assert(score.get_jeu() == 3);
 
     return (true);
 }

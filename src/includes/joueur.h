@@ -2,7 +2,7 @@
 # define JOUEUR_H
 
 # include "vec2.h"
-//#include "score.h"
+# include "score.h"
 # include <string>
 
 using namespace std;
@@ -12,15 +12,17 @@ class Joueur
     private :
         string nom;
         Vec2 pos;
+        Score score;
     
     public :
         /**
          * \brief Initialise un joueur avec les différents paramètres
          * \param n : Nom du joueur
          * \param p : Sa position
+         * \param s : Son score
         */
 
-        Joueur(string n, Vec2 p);
+        Joueur(string n, Vec2 p,Score s);
         ~Joueur();
 
         /**
@@ -34,6 +36,12 @@ class Joueur
         Vec2 get_pos() const;
 
         /**
+         * \brief Permet d'obtenir le score du joueur
+        */
+
+        Score& get_score();
+
+        /**
          * \brief Permet de modifier le nom d'un joueur
          * \param n : Le nouveau nom du joueur
         */
@@ -44,6 +52,11 @@ class Joueur
          * \param p : Un vecteur (x,y) qui représente la nouvelle position du joueur
         */
         void set_pos(Vec2 p);
+
+        /**
+         * \brief Permet de modifier le score du joueur
+        */
+        void set_score(const Score s);
 
         /**
          * \brief Permet d'effectuer le déplacement d'un joueur vers le haut de l'écran pour le joueur en bas de l'écran
