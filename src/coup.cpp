@@ -69,6 +69,7 @@ void Coup::faire_coup()
                 vitesse_actuelle == 0 ? revers_bas : revers_bas * vitesse_actuelle * COEFF_VITESSE 
             );
     }
+    this->balle.set_hauteur(1);
 }
 
 bool Coup::test()
