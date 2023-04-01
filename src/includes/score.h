@@ -1,8 +1,6 @@
 #ifndef SCORE_H
 #define SCORE_H
 
-#include <iostream>
-
 typedef enum Points 
 {
     ZERO = 0,

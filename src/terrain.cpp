@@ -1,9 +1,11 @@
 #include "includes/terrain.h"
 #include "includes/joueur.h"
 #include "includes/balle.h"
-
+#include <iostream>
 
 #include "assert.h"
+
+using namespace std;
 
 Terrain::Terrain(Joueur x, Joueur y, Balle b) : joueur_a(x), joueur_b(y), balle(b) {}
 
@@ -145,10 +147,44 @@ void Terrain::repousser_filet_joueur_b()
     joueur_b.set_pos(pos);
 }
 
+bool Terrain::joueur_a_gagne_point()
+{
+    float pos_balle_x = balle.get_pos().get_x();
+    float pos_balle_y = balle.get_pos().get_y();
+
+    if(pos_balle_y <= BORDER_Y_SIZE * -1.0 - 1.0 || pos_balle_x <= BORDER_X_SIZE *1.0 - 1.0 || pos_balle_x >= BORDER_X_SIZE + 1.0)
+    {
+        cout<<"score a"<<joueur_a.get_score().get_points()<<endl;
+        joueur_a.get_score().gagner_points();
+        cout<<"score aa"<<joueur_a.get_score().get_points()<<endl;
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool Terrain::joueur_b_gagne_point()
+{
+    float pos_balle_x = balle.get_pos().get_x();
+    float pos_balle_y = balle.get_pos().get_y();
+
+    if(pos_balle_y >= BORDER_Y_SIZE + 1.0 || pos_balle_x <= BORDER_X_SIZE * -1.0 - 1.0 || pos_balle_x >= BORDER_X_SIZE + 1.0)
+    {
+        joueur_b.get_score().gagner_points();
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
 bool Terrain::test()
 {
-    Joueur j1("Nadal", Vec2(-6.0 , 12.0));
-    Joueur j2("Djokovic", Vec2(3.0 , 1.0));
+    Joueur j1("Nadal", Vec2(-6.0 , 12.0),Score());
+    Joueur j2("Djokovic", Vec2(3.0 , 1.0),Score());
     
     Balle b;
     
@@ -168,6 +204,10 @@ bool Terrain::test()
 
     assert(new_pos_x_joueur_b == 3.0);
     assert(new_pos_y_joueur_b == -1.0);
+
+    b.set_pos(Vec2(-7.0,-17.0));
+    assert(t.joueur_a_gagne_point() == true);
+    assert(j1.get_score().get_points() == QUINZE);
 
     return true;
 }
