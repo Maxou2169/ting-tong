@@ -95,7 +95,6 @@ void Affichage::render_loop()
         last_time = now; // Puts the current time into prev_frame_ts
 
         this->terrain.maj_points_service();
-        this->terrain.get_balle().set_pos(Vec2(1,1));
         this->terrain.repousser();
 
         // Render at each frame
