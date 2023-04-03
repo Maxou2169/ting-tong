@@ -66,33 +66,28 @@ void Affichage::render_loop()
                 if (state[SDL_SCANCODE_ESCAPE])
                     quit = true;
                 if (state[SDL_SCANCODE_W])
-                    this->terrain.get_joueur_a().bas_joueur();
+                    this->terrain.get_joueur_b().bas_joueur();
                 if (state[SDL_SCANCODE_S])
-                    this->terrain.get_joueur_a().haut_joueur();
+                    this->terrain.get_joueur_b().haut_joueur();
                 if (state[SDL_SCANCODE_A])
-                    this->terrain.get_joueur_a().gauche_joueur();
+                    this->terrain.get_joueur_b().gauche_joueur();
                 if (state[SDL_SCANCODE_D])
-                    this->terrain.get_joueur_a().droite_joueur();
+                    this->terrain.get_joueur_b().droite_joueur();
                 if (state[SDL_SCANCODE_E])
-                    Coup c(this->terrain.get_joueur_a(), this->terrain.get_balle());
+                    Coup c(this->terrain.get_joueur_b(), this->terrain.get_balle());
 
                 if (state[SDL_SCANCODE_O])
-                    this->terrain.get_joueur_b().bas_joueur();
+                    this->terrain.get_joueur_a().bas_joueur();
                 if (state[SDL_SCANCODE_L])
-                    this->terrain.get_joueur_b().haut_joueur();
+                    this->terrain.get_joueur_a().haut_joueur();
                 if (state[SDL_SCANCODE_K])
-                    this->terrain.get_joueur_b().gauche_joueur();
+                    this->terrain.get_joueur_a().gauche_joueur();
                 if (state[SDL_SCANCODE_SEMICOLON])
-                    this->terrain.get_joueur_b().droite_joueur();
+                    this->terrain.get_joueur_a().droite_joueur();
                 if (state[SDL_SCANCODE_P])
-                    Coup c(this->terrain.get_joueur_b(), this->terrain.get_balle());
+                    Coup c(this->terrain.get_joueur_a(), this->terrain.get_balle());
             }
         }
-        // Render at each frame
-        SDL_SetRenderDrawColor(this->sdl_renderer, 100, 100, 100, 255);
-        SDL_RenderClear(this->sdl_renderer);
-        // Here we render
-        SDL_SetRenderDrawColor(this->sdl_renderer, 255, 255, 255, 255);
 
         auto now = chrono::high_resolution_clock::now();
         auto duration_between = chrono::duration_cast<chrono::microseconds>(now - last_time);
@@ -100,8 +95,15 @@ void Affichage::render_loop()
         last_time = now; // Puts the current time into prev_frame_ts
 
         this->terrain.maj_points_service();
-
+        this->terrain.get_balle().set_pos(Vec2(1,1));
         this->terrain.repousser();
+
+        // Render at each frame
+        SDL_SetRenderDrawColor(this->sdl_renderer, 100, 100, 100, 255);
+        SDL_RenderClear(this->sdl_renderer);
+        // Here we render
+        SDL_SetRenderDrawColor(this->sdl_renderer, 255, 255, 255, 255);
+
         this->draw_balle(this->terrain.get_balle());
         this->draw_joueur(this->terrain.get_joueur_a());
         this->draw_joueur(this->terrain.get_joueur_b());
@@ -161,7 +163,7 @@ Vec2 Affichage::get_screen_coords(const Vec2 & v, float x_margin, float y_margin
     float origin_y = y_margin + (this->y_size - y_margin) / (float) 2;
     return Vec2(
         origin_x + (v.get_x() * scale),
-        origin_y + (v.get_y() * scale)
+        origin_y - (v.get_y() * scale)
     );
 }
 
