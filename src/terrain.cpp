@@ -151,7 +151,9 @@ bool Terrain::joueur_a_gagne_point()
     float pos_balle_x = balle.get_pos().get_x();
     float pos_balle_y = balle.get_pos().get_y();
 
-    if(pos_balle_y <= BORDER_Y_SIZE * -1.0 || ((pos_balle_x <= BORDER_X_SIZE *1.0  || pos_balle_x >= BORDER_X_SIZE) && pos_balle_y <= 0))
+    if(pos_balle_y <= BORDER_Y_SIZE * -1.0 || 
+        ((pos_balle_x <= BORDER_X_SIZE *1.0  || pos_balle_x >= BORDER_X_SIZE) && pos_balle_y <= 0)
+    )
     {
         joueur_a.get_score().gagner_points();
         return true;
@@ -167,7 +169,9 @@ bool Terrain::joueur_b_gagne_point()
     float pos_balle_x = balle.get_pos().get_x();
     float pos_balle_y = balle.get_pos().get_y();
 
-    if(pos_balle_y >= BORDER_Y_SIZE || ((pos_balle_x <= BORDER_X_SIZE * -1.0 || pos_balle_x >= BORDER_X_SIZE) && pos_balle_y >= 0))
+    if(pos_balle_y >= BORDER_Y_SIZE ||
+        ((pos_balle_x <= -BORDER_X_SIZE || pos_balle_x >= BORDER_X_SIZE) && pos_balle_y >= 0)
+    )
     {
         this->joueur_b.get_score().gagner_points();
         return true;
@@ -180,9 +184,6 @@ bool Terrain::joueur_b_gagne_point()
 
 void Terrain::service()
 {
-    // It's best to set the seed every time than rely on the user to set it before
-    srand(time(NULL));
-
     if ((this->get_joueur_a().get_score().get_jeu() + this->get_joueur_b().get_score().get_jeu()) % 2)
     { // Joueur A (en haut) doit servir
         if (rand() % 2)
