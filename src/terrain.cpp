@@ -6,6 +6,8 @@
 #include <cstdlib>
 #include <ctime>
 
+#include <iostream>
+
 using namespace std;
 
 Terrain::Terrain(Joueur x, Joueur y, Balle b) : joueur_a(x), joueur_b(y), balle(b) {}
@@ -148,12 +150,10 @@ void Terrain::repousser_filet_joueur_b()
 
 bool Terrain::joueur_a_gagne_point()
 {
-    float pos_balle_x = balle.get_pos().get_x();
+    //float pos_balle_x = balle.get_pos().get_x();
     float pos_balle_y = balle.get_pos().get_y();
 
-    if(pos_balle_y <= BORDER_Y_SIZE * -1.0 || 
-        ((pos_balle_x <= BORDER_X_SIZE *1.0  || pos_balle_x >= BORDER_X_SIZE) && pos_balle_y <= 0)
-    )
+    if(pos_balle_y <= BORDER_Y_SIZE * -1.0)
     {
         joueur_a.get_score().gagner_points();
         return true;
@@ -166,12 +166,10 @@ bool Terrain::joueur_a_gagne_point()
 
 bool Terrain::joueur_b_gagne_point()
 {
-    float pos_balle_x = balle.get_pos().get_x();
+    //float pos_balle_x = balle.get_pos().get_x();
     float pos_balle_y = balle.get_pos().get_y();
 
-    if(pos_balle_y >= BORDER_Y_SIZE ||
-        ((pos_balle_x <= -BORDER_X_SIZE || pos_balle_x >= BORDER_X_SIZE) && pos_balle_y >= 0)
-    )
+    if(pos_balle_y >= BORDER_Y_SIZE)
     {
         this->joueur_b.get_score().gagner_points();
         return true;
@@ -264,7 +262,7 @@ bool Terrain::test()
     assert(new_pos_x_joueur_b == 3.0);
     assert(new_pos_y_joueur_b == -1.0);
 
-    b.set_pos(Vec2(-7.0,-17.0));
+    t.get_balle().set_pos(Vec2(-7.0,-17.0));
     assert(t.joueur_a_gagne_point() == true);
     assert(t.get_joueur_a().get_score().get_points() == QUINZE);
 

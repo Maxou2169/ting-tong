@@ -2,7 +2,7 @@ SRCS		= affichage.cpp balle.cpp coup.cpp format.cpp joueur.cpp main.cpp \
 	score.cpp terrain.cpp texte.cpp vec2.cpp
 HEADERS		= src/includes
 CXX			= g++
-CXX_FLAGS	= -Wall -Werror -Wextra
+CXX_FLAGS	= -Wall -Werror -Wextra -g
 LD_FLAGS	= -lSDL2 -lSDL2_ttf -lSDL2_image
 
 OBJ_DIR = obj

@@ -71,6 +71,8 @@ class Affichage
         */
         void render_loop();
 
+        void draw_score();
+
         bool test();
 };
 
