@@ -83,7 +83,15 @@ class Affichage
         */
         void render_loop();
 
+        /**
+         * \brief Affiche le score des joueurs dans un tableau
+        */
+
         void draw_score();
+
+        /**
+         * \brief Effectue des tests des différentes fonctions
+        */
 
         bool test();
 };

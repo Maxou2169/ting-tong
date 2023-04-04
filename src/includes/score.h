@@ -91,7 +91,6 @@ class Score
 
     /**
      * \brief Fait gagner un point au score d'un joueur
-     * \param p : Le score du joueur avant qu'il gagne le point
     */
 
     void gagner_points();
