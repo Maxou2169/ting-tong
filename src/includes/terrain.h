@@ -32,13 +32,12 @@ class Terrain
         void repousser_filet_joueur_b();
     
     public:
-
-    /**
-     * \brief Initialise un terrain avec deux joueur et une balle
-     * \param x : Le joueur 1
-     * \param y : Le joueur 2
-     * \param b : La balle
-    */
+        /**
+         * \brief Initialise un terrain avec deux joueur et une balle
+         * \param x : Le joueur 1
+         * \param y : Le joueur 2
+         * \param b : La balle
+        */
         Terrain(Joueur x, Joueur y, Balle b);
 
         ~Terrain();
