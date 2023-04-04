@@ -7,14 +7,15 @@
 #include <chrono>
 #include <SDL2/SDL.h>	
 #include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_image.h>
 #include <iostream>
 #include <assert.h>
 #include <string>
 
-Affichage::Affichage(Terrain &t, unsigned int x, unsigned int y)
+Affichage::Affichage(Terrain &t, unsigned int x, unsigned int y, std::string terrain_texture)
     : terrain(t), x_size(x), y_size(y)
 {
-    this->sdl_init();
+    this->sdl_init(terrain_texture);
 }
 
 Affichage::~Affichage()
@@ -24,21 +25,25 @@ Affichage::~Affichage()
 
 using namespace std;
 
-void Affichage::sdl_init()
+void Affichage::sdl_init(std::string terrain_path)
 {
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
     {
         cerr << "Error while initialising the SDL : " << SDL_GetError() << endl;
-        SDL_Quit();
-        exit(1);
+        SDL_Quit();exit(1);
     }
 
     this->sdl_window = SDL_CreateWindow("Ting Tong", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, this->x_size, this->y_size, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
     if (this->sdl_window == NULL)
     {
         cerr << "Erreur lors de la creation de la fenetre : " << SDL_GetError() << endl;
-        SDL_Quit();
-        exit(1);
+        SDL_Quit();exit(1);
+    }
+    
+    int imgFlags = IMG_INIT_PNG | IMG_INIT_JPG;
+    if( !(IMG_Init(imgFlags) & imgFlags)) {
+        cerr << "SDL_m_image could not initialize! SDL_m_image Error: " << IMG_GetError() << endl;
+        SDL_Quit();exit(1);
     }
     
     if(TTF_Init() !=0)
@@ -49,12 +54,31 @@ void Affichage::sdl_init()
     }
     this->sdl_renderer = SDL_CreateRenderer(this->sdl_window, -1, SDL_RENDERER_ACCELERATED);
 
+    SDL_Surface * image_surface = IMG_Load(terrain_path.data());
+    if (image_surface == nullptr)
+    {
+        cout << "Error: cannot load " << terrain_path << endl;
+        exit(1);
+    }
+
+    SDL_Surface *surfaceCorrectPixelFormat = SDL_ConvertSurfaceFormat(image_surface, SDL_PIXELFORMAT_ARGB8888, 0);
+    SDL_FreeSurface(image_surface);
+    image_surface = surfaceCorrectPixelFormat;
+
+    terrain_texture = SDL_CreateTextureFromSurface(this->sdl_renderer, surfaceCorrectPixelFormat);
+    if (terrain_texture == nullptr)
+    {
+        cout << "Error: problem to create the texture of " << terrain_path << endl;
+        exit(1);
+    }
+    SDL_FreeSurface(surfaceCorrectPixelFormat);
 }
 
 void Affichage::sdl_destroy()
 {
     SDL_DestroyRenderer(this->sdl_renderer);
     SDL_DestroyWindow(this->sdl_window);
+    SDL_DestroyTexture(this->terrain_texture);
     SDL_Quit();
 }
 
@@ -112,6 +136,7 @@ void Affichage::render_loop()
         // Here we render
         SDL_SetRenderDrawColor(this->sdl_renderer, 255, 255, 255, 255);
 
+        this->draw_terrain();
         this->draw_balle(this->terrain.get_balle());
         this->draw_joueur(this->terrain.get_joueur_a());
         this->draw_joueur(this->terrain.get_joueur_b());
@@ -175,7 +200,6 @@ Vec2 Affichage::get_screen_coords(const Vec2 & v, float x_margin, float y_margin
         origin_y - (v.get_y() * scale)
     );
 }
-
 void Affichage::draw_score()
 {
     
@@ -217,9 +241,20 @@ void Affichage::draw_score()
     SDL_FreeSurface(gameCountSurface);
     SDL_FreeSurface(pointCountSurface);
     TTF_CloseFont(Sans);
+}
 
 
-
+void Affichage::draw_terrain()
+{
+    SDL_Rect r;
+    Vec2 top_left_image = this->get_screen_coords(Vec2(-BORDER_X_SIZE, BORDER_Y_SIZE));
+    Vec2 bottom_right_image = this->get_screen_coords(Vec2(BORDER_X_SIZE, -BORDER_Y_SIZE));
+    r.x = top_left_image.get_x();
+    r.y = top_left_image.get_y();
+    r.w = bottom_right_image.get_x() - top_left_image.get_x();
+    r.h = bottom_right_image.get_y() - top_left_image.get_y();
+    int ok = SDL_RenderCopy(this->sdl_renderer,this->terrain_texture,nullptr,&r);
+    assert(ok == 0);
 }
 
 bool Affichage::test()

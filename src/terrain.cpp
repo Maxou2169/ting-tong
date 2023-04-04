@@ -235,9 +235,7 @@ void Terrain::service()
 void Terrain::maj_points_service()
 {
     if (this->joueur_a_gagne_point() || this->joueur_b_gagne_point())
-    {
         this->service();
-    }
 }
 
 bool Terrain::test()

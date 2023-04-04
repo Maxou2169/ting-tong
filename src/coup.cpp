@@ -20,14 +20,20 @@ const Vec2 revers_haut(-x, -y);
 const Vec2 coup_droit_haut(x, -y);
 
 /**
- * \fn This function is a simple implementation of a python style randint
+ * \fn This function is a simple implementation of a python style randfloat
  * 
  * This function is mainly used in Coup::faire_coup()
 */
-int randint(int a, int b)
+int randfloat(int a, int b)
 {
     assert (a < b);
     return a + rand() % (b - a);
+}
+
+float randfloat(float a, float b)
+{
+    assert (a < b);
+    return (a + (rand() % (int) ((b * 1000) - (a * 1000))) / 1000.f);
 }
 
 Coup::Coup(Joueur & j, Balle& b) : joueur(j), balle(b) 
@@ -65,13 +71,13 @@ void Coup::faire_coup()
         if (this->balle.get_pos().get_x() > this->joueur.get_pos().get_x())
             // Alors la balle est à gauche du joueur - droite de l'écran, c'est un revers
             new_traj = Vec2(
-                randint(-BORDER_X_SIZE, this->balle.get_pos().get_x()),
-                randint(-BORDER_Y_SIZE, -1)
+                randfloat(-BORDER_X_SIZE, this->balle.get_pos().get_x()),
+                randfloat(-BORDER_Y_SIZE, -1.0)
             );
         else
             new_traj = Vec2(
-                randint(this->balle.get_pos().get_x(), BORDER_X_SIZE),
-                randint(-BORDER_Y_SIZE, -1)
+                randfloat(this->balle.get_pos().get_x(), BORDER_X_SIZE),
+                randfloat(-BORDER_Y_SIZE, -1.0)
             );
 
     }
@@ -81,19 +87,19 @@ void Coup::faire_coup()
         {
         // Alors la balle est à droite, c'est un coup droit
             new_traj = Vec2(
-                randint(-BORDER_X_SIZE, this->balle.get_pos().get_x()),
-                randint(1, BORDER_Y_SIZE)
+                randfloat(-BORDER_X_SIZE, this->balle.get_pos().get_x()),
+                randfloat(1.0, BORDER_Y_SIZE)
             );
         }
         else 
             new_traj = Vec2(
-                randint(-BORDER_X_SIZE, this->balle.get_pos().get_x()),
-                randint(1, BORDER_Y_SIZE)
+                randfloat(-BORDER_X_SIZE, this->balle.get_pos().get_x()),
+                randfloat(1.0, BORDER_Y_SIZE)
             );
     }
     std::cout << std::flush;
     new_traj.normalise();
-    new_traj *= vitesse_actuelle == 0 ? 3 : vitesse_actuelle *= 1.1;
+    new_traj *= vitesse_actuelle == 0 ? 3 : vitesse_actuelle * 1.1;
     this->balle.set_traj(new_traj);
     this->balle.set_hauteur(1);
 }
