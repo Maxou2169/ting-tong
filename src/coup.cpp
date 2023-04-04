@@ -30,6 +30,12 @@ int randint(int a, int b)
     return a + rand() % (b - a);
 }
 
+float randfloat(float a, float b)
+{
+    assert (a < b);
+    return (a + (rand() % (int) ((b * 1000) - (a * 1000))) / 1000.f);
+}
+
 Coup::Coup(Joueur & j, Balle& b) : joueur(j), balle(b) 
 {
     if (this->peut_faire_coup())
@@ -93,7 +99,7 @@ void Coup::faire_coup()
     }
     std::cout << std::flush;
     new_traj.normalise();
-    new_traj *= vitesse_actuelle == 0 ? 3 : vitesse_actuelle *= 1.1;
+    new_traj *= vitesse_actuelle == 0 ? 3 : vitesse_actuelle * 1.1;
     this->balle.set_traj(new_traj);
     this->balle.set_hauteur(1);
 }
