@@ -5,7 +5,8 @@
 #include "includes/coup.h"
 
 #include <chrono>
-#include <SDL2/SDL.h>
+#include <SDL2/SDL.h>	
+#include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_image.h>
 #include <iostream>
 #include <assert.h>
@@ -44,7 +45,13 @@ void Affichage::sdl_init(std::string terrain_path)
         cerr << "SDL_m_image could not initialize! SDL_m_image Error: " << IMG_GetError() << endl;
         SDL_Quit();exit(1);
     }
-
+    
+    if(TTF_Init() !=0)
+    {
+        cerr << "Erreur lors de la creation de l'écriture : " << SDL_GetError() << endl;
+        TTF_Quit();
+        exit(100);
+    }
     this->sdl_renderer = SDL_CreateRenderer(this->sdl_window, -1, SDL_RENDERER_ACCELERATED);
 
     SDL_Surface * image_surface = IMG_Load(terrain_path.data());
@@ -133,7 +140,8 @@ void Affichage::render_loop()
         this->draw_balle(this->terrain.get_balle());
         this->draw_joueur(this->terrain.get_joueur_a());
         this->draw_joueur(this->terrain.get_joueur_b());
-        
+        this->draw_score();
+
         // on permute les deux buffers (cette fonction ne doit se faire qu'une seule fois dans la boucle)
         SDL_RenderPresent(this->sdl_renderer);
     }
@@ -192,6 +200,49 @@ Vec2 Affichage::get_screen_coords(const Vec2 & v, float x_margin, float y_margin
         origin_y - (v.get_y() * scale)
     );
 }
+void Affichage::draw_score()
+{
+    
+    TTF_Font* Sans = TTF_OpenFont("data/arial.ttf", 24);
+    if (Sans == nullptr) exit(100);
+    SDL_Color White = {255, 255, 255, 255};
+
+    // Create a surface containing the player's name
+    SDL_Surface* nameSurface = TTF_RenderText_Solid(Sans, this->terrain.get_joueur_b().get_nom().c_str(), White);
+    if (nameSurface == nullptr) exit(234);
+    SDL_Texture * nameS = SDL_CreateTextureFromSurface(this->sdl_renderer, nameSurface);
+
+    // Create a surface containing the game count
+    SDL_Surface* gameCountSurface = TTF_RenderText_Solid(Sans, std::to_string(this->terrain.get_joueur_b().get_score().get_jeu()).data(), White);
+    SDL_Texture * gameCS = SDL_CreateTextureFromSurface(this->sdl_renderer, gameCountSurface);
+
+    // Create a surface containing the point count
+    SDL_Surface* pointCountSurface = TTF_RenderText_Solid(Sans, std::to_string(this->terrain.get_joueur_b().get_score().get_points()).data(), White);
+    SDL_Texture * pointCS = SDL_CreateTextureFromSurface(this->sdl_renderer, pointCountSurface);
+    // Define the positions of the surfaces in the table
+    SDL_Rect nameRect = { 50, 75, nameSurface->w, nameSurface->h };
+    SDL_Rect gameCountRect = { 200, 75, gameCountSurface->w, gameCountSurface->h };
+    SDL_Rect pointCountRect = { 250, 75, pointCountSurface->w, pointCountSurface->h };
+
+    SDL_RenderDrawLine(this->sdl_renderer, 50, 50, 300, 50);
+    SDL_RenderDrawLine(this->sdl_renderer, 50, 100, 300, 100);
+
+    // Dessin des lignes verticales
+    SDL_RenderDrawLine(this->sdl_renderer, 200, 20, 200, 180);
+    SDL_RenderDrawLine(this->sdl_renderer, 250, 20, 250, 180);
+
+
+    // Draw the surfaces on the screen
+    SDL_RenderCopy(this->sdl_renderer, nameS, NULL, &nameRect);
+    SDL_RenderCopy(this->sdl_renderer, gameCS, NULL, &gameCountRect);
+    SDL_RenderCopy(this->sdl_renderer, pointCS, NULL, &pointCountRect);
+
+    SDL_FreeSurface(nameSurface);
+    SDL_FreeSurface(gameCountSurface);
+    SDL_FreeSurface(pointCountSurface);
+    TTF_CloseFont(Sans);
+}
+
 
 void Affichage::draw_terrain()
 {
