@@ -8,15 +8,18 @@
 #include "includes/format.h"
 #include "includes/texte.h"
 
+#include <cstdlib>
+#include <ctime>
+
 bool run_test(void);
 
 int main(void)
 {
+    srand(time(NULL));
+
     run_test();
-    Terrain t(Joueur("J1", Vec2(0,8), Score()), Joueur("J2", Vec2(0,-8), Score()), Balle(Vec2(0.0, 0.0), Vec2(0.1, 0.1)));
-    //t.get_balle().set_traj(Vec2(0, 2));
-    Texte tx(t);
-    //tx.texte();
+    Terrain t(Joueur("J1", Vec2(0,8), Score()), Joueur("J2", Vec2(0,-8), Score()), Balle());
+    t.service();
     Affichage a(t);
     a.render_loop();
     return (0);

@@ -99,6 +99,20 @@ class Terrain
         */
 
         bool joueur_b_gagne_point();
+
+        /**
+         * \brief Cette fonction place la balle au bon endroit pour faire un service sur un des deux joueurs
+         * 
+         * Cette fonction choisit aléatoirement un des deux joueurs et le fait servir.
+         * Un service est une balle placée un peu en haut à droite du joueur
+         * Les joueurs sont replacés dans leurs carrés de service
+        */
+        void service();
+
+        /**
+         * \brief Cette fonction vérifie si un des joueurs vient de gagner un point et remet un service
+        */
+        void maj_points_service();
 };
 
 

@@ -1,9 +1,10 @@
 #include "includes/terrain.h"
 #include "includes/joueur.h"
 #include "includes/balle.h"
-#include <iostream>
 
 #include "assert.h"
+#include <cstdlib>
+#include <ctime>
 
 using namespace std;
 
@@ -140,8 +141,6 @@ void Terrain::repousser_filet_joueur_b()
 {
     float pos_x_joueur_b = joueur_b.get_pos().get_x();
     float pos_y_joueur_b = joueur_b.get_pos().get_y();
-
-    cout<<pos_x_joueur_b<<pos_y_joueur_b;
     
     Vec2 pos(pos_x_joueur_b , pos_y_joueur_b * -1.0);
     joueur_b.set_pos(pos);
@@ -152,11 +151,11 @@ bool Terrain::joueur_a_gagne_point()
     float pos_balle_x = balle.get_pos().get_x();
     float pos_balle_y = balle.get_pos().get_y();
 
-    if(pos_balle_y <= BORDER_Y_SIZE * -1.0 - 1.0 || pos_balle_x <= BORDER_X_SIZE *1.0 - 1.0 || pos_balle_x >= BORDER_X_SIZE + 1.0)
+    if(pos_balle_y <= BORDER_Y_SIZE * -1.0 || 
+        ((pos_balle_x <= BORDER_X_SIZE *1.0  || pos_balle_x >= BORDER_X_SIZE) && pos_balle_y <= 0)
+    )
     {
-        cout<<"[DEBUG TERRAIN] score Joueur A avant gain "<<joueur_a.get_score().get_points()<<endl;
         joueur_a.get_score().gagner_points();
-        cout<<"[DEBUG TERRAIN] score joueur A après gain "<<joueur_a.get_score().get_points()<<endl;
         return true;
     }
     else
@@ -170,7 +169,9 @@ bool Terrain::joueur_b_gagne_point()
     float pos_balle_x = balle.get_pos().get_x();
     float pos_balle_y = balle.get_pos().get_y();
 
-    if(pos_balle_y >= BORDER_Y_SIZE + 1.0 || pos_balle_x <= BORDER_X_SIZE * -1.0 - 1.0 || pos_balle_x >= BORDER_X_SIZE + 1.0)
+    if(pos_balle_y >= BORDER_Y_SIZE ||
+        ((pos_balle_x <= -BORDER_X_SIZE || pos_balle_x >= BORDER_X_SIZE) && pos_balle_y >= 0)
+    )
     {
         this->joueur_b.get_score().gagner_points();
         return true;
@@ -178,6 +179,66 @@ bool Terrain::joueur_b_gagne_point()
     else
     {
         return false;
+    }
+}
+
+void Terrain::service()
+{
+    if ((this->get_joueur_a().get_score().get_jeu() + this->get_joueur_b().get_score().get_jeu()) % 2)
+    { // Joueur A (en haut) doit servir
+        if (rand() % 2)
+        { // Le joueur A sert à gauche, le joueur B est à droite
+            Vec2 pos_a(-2.5, 8);
+            this->get_joueur_a().set_pos(pos_a);
+            this->get_joueur_b().set_pos(Vec2(2.5, -8));
+            this->get_balle().set_pos(Vec2(
+                pos_a.get_x() - 0.2,
+                pos_a.get_y() - 0.2
+            ));
+        }
+        else
+        {
+            Vec2 pos_a(2.5, 8);
+            this->get_joueur_a().set_pos(pos_a);
+            this->get_joueur_b().set_pos(Vec2(-2.5, -8));
+            this->get_balle().set_pos(Vec2(
+                pos_a.get_x() + 0.2,
+                pos_a.get_y() - 0.2
+            ));
+        }
+    }
+    else 
+    { // Joueur B doit servir
+        if (rand() % 2)
+        { // Le joueur A est à gauche, le joueur B sert à droite
+            Vec2 pos_b(2.5, -8);
+            this->get_joueur_a().set_pos(Vec2(-2.5, 8));
+            this->get_joueur_b().set_pos(pos_b);
+            this->get_balle().set_pos(Vec2(
+                pos_b.get_x() + 0.2,
+                pos_b.get_y() + 0.2
+            ));
+        }
+        else
+        {
+            Vec2 pos_b(-2.5, -8);
+            this->get_joueur_a().set_pos(Vec2(2.5, 8));
+            this->get_joueur_b().set_pos(pos_b);
+            this->get_balle().set_pos(Vec2(
+                pos_b.get_x() - 0.2,
+                pos_b.get_y() + 0.2
+            ));
+        }
+    }
+    this->get_balle().set_traj(Vec2(0,0));
+    this->get_balle().set_hauteur(1);
+}
+
+void Terrain::maj_points_service()
+{
+    if (this->joueur_a_gagne_point() || this->joueur_b_gagne_point())
+    {
+        this->service();
     }
 }
 

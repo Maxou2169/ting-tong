@@ -45,6 +45,11 @@ class Vec2
         float norm() const;
 
         /**
+         * \brief Normalise le vecteur
+        */
+        void normalise();
+        
+        /**
          * \brief This function adds a second vector and returns it
          * 
          * \returns A new Vec2

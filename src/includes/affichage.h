@@ -46,6 +46,8 @@ class Affichage
          * \param v : Les coordonnées à traduire
          * \param x_margin : L'espace total à laisser sur l'axe x autour du terrain
          * \param y_margin : L'espace total à laisser sur l'axe y autour du terrain
+         * 
+         * \note Effectue un scale et une inversion (repère jeu orthonormé, SDL inverse en y)
         */
         Vec2 get_screen_coords(const Vec2 & v, float x_margin = 0, float y_margin = 0);
 

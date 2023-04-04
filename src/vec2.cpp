@@ -73,6 +73,13 @@ bool Vec2::operator==(Vec2 const & to_compare) const
     return (this->x == to_compare.get_x() && this->y == to_compare.get_y());
 }
 
+void Vec2::normalise()
+{
+    Vec2 old(this->get_x(), this->get_y());
+    float norm = this->norm();
+    this->set_x(this->get_x()/norm);
+    this->set_y(this->get_y()/norm);
+}
 
 bool Vec2::test()
 {
@@ -82,7 +89,7 @@ bool Vec2::test()
     v0.set_x(0);
     v0.set_y(6);
     assert(v0.get_x() == 0);
-    assert(v0.get_y() == 6); 
+    assert(v0.get_y() == 6);
     
     Vec2 v00(0,6); // operator ==
     assert(v0 == v0);
