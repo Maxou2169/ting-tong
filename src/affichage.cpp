@@ -204,25 +204,37 @@ void Affichage::draw_score()
 {
     
     TTF_Font* Sans = TTF_OpenFont("data/arial.ttf", 24);
-    if (Sans == nullptr) exit(100);
     SDL_Color White = {255, 255, 255, 255};
 
     // Create a surface containing the player's name
     SDL_Surface* nameSurface = TTF_RenderText_Solid(Sans, this->terrain.get_joueur_b().get_nom().c_str(), White);
-    if (nameSurface == nullptr) exit(234);
     SDL_Texture * nameS = SDL_CreateTextureFromSurface(this->sdl_renderer, nameSurface);
+
+    SDL_Surface* nameSurfaceA = TTF_RenderText_Solid(Sans, this->terrain.get_joueur_a().get_nom().c_str(), White);
+    SDL_Texture * nameSA = SDL_CreateTextureFromSurface(this->sdl_renderer, nameSurfaceA);
 
     // Create a surface containing the game count
     SDL_Surface* gameCountSurface = TTF_RenderText_Solid(Sans, std::to_string(this->terrain.get_joueur_b().get_score().get_jeu()).data(), White);
     SDL_Texture * gameCS = SDL_CreateTextureFromSurface(this->sdl_renderer, gameCountSurface);
 
+     SDL_Surface* gameCountSurfaceA = TTF_RenderText_Solid(Sans, std::to_string(this->terrain.get_joueur_a().get_score().get_jeu()).data(), White);
+    SDL_Texture * gameCSA = SDL_CreateTextureFromSurface(this->sdl_renderer, gameCountSurfaceA);
+
     // Create a surface containing the point count
     SDL_Surface* pointCountSurface = TTF_RenderText_Solid(Sans, std::to_string(this->terrain.get_joueur_b().get_score().get_points()).data(), White);
     SDL_Texture * pointCS = SDL_CreateTextureFromSurface(this->sdl_renderer, pointCountSurface);
+
+    SDL_Surface* pointCountSurfaceA = TTF_RenderText_Solid(Sans, std::to_string(this->terrain.get_joueur_a().get_score().get_points()).data(), White);
+    SDL_Texture * pointCSA = SDL_CreateTextureFromSurface(this->sdl_renderer, pointCountSurfaceA);
+
     // Define the positions of the surfaces in the table
     SDL_Rect nameRect = { 50, 75, nameSurface->w, nameSurface->h };
-    SDL_Rect gameCountRect = { 200, 75, gameCountSurface->w, gameCountSurface->h };
-    SDL_Rect pointCountRect = { 250, 75, pointCountSurface->w, pointCountSurface->h };
+    SDL_Rect gameCountRect = { 210, 75, gameCountSurface->w, gameCountSurface->h };
+    SDL_Rect pointCountRect = { 260, 75, pointCountSurface->w, pointCountSurface->h };
+
+    SDL_Rect nameRectA = { 50, 25, nameSurfaceA->w, nameSurfaceA->h };
+    SDL_Rect gameCountRectA = { 210, 25, gameCountSurfaceA->w, gameCountSurfaceA->h };
+    SDL_Rect pointCountRectA = { 260, 25, pointCountSurfaceA->w, pointCountSurfaceA->h };
 
     SDL_RenderDrawLine(this->sdl_renderer, 50, 50, 300, 50);
     SDL_RenderDrawLine(this->sdl_renderer, 50, 100, 300, 100);
@@ -237,9 +249,16 @@ void Affichage::draw_score()
     SDL_RenderCopy(this->sdl_renderer, gameCS, NULL, &gameCountRect);
     SDL_RenderCopy(this->sdl_renderer, pointCS, NULL, &pointCountRect);
 
+    SDL_RenderCopy(this->sdl_renderer, nameSA, NULL, &nameRectA);
+    SDL_RenderCopy(this->sdl_renderer, gameCSA, NULL, &gameCountRectA);
+    SDL_RenderCopy(this->sdl_renderer, pointCSA, NULL, &pointCountRectA);
+
     SDL_FreeSurface(nameSurface);
     SDL_FreeSurface(gameCountSurface);
     SDL_FreeSurface(pointCountSurface);
+    SDL_FreeSurface(nameSurfaceA);
+    SDL_FreeSurface(gameCountSurfaceA);
+    SDL_FreeSurface(pointCountSurfaceA);
     TTF_CloseFont(Sans);
 }
 
