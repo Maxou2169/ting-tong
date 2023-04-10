@@ -99,9 +99,9 @@ void Affichage::render_loop()
                 if (state[SDL_SCANCODE_ESCAPE])
                     quit = true;
                 if (state[SDL_SCANCODE_W])
-                    this->terrain.get_joueur_b().bas_joueur();
-                if (state[SDL_SCANCODE_S])
                     this->terrain.get_joueur_b().haut_joueur();
+                if (state[SDL_SCANCODE_S])
+                    this->terrain.get_joueur_b().bas_joueur();
                 if (state[SDL_SCANCODE_A])
                     this->terrain.get_joueur_b().gauche_joueur();
                 if (state[SDL_SCANCODE_D])
@@ -110,9 +110,9 @@ void Affichage::render_loop()
                     Coup c(this->terrain.get_joueur_b(), this->terrain.get_balle());
 
                 if (state[SDL_SCANCODE_O])
-                    this->terrain.get_joueur_a().bas_joueur();
-                if (state[SDL_SCANCODE_L])
                     this->terrain.get_joueur_a().haut_joueur();
+                if (state[SDL_SCANCODE_L])
+                    this->terrain.get_joueur_a().bas_joueur();
                 if (state[SDL_SCANCODE_K])
                     this->terrain.get_joueur_a().gauche_joueur();
                 if (state[SDL_SCANCODE_SEMICOLON])
