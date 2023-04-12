@@ -155,7 +155,34 @@ bool Terrain::joueur_a_gagne_point()
 
     if(pos_balle_y <= BORDER_Y_SIZE * -1.0)
     {
-        joueur_a.get_score().gagner_points();
+        int jA = joueur_a.get_score().get_jeu();
+        int jB = joueur_b.get_score().get_jeu();
+        int j_next = jA + 1;
+
+        if(joueur_a.get_score().get_points() == QUARANTE
+        && joueur_a.get_score().get_avantage() == false
+        && joueur_a.get_score().get_egalite() == false
+        && joueur_b.get_score().get_points() == QUARANTE
+        && joueur_b.get_score().get_avantage() == true
+        && joueur_b.get_score().get_egalite() == false)
+        {
+            Score sA = Score(QUARANTE,false,true,jA);
+            Score sB = Score(QUARANTE,false,true,jB);
+
+            joueur_a.set_score(sA);
+            joueur_b.set_score(sB);
+        }
+        else
+        {
+            joueur_a.get_score().gagner_points();
+
+            int j_bis = joueur_a.get_score().get_jeu();
+            if(j_next == j_bis)
+            {
+                Score s(ZERO,false,false,joueur_b.get_score().get_jeu());
+                joueur_b.set_score(s);
+            }
+        }           
         return true;
     }
     else
@@ -164,6 +191,7 @@ bool Terrain::joueur_a_gagne_point()
     }
 }
 
+
 bool Terrain::joueur_b_gagne_point()
 {
     //float pos_balle_x = balle.get_pos().get_x();
@@ -171,7 +199,34 @@ bool Terrain::joueur_b_gagne_point()
 
     if(pos_balle_y >= BORDER_Y_SIZE)
     {
-        this->joueur_b.get_score().gagner_points();
+        int jA = joueur_a.get_score().get_jeu();
+        int jB = joueur_b.get_score().get_jeu();
+        int j_next = jB + 1;
+
+        if(joueur_b.get_score().get_points() == QUARANTE
+        && joueur_b.get_score().get_avantage() == false
+        && joueur_b.get_score().get_egalite() == false
+        && joueur_a.get_score().get_points() == QUARANTE
+        && joueur_a.get_score().get_avantage() == true
+        && joueur_a.get_score().get_egalite() == false)
+        {
+            Score sA = Score(QUARANTE,false,true,jA);
+            Score sB = Score(QUARANTE,false,true,jB);
+
+            joueur_a.set_score(sA);
+            joueur_b.set_score(sB);
+        }
+        else
+        {
+            joueur_b.get_score().gagner_points();
+
+            int j_bis = joueur_b.get_score().get_jeu();
+            if(j_next == j_bis)
+            {
+                Score s(ZERO,false,false,joueur_a.get_score().get_jeu());
+                joueur_a.set_score(s);
+            }
+        }           
         return true;
     }
     else
