@@ -117,3 +117,4 @@ bool Coup::test()
     //assert(b.get_traj() == coup_droit_bas);
     return (true);
 }
+

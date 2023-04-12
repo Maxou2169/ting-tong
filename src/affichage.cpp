@@ -148,6 +148,7 @@ void Affichage::render_loop()
 }
 
 
+
 void Affichage::draw_joueur(const Joueur & j)
 {
     /*
