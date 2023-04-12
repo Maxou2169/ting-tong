@@ -12,13 +12,6 @@ const float HITBOX_X = 5.0; //< La hitbox en coordonnées du Terrain
 const float HITBOX_Y = 5.0;
 const float COEFF_VITESSE = 1.1;
 
-const float x = 3;
-const float y = 3;
-const Vec2 coup_droit_bas(-x,y);
-const Vec2 revers_bas(x, y);
-const Vec2 revers_haut(-x, -y);
-const Vec2 coup_droit_haut(x, -y);
-
 /**
  * \fn This function is a simple implementation of a python style randfloat
  * 
@@ -33,7 +26,10 @@ int randfloat(int a, int b)
 float randfloat(float a, float b)
 {
     assert (a < b);
-    return (a + (rand() % (int) ((b * 1000) - (a * 1000))) / 1000.f);
+    float res = (a + (rand() % (int) ((b * 1000) - (a * 1000))) / 1000.f);
+    cout << a << " " << res << " " << b << endl;
+    assert (a < res && res < b);
+    return res;
 }
 
 Coup::Coup(Joueur & j, Balle& b) : joueur(j), balle(b) 
@@ -99,7 +95,7 @@ void Coup::faire_coup()
     }
     std::cout << std::flush;
     new_traj.normalise();
-    new_traj *= vitesse_actuelle == 0 ? 3 : vitesse_actuelle * 1.1;
+    new_traj *= vitesse_actuelle == 0 ? 3 : vitesse_actuelle * COEFF_VITESSE;
     this->balle.set_traj(new_traj);
     this->balle.set_hauteur(1);
 }
