@@ -206,7 +206,7 @@ void Affichage::draw_score()
 {
     
     TTF_Font* Sans = TTF_OpenFont("data/arial.ttf", 24);
-    SDL_Color White = {255, 255, 255, 255};
+    SDL_Color White = {0, 0, 0, 0};
 
     // Create a surface containing the player's name
     SDL_Surface* nameSurface = TTF_RenderText_Solid(Sans, this->terrain.get_joueur_b().get_nom().c_str(), White);
@@ -230,7 +230,7 @@ void Affichage::draw_score()
 
     if(this->terrain.get_joueur_a().get_score().get_avantage() == true)
     {
-        pointCountSurfaceA = TTF_RenderText_Solid(Sans, "AV", White);
+        pointCountSurfaceA = TTF_RenderText_Solid(Sans, "A", White);
         pointCSA = SDL_CreateTextureFromSurface(this->sdl_renderer, pointCountSurfaceA);
     }
     else
@@ -241,7 +241,7 @@ void Affichage::draw_score()
 
     if(this->terrain.get_joueur_b().get_score().get_avantage() == true)
     {
-        pointCountSurface = TTF_RenderText_Solid(Sans, "AV", White);
+        pointCountSurface = TTF_RenderText_Solid(Sans, "A", White);
         pointCS = SDL_CreateTextureFromSurface(this->sdl_renderer, pointCountSurface);
     }
     else
@@ -251,20 +251,37 @@ void Affichage::draw_score()
     }
 
     // Define the positions of the surfaces in the table
-    SDL_Rect nameRect = { 50, 75, nameSurface->w, nameSurface->h };
-    SDL_Rect gameCountRect = { 210, 75, gameCountSurface->w, gameCountSurface->h };
-    SDL_Rect pointCountRect = { 260, 75, pointCountSurface->w, pointCountSurface->h };
+    SDL_Rect nameRect = { 30, 55, nameSurface->w, nameSurface->h };
+    SDL_Rect gameCountRect = { 160, 55, gameCountSurface->w, gameCountSurface->h };
+    SDL_Rect pointCountRect = { 210, 55, pointCountSurface->w, pointCountSurface->h };
 
-    SDL_Rect nameRectA = { 50, 25, nameSurfaceA->w, nameSurfaceA->h };
-    SDL_Rect gameCountRectA = { 210, 25, gameCountSurfaceA->w, gameCountSurfaceA->h };
-    SDL_Rect pointCountRectA = { 260, 25, pointCountSurfaceA->w, pointCountSurfaceA->h };
+    SDL_Rect nameRectA = { 30, 25, nameSurfaceA->w, nameSurfaceA->h };
+    SDL_Rect gameCountRectA = { 160, 25, gameCountSurfaceA->w, gameCountSurfaceA->h };
+    SDL_Rect pointCountRectA = { 210, 25, pointCountSurfaceA->w, pointCountSurfaceA->h };
 
-    SDL_RenderDrawLine(this->sdl_renderer, 50, 50, 300, 50);
-    SDL_RenderDrawLine(this->sdl_renderer, 50, 100, 300, 100);
+    SDL_SetRenderDrawColor(this->sdl_renderer, 16, 106, 31, 255);
+    SDL_Rect backgroundRect = {20, 20, 231, 60};
+    SDL_RenderFillRect(this->sdl_renderer, &backgroundRect);
+
+    SDL_SetRenderDrawColor(this->sdl_renderer, 255, 255, 255, 255);
+    SDL_Rect backgroundRect2 = {201, 20, 50, 60};
+    SDL_RenderFillRect(this->sdl_renderer, &backgroundRect2);
+
+
+    SDL_SetRenderDrawColor(this->sdl_renderer, 255, 255, 255, 255); 
+
+    SDL_SetRenderDrawColor(this->sdl_renderer, 255, 165, 0, 255);
+    
+    //Dessin des lignes horizontales
+    SDL_RenderDrawLine(this->sdl_renderer, 20, 20, 250, 20);
+    SDL_RenderDrawLine(this->sdl_renderer, 20, 50, 250, 50);
+    SDL_RenderDrawLine(this->sdl_renderer, 20, 80, 250, 80);
 
     // Dessin des lignes verticales
-    SDL_RenderDrawLine(this->sdl_renderer, 200, 20, 200, 180);
-    SDL_RenderDrawLine(this->sdl_renderer, 250, 20, 250, 180);
+    SDL_RenderDrawLine(this->sdl_renderer, 20, 20, 20, 80);
+    SDL_RenderDrawLine(this->sdl_renderer, 150, 20, 150, 80);
+    SDL_RenderDrawLine(this->sdl_renderer, 200, 20, 200, 80);
+    SDL_RenderDrawLine(this->sdl_renderer, 250, 20, 250, 80);
 
 
     // Draw the surfaces on the screen
@@ -297,6 +314,26 @@ void Affichage::draw_terrain()
     r.h = bottom_right_image.get_y() - top_left_image.get_y();
     int ok = SDL_RenderCopy(this->sdl_renderer,this->terrain_texture,nullptr,&r);
     assert(ok == 0);
+    
+    // Dessin du filet
+    Vec2 top_left_net = this->get_screen_coords(Vec2(-BORDER_X_SIZE, NET_HEIGHT * 1.1));
+    Vec2 bottom_right_net = this->get_screen_coords(Vec2(BORDER_X_SIZE, -NET_HEIGHT * 0.7));
+    int line_count = 20; // Nombre de lignes de quadrillage
+
+    // Définir la couleur de dessin en gris foncé
+    SDL_SetRenderDrawColor(this->sdl_renderer, 50, 50, 50, SDL_ALPHA_OPAQUE);
+
+    // Dessiner les lignes horizontales de quadrillage
+    for (int i = 0; i < line_count; i++) {
+        int y = top_left_net.get_y() + (bottom_right_net.get_y() - top_left_net.get_y()) / line_count * i;
+        SDL_RenderDrawLine(this->sdl_renderer, top_left_net.get_x(), y, bottom_right_net.get_x(), y);
+    }
+
+    // Dessiner les lignes verticales de quadrillage
+    for (int i = 0; i < line_count; i++) {
+        int x = top_left_net.get_x() + (bottom_right_net.get_x() - top_left_net.get_x()) / line_count * i;
+        SDL_RenderDrawLine(this->sdl_renderer, x, top_left_net.get_y(), x, bottom_right_net.get_y());
+    }
 }
 
 bool Affichage::test()

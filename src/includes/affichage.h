@@ -25,6 +25,8 @@ class Affichage
         unsigned int x_size;
         unsigned int y_size;
 
+        float NET_HEIGHT = 0.914f;
+
         void sdl_init(std::string terrain_path);
         void sdl_destroy();
 
