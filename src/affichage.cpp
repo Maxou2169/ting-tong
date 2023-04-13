@@ -264,7 +264,7 @@ void Affichage::draw_score()
     SDL_RenderFillRect(this->sdl_renderer, &backgroundRect);
 
     SDL_SetRenderDrawColor(this->sdl_renderer, 255, 255, 255, 255);
-    SDL_Rect backgroundRect2 = {201, 20, 50, 60};
+    SDL_Rect backgroundRect2 = {202, 20, 49, 60};
     SDL_RenderFillRect(this->sdl_renderer, &backgroundRect2);
 
 
@@ -276,12 +276,19 @@ void Affichage::draw_score()
     SDL_RenderDrawLine(this->sdl_renderer, 20, 20, 250, 20);
     SDL_RenderDrawLine(this->sdl_renderer, 20, 50, 250, 50);
     SDL_RenderDrawLine(this->sdl_renderer, 20, 80, 250, 80);
+    SDL_RenderDrawLine(this->sdl_renderer, 21, 21, 251, 21);
+    SDL_RenderDrawLine(this->sdl_renderer, 21, 51, 251, 51);
+    SDL_RenderDrawLine(this->sdl_renderer, 21, 81, 251, 81);
 
     // Dessin des lignes verticales
     SDL_RenderDrawLine(this->sdl_renderer, 20, 20, 20, 80);
     SDL_RenderDrawLine(this->sdl_renderer, 150, 20, 150, 80);
     SDL_RenderDrawLine(this->sdl_renderer, 200, 20, 200, 80);
     SDL_RenderDrawLine(this->sdl_renderer, 250, 20, 250, 80);
+    SDL_RenderDrawLine(this->sdl_renderer, 21, 21, 21, 81);
+    SDL_RenderDrawLine(this->sdl_renderer, 151, 21, 151, 81);
+    SDL_RenderDrawLine(this->sdl_renderer, 201, 21, 201, 81);
+    SDL_RenderDrawLine(this->sdl_renderer, 251, 21, 251, 81);
 
 
     // Draw the surfaces on the screen
@@ -334,6 +341,16 @@ void Affichage::draw_terrain()
         int x = top_left_net.get_x() + (bottom_right_net.get_x() - top_left_net.get_x()) / line_count * i;
         SDL_RenderDrawLine(this->sdl_renderer, x, top_left_net.get_y(), x, bottom_right_net.get_y());
     }
+
+    // Chargemenet du logo
+    SDL_Surface* logo = IMG_Load("data/logoRG.png");
+    SDL_Texture* logoTexture = SDL_CreateTextureFromSurface(this->sdl_renderer, logo);
+    int logoWidth, logoHeight;
+    SDL_QueryTexture(logoTexture, nullptr, nullptr, &logoWidth, &logoHeight);
+
+    // Copie de la texture du logo sur le rendu SDL
+    SDL_Rect logoDestRect = {650, 20, logoWidth, logoHeight};
+    SDL_RenderCopy(this->sdl_renderer, logoTexture, nullptr, &logoDestRect);
 }
 
 bool Affichage::test()
