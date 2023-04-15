@@ -209,23 +209,23 @@ void Affichage::draw_score()
     SDL_Color White = {0, 0, 0, 0};
 
     // Create a surface containing the player's name
-    SDL_Surface* nameSurface = TTF_RenderText_Solid(Sans, this->terrain.get_joueur_b().get_nom().c_str(), White);
+    SDL_Surface * nameSurface = TTF_RenderText_Solid(Sans, this->terrain.get_joueur_b().get_nom().c_str(), White);
     SDL_Texture * nameS = SDL_CreateTextureFromSurface(this->sdl_renderer, nameSurface);
 
-    SDL_Surface* nameSurfaceA = TTF_RenderText_Solid(Sans, this->terrain.get_joueur_a().get_nom().c_str(), White);
+    SDL_Surface * nameSurfaceA = TTF_RenderText_Solid(Sans, this->terrain.get_joueur_a().get_nom().c_str(), White);
     SDL_Texture * nameSA = SDL_CreateTextureFromSurface(this->sdl_renderer, nameSurfaceA);
 
     // Create a surface containing the game count
-    SDL_Surface* gameCountSurface = TTF_RenderText_Solid(Sans, std::to_string(this->terrain.get_joueur_b().get_score().get_jeu()).data(), White);
+    SDL_Surface * gameCountSurface = TTF_RenderText_Solid(Sans, std::to_string(this->terrain.get_joueur_b().get_score().get_jeu()).data(), White);
     SDL_Texture * gameCS = SDL_CreateTextureFromSurface(this->sdl_renderer, gameCountSurface);
 
-     SDL_Surface* gameCountSurfaceA = TTF_RenderText_Solid(Sans, std::to_string(this->terrain.get_joueur_a().get_score().get_jeu()).data(), White);
+    SDL_Surface * gameCountSurfaceA = TTF_RenderText_Solid(Sans, std::to_string(this->terrain.get_joueur_a().get_score().get_jeu()).data(), White);
     SDL_Texture * gameCSA = SDL_CreateTextureFromSurface(this->sdl_renderer, gameCountSurfaceA);
 
     // Create a surface containing the point count
-    SDL_Surface* pointCountSurface;
+    SDL_Surface * pointCountSurface;
     SDL_Texture * pointCS;
-    SDL_Surface* pointCountSurfaceA;
+    SDL_Surface * pointCountSurfaceA;
     SDL_Texture * pointCSA;
 
     if(this->terrain.get_joueur_a().get_score().get_avantage() == true)
