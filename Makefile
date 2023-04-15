@@ -1,5 +1,5 @@
 SRCS		= affichage.cpp balle.cpp coup.cpp format.cpp joueur.cpp main.cpp \
-	score.cpp terrain.cpp texte.cpp vec2.cpp
+	score.cpp terrain.cpp texte.cpp vec2.cpp SDL2Menu.cpp
 HEADERS		= src/includes
 CXX			= g++
 CXX_FLAGS	= -Wall -Werror -Wextra -g

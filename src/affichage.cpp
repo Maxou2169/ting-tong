@@ -3,9 +3,10 @@
 #include "includes/balle.h"
 #include "includes/joueur.h"
 #include "includes/coup.h"
+#include "includes/SDL2Menu.h"
 
 #include <chrono>
-#include <SDL2/SDL.h>	
+#include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_image.h>
 #include <iostream>
@@ -200,6 +201,7 @@ Vec2 Affichage::get_screen_coords(const Vec2 & v, float x_margin, float y_margin
         origin_y - (v.get_y() * scale)
     );
 }
+
 void Affichage::draw_score()
 {
     
@@ -283,4 +285,15 @@ bool Affichage::test()
     //assert(v_proj == Vec2(this->x_size / 2, this->y_size / 2));
 
     return (true);
+}
+
+
+void Affichage::affichage()
+{
+    if (in_menu)
+    {
+        t_sdl2menu options_menu;
+        options_menu.insert(std::make_pair("Quitter"), this->cb_exit_menu);
+        SDL2Menu menu(options_menu);
+    }
 }

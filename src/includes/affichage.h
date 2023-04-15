@@ -28,6 +28,8 @@ class Affichage
         void sdl_init(std::string terrain_path);
         void sdl_destroy();
 
+        bool in_menu = true;
+
         /**
          * \brief This function takes a Joueur and draws it on the SDL_Window
          * \param j : The Joueur to draw
@@ -69,6 +71,11 @@ class Affichage
         */
         void draw_circle(int x, int y, int radius, SDL_Color color);
 
+        /**
+         * \brief Affiche le score des joueurs dans un tableau
+        */
+        void draw_score();
+
     public:
         Affichage(Terrain &t, 
             unsigned int window_size_x = 800, 
@@ -76,23 +83,33 @@ class Affichage
             std::string terrain_texture = "data/terrain.png"
         );
         ~Affichage();
+        
 
+        /**
+         * This function handles the choice between the menu and the game.
+         * 
+        */
+        void affichage();
         /**
          * \brief This function draws inside the SDL Window and handles the events
          * \note This function is "blocking"
         */
         void render_loop();
 
+
         /**
-         * \brief Affiche le score des joueurs dans un tableau
+         * \brief Callback to kill the window
         */
-
-        void draw_score();
-
+        void cb_exit_menu();
+        
+        /**
+         * \brief Callback to launch game
+        */
+        void cb_launch_game();
+        
         /**
          * \brief Effectue des tests des différentes fonctions
         */
-
         bool test();
 };
 
