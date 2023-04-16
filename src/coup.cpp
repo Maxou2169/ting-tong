@@ -8,9 +8,9 @@
 #include <cstdlib>
 #include <ctime>
 
-const float HITBOX_X = 5.0; //< La hitbox en coordonnées du Terrain
-const float HITBOX_Y = 5.0;
-const float COEFF_VITESSE = 1.1;
+const float HITBOX_X = 1.0; //< La hitbox en coordonnées du Terrain
+const float HITBOX_Y = 1.0;
+const float COEFF_VITESSE = 1.2;
 
 /**
  * \fn This function is a simple implementation of a python style randfloat
@@ -27,7 +27,6 @@ float randfloat(float a, float b)
 {
     assert (a < b);
     float res = (a + (rand() % (int) ((b * 1000) - (a * 1000))) / 1000.f);
-    cout << a << " " << res << " " << b << endl;
     assert (a < res && res < b);
     return res;
 }
@@ -59,44 +58,50 @@ bool Coup::peut_faire_coup()
 void Coup::faire_coup()
 {
     // On assume que l'on peut faire un coup
-    float vitesse_actuelle = this->balle.get_traj().norm() == 0 ? 2 : this->balle.get_traj().norm();
-    Vec2 new_traj;
+    float vitesse_actuelle = this->balle.get_traj().norm() == 0 ? 3 : this->balle.get_traj().norm();
+    Vec2 pt_arrivee;
+
     if (this->joueur.get_pos().get_y() > 0)
     { // C'est le joueur du haut
-        std::cout << this->joueur.get_pos().get_y();
         if (this->balle.get_pos().get_x() > this->joueur.get_pos().get_x())
+        {
             // Alors la balle est à gauche du joueur - droite de l'écran, c'est un revers
-            new_traj = Vec2(
-                randfloat(-BORDER_X_SIZE, this->balle.get_pos().get_x()),
+            pt_arrivee = Vec2(
+                randfloat(-BORDER_X_SIZE, this->balle.get_pos().get_x() -1 ),
                 randfloat(-BORDER_Y_SIZE, -1.0)
             );
+        }
         else
-            new_traj = Vec2(
-                randfloat(this->balle.get_pos().get_x(), BORDER_X_SIZE),
+        {
+            pt_arrivee = Vec2(
+                randfloat(this->balle.get_pos().get_x() + 1, BORDER_X_SIZE),
                 randfloat(-BORDER_Y_SIZE, -1.0)
             );
-
+        }
     }
     else
-    {
+    { // Joueur du bas
         if (this->balle.get_pos().get_x() > this->joueur.get_pos().get_x())
         {
         // Alors la balle est à droite, c'est un coup droit
-            new_traj = Vec2(
-                randfloat(-BORDER_X_SIZE, this->balle.get_pos().get_x()),
+            pt_arrivee = Vec2(
+                randfloat(-BORDER_X_SIZE, this->balle.get_pos().get_x() - 1),
                 randfloat(1.0, BORDER_Y_SIZE)
             );
         }
-        else 
-            new_traj = Vec2(
-                randfloat(-BORDER_X_SIZE, this->balle.get_pos().get_x()),
+        else
+        {
+            pt_arrivee = Vec2(
+                randfloat(this->balle.get_pos().get_x() + 1, BORDER_X_SIZE),
                 randfloat(1.0, BORDER_Y_SIZE)
             );
+        }
     }
-    std::cout << std::flush;
-    new_traj.normalise();
-    new_traj *= vitesse_actuelle == 0 ? 3 : vitesse_actuelle * COEFF_VITESSE;
-    this->balle.set_traj(new_traj);
+    pt_arrivee -= this->balle.get_pos();
+    pt_arrivee.normalise();
+    pt_arrivee = (vitesse_actuelle == 0) ? pt_arrivee * 3 : pt_arrivee * vitesse_actuelle * COEFF_VITESSE;
+
+    this->balle.set_traj(pt_arrivee);
     this->balle.set_hauteur(1);
 }
 

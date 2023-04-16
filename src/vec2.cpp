@@ -73,10 +73,18 @@ bool Vec2::operator==(Vec2 const & to_compare) const
     return (this->x == to_compare.get_x() && this->y == to_compare.get_y());
 }
 
+void Vec2::operator-=(Vec2 const & to_add)
+{
+    this->x -= to_add.get_x();
+    this->y -= to_add.get_y();
+}
+
 void Vec2::normalise()
 {
     Vec2 old(this->get_x(), this->get_y());
     float norm = this->norm();
+    if (norm == 0)
+        return;
     this->set_x(this->get_x()/norm);
     this->set_y(this->get_y()/norm);
 }
