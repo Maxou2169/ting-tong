@@ -76,16 +76,18 @@ class Vec2
 
         /**
          * \brief This function implments the operation *= between a scalar and a vector
-         * \returns Nothing, the class is just modified
         */
         void operator*=(const float f);
 
         /**
-         * \brief This function follows our standards and performs tests
-         * \returns true if all the test went good, false/assert exception if not
+         * \brief This function implements the += operator on two Vec2, it adds separately the x and ys
         */
-
         void operator+=(Vec2 const& to_add);
+
+        /**
+         * \brief This function implements the -= operator on two Vec2, it modifies separately the xs and ys
+        */
+        void operator -=(Vec2 const & to_add);
 
         /**
          * \brief This function compares two vectors. Those vectors are equal if x1 = x2 and y1 = y2
