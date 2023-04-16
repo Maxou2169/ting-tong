@@ -301,11 +301,19 @@ void Affichage::draw_score()
     SDL_RenderCopy(this->sdl_renderer, pointCSA, NULL, &pointCountRectA);
 
     SDL_FreeSurface(nameSurface);
-    SDL_FreeSurface(gameCountSurface);
-    SDL_FreeSurface(pointCountSurface);
     SDL_FreeSurface(nameSurfaceA);
+    SDL_FreeSurface(gameCountSurface);
     SDL_FreeSurface(gameCountSurfaceA);
+    SDL_FreeSurface(pointCountSurface);
     SDL_FreeSurface(pointCountSurfaceA);
+
+    SDL_DestroyTexture(nameS);
+    SDL_DestroyTexture(nameSA);
+    SDL_DestroyTexture(gameCS);
+    SDL_DestroyTexture(gameCSA);
+    SDL_DestroyTexture(pointCS);
+    SDL_DestroyTexture(pointCSA);
+
     TTF_CloseFont(Sans);
 }
 
