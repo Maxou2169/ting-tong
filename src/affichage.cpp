@@ -82,7 +82,12 @@ void Affichage::sdl_destroy()
     SDL_Quit();
 }
 
-void Affichage::render_loop()
+void Affichage::affichage_menu()
+{
+    return;
+}
+
+void Affichage::affichage_jeu()
 {
     SDL_Event events;
     bool quit = false;
@@ -154,7 +159,10 @@ void Affichage::render_loop()
     }
 }
 
-
+void Affichage::affichage_vainqueur()
+{
+    return;
+}
 
 void Affichage::draw_joueur(const Joueur & j)
 {
@@ -369,6 +377,13 @@ void Affichage::draw_terrain()
 
     SDL_FreeSurface(logo);
     SDL_DestroyTexture(logoTexture);
+}
+
+void Affichage::affichage()
+{
+    affichage_menu();
+    affichage_jeu();
+    affichage_vainqueur();
 }
 
 bool Affichage::test()

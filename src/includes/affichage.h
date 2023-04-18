@@ -50,6 +50,12 @@ class Affichage
          * \brief This displays the terrain texture
         */
         void draw_terrain();
+
+        /**
+         * \brief Affiche le score des joueurs dans un tableau
+        */
+        void draw_score();
+
         /**
          * \brief Cette fonction traduit des coordonnées du terrain en des coordonnées-écran
          * \param v : Les coordonnées à traduire
@@ -71,6 +77,14 @@ class Affichage
         */
         void draw_circle(int x, int y, int radius, SDL_Color color);
 
+        void affichage_menu();
+        /**
+         * \brief This function draws inside the SDL Window and handles the events
+         * \note This function is "blocking"
+        */
+        void affichage_jeu();
+        void affichage_vainqueur();
+
     public:
         Affichage(Terrain &t, 
             unsigned int window_size_x = 800, 
@@ -79,22 +93,11 @@ class Affichage
         );
         ~Affichage();
 
-        /**
-         * \brief This function draws inside the SDL Window and handles the events
-         * \note This function is "blocking"
-        */
-        void render_loop();
-
-        /**
-         * \brief Affiche le score des joueurs dans un tableau
-        */
-
-        void draw_score();
+        void affichage();
 
         /**
          * \brief Effectue des tests des différentes fonctions
         */
-
         bool test();
 };
 

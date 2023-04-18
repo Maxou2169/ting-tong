@@ -21,7 +21,7 @@ int main(void)
     Terrain t(Joueur("J1", Vec2(0,8), Score()), Joueur("J2", Vec2(0,-8), Score()), Balle(), Format());
     t.service();
     Affichage a(t);
-    a.render_loop();
+    a.affichage();
     return (0);
 }
 
