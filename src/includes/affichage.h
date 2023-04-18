@@ -99,6 +99,9 @@ class Affichage
          * \brief Effectue des tests des différentes fonctions
         */
         bool test();
+
+        void cb_change_terrain(std::string terrain_path);
+
 };
 
 #endif

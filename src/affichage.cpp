@@ -3,6 +3,7 @@
 #include "includes/balle.h"
 #include "includes/joueur.h"
 #include "includes/coup.h"
+#include "includes/boundingbox.h"
 
 #include <chrono>
 #include <SDL2/SDL.h>	
@@ -11,6 +12,8 @@
 #include <iostream>
 #include <assert.h>
 #include <string>
+#include <vector>
+#include <map>
 
 Affichage::Affichage(Terrain &t, unsigned int x, unsigned int y, std::string terrain_texture)
     : terrain(t), x_size(x), y_size(y)
@@ -84,6 +87,98 @@ void Affichage::sdl_destroy()
 
 void Affichage::affichage_menu()
 {
+    TTF_Font* Sans = TTF_OpenFont("data/arial.ttf", 24);
+    SDL_Colour colour_bg = {255,0,0,255};
+    SDL_Colour colour_text = {0,0,0,255};
+    std::vector <std::string> options;
+
+    options.push_back("Open d'Australie");
+    options.push_back("Roland Garros");
+    options.push_back("Wimbledon");
+    options.push_back("US Open");
+
+    // Menu choix terrain
+
+        int padding_x, case_height, padding_y, space_between;
+        // Trouver le max des cases à afficher
+            int max_size = 0;
+            for (auto it = options.begin(); it != options.end(); it++ )
+            {   // it->first for the key, it->second for the value
+                int temp_size;
+                TTF_SizeText(Sans, it->data(), &temp_size, nullptr);
+                if (temp_size > max_size)
+                    max_size = temp_size;
+            }
+
+            padding_x = this->x_size - (max_size + 0.05 * this->x_size);
+            case_height = (this->y_size / (options.size() + 3));
+            padding_y = case_height * 2;
+            space_between = case_height / (options.size() - 1);
+        // Créer les bounding_box pour chaque case
+            std::map<std::string, BoundingBox> objects_to_draw;
+            int x = (1/2.0) * padding_x;
+            int y = (1/2.0) * padding_y;
+
+            for (auto it = options.begin(); it != options.end(); it++)
+            {
+                objects_to_draw.insert(make_pair(*it, BoundingBox(
+                    x, y, (this->x_size - padding_x), (this->y_size - padding_y)
+                )));
+                y += case_height + space_between;
+            }
+        // Faire la boucle de rendu qui gère les pointeurs sur f()
+            SDL_Event events;
+            bool quit = false;
+
+            while (!quit)
+            {
+                while (SDL_PollEvent(&events))
+                { // Event loop
+                    if (events.type == SDL_QUIT)
+                        quit = true; // Si l'utilisateur a clique sur la croix de fermeture
+                    else if (events.type == SDL_MOUSEBUTTONDOWN)
+                    {
+                        int mouse_x = 0;
+                        int mouse_y = 0;
+                        SDL_GetMouseState(&mouse_x, &mouse_y);
+                        for (auto it = objects_to_draw.begin(); it != objects_to_draw.end(); it++)
+                        {
+                            if (it->second.belong_to(mouse_x, mouse_y))
+                            {
+                                std::string t(it->first);
+                                cb_change_terrain(t);
+                            }
+                        }
+                    }
+                }
+
+                // Render at each frame
+                SDL_SetRenderDrawColor(this->sdl_renderer, 100, 100, 100, 255);
+                SDL_RenderClear(this->sdl_renderer);
+                // Here we render
+                SDL_SetRenderDrawColor(this->sdl_renderer, 255, 255, 255, 255);
+
+                for (auto it = objects_to_draw.begin(); it != objects_to_draw.end(); it++)
+                {
+                    SDL_SetRenderDrawColor(this->sdl_renderer, colour_bg.r,colour_bg.g, colour_bg.b, colour_bg.a);
+                    SDL_Rect rect = {it->second.x, it->second.y, it->second.x + it->second.w, it->second.y + it->second.h};
+                    SDL_RenderDrawRect(this->sdl_renderer, &rect);
+
+                    SDL_Surface* text_surface = TTF_RenderText_Solid(Sans, it->first.data(), colour_text);
+                    SDL_Texture * text_tex = SDL_CreateTextureFromSurface(this->sdl_renderer, text_surface);
+                    SDL_RenderCopy(this->sdl_renderer, text_tex, NULL, &rect);
+                    SDL_FreeSurface(text_surface);
+                    SDL_DestroyTexture(text_tex);
+                    TTF_CloseFont(Sans);
+                }
+
+        // on permute les deux buffers (cette fonction ne doit se faire qu'une seule fois dans la boucle)
+        SDL_RenderPresent(this->sdl_renderer);
+    }
+    // Menu choix nb_jeux
+
+    // Menus pour les skins (flemme pour le moment)
+    
     return;
 }
 
@@ -217,6 +312,7 @@ Vec2 Affichage::get_screen_coords(const Vec2 & v, float x_margin, float y_margin
         origin_y - (v.get_y() * scale)
     );
 }
+
 void Affichage::draw_score()
 {
     
