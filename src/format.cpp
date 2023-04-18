@@ -2,7 +2,7 @@
 
 #include "assert.h"
 
-Format::Format() : nb_jeux(TROIS_JEUX) {}
+Format::Format() : nb_jeux(UN_JEU) {}
 // TODO : Passer à un seul contructeur avec arguments par défauts
 Format::Format(Jeux nb_jeux) : nb_jeux(nb_jeux) {}
 
@@ -22,7 +22,7 @@ void Format::set_jeux(Jeux nb_jeux)
 bool Format::test()
 {
     Format format;
-    assert(format.get_jeux() == TROIS_JEUX);
+    assert(format.get_jeux() == UN_JEU);
 
     format.set_jeux(SIX_JEUX);
     assert(format.get_jeux() == SIX_JEUX);
