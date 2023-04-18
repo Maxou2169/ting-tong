@@ -161,7 +161,98 @@ void Affichage::affichage_jeu()
 
 void Affichage::affichage_vainqueur()
 {
-    return;
+    SDL_Event events;
+    bool quit = false;
+    while (!quit)
+    {
+
+        while (SDL_PollEvent(&events))
+        { // Event loop
+            if (events.type == SDL_QUIT)
+                quit = true; // Si l'utilisateur a clique sur la croix de fermeture
+
+        }
+        
+        int jeuA = this->terrain.get_joueur_a().get_score().get_jeu();
+        int jeuB = this->terrain.get_joueur_b().get_score().get_jeu();
+
+        int PointA = this->terrain.get_joueur_a().get_score().get_points();
+        int PointB = this->terrain.get_joueur_b().get_score().get_points();
+
+        bool avA = this->terrain.get_joueur_a().get_score().get_avantage();
+
+        string Vainqueur;
+        string Perdant;
+
+        if(jeuA > jeuB)
+        {
+            Vainqueur = this->terrain.get_joueur_a().get_nom();
+            Perdant = this->terrain.get_joueur_b().get_nom();
+        }
+        else if (jeuA == jeuB)
+        {
+            if(PointA > PointB)
+            {
+                Vainqueur = this->terrain.get_joueur_a().get_nom();
+                Perdant = this->terrain.get_joueur_b().get_nom();
+            }
+            else if(PointA == PointB)
+            {
+                if(avA == true)
+                {
+                    Vainqueur = this->terrain.get_joueur_a().get_nom();
+                    Perdant = this->terrain.get_joueur_b().get_nom();
+                }
+                else
+                {
+                    Vainqueur = this->terrain.get_joueur_b().get_nom();
+                    Perdant = this->terrain.get_joueur_a().get_nom();
+                }
+            }
+            else
+            {
+                Vainqueur = this->terrain.get_joueur_b().get_nom();
+                Perdant = this->terrain.get_joueur_a().get_nom();
+            }
+        }
+        else
+        {
+            Vainqueur = this->terrain.get_joueur_b().get_nom();
+            Perdant = this->terrain.get_joueur_a().get_nom();
+        }
+
+        // Render at each frame
+        TTF_Font* Sans = TTF_OpenFont("data/arial.ttf", 24);
+        SDL_Color White = {255, 255, 255, 255};
+
+        string formulation = " gagne le match contre ";
+        string annonce = Vainqueur + formulation + Perdant;
+
+        // Create a surface containing the player's name
+        SDL_Surface * Surface = TTF_RenderText_Solid(Sans, annonce.c_str(), White);
+        SDL_Texture * Texture = SDL_CreateTextureFromSurface(this->sdl_renderer, Surface);
+
+        // Get the dimensions of the texture
+        int texW = 0;
+        int texH = 0;
+        SDL_QueryTexture(Texture, NULL, NULL, &texW, &texH);
+
+        // Calculate the position to center the text
+        int x = (this->x_size - texW) / 2;
+        int y = (this->y_size - texH) / 2;
+
+        SDL_Rect nameRect = { x, y, Surface->w, Surface->h };
+
+        SDL_SetRenderDrawColor(this->sdl_renderer, 100, 100, 100, 255);
+        SDL_RenderClear(this->sdl_renderer);
+
+        SDL_RenderCopy(this->sdl_renderer, Texture, NULL, &nameRect);
+
+        SDL_FreeSurface(Surface);
+        SDL_DestroyTexture(Texture);
+
+        SDL_RenderPresent(this->sdl_renderer);
+    }
 }
 
 void Affichage::draw_joueur(const Joueur & j)
@@ -366,17 +457,21 @@ void Affichage::draw_terrain()
     }
 
     // Chargemenet du logo
-    SDL_Surface* logo = IMG_Load("data/logoRG.png");
-    SDL_Texture* logoTexture = SDL_CreateTextureFromSurface(this->sdl_renderer, logo);
-    int logoWidth, logoHeight;
-    SDL_QueryTexture(logoTexture, nullptr, nullptr, &logoWidth, &logoHeight);
+    SDL_Surface* logo = IMG_Load("data/logo_Roland-Garros.svg.png");
+    this->logoTexture = SDL_CreateTextureFromSurface(this->sdl_renderer, logo);
+    int logoWidth ;
+    int logoHeight;
+    SDL_QueryTexture(this->logoTexture, nullptr, nullptr, &logoWidth, &logoHeight);
+
+    logoWidth /=20;
+    logoHeight /=20;
 
     // Copie de la texture du logo sur le rendu SDL
     SDL_Rect logoDestRect = {650, 20, logoWidth, logoHeight};
-    SDL_RenderCopy(this->sdl_renderer, logoTexture, nullptr, &logoDestRect);
+    SDL_RenderCopy(this->sdl_renderer, this->logoTexture, nullptr, &logoDestRect);
 
     SDL_FreeSurface(logo);
-    SDL_DestroyTexture(logoTexture);
+    SDL_DestroyTexture(this->logoTexture);
 }
 
 void Affichage::affichage()

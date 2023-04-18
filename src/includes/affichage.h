@@ -20,6 +20,8 @@ class Affichage
 
         SDL_Texture * terrain_texture;
 
+        SDL_Texture* logoTexture;
+
         Terrain &terrain;
 
         unsigned int x_size;
@@ -89,7 +91,7 @@ class Affichage
         Affichage(Terrain &t, 
             unsigned int window_size_x = 800, 
             unsigned int window_size_y = 600, 
-            std::string terrain_texture = "data/terrain.png"
+            std::string terrain_texture = "data/terrain_RG.png"
         );
         ~Affichage();
 
