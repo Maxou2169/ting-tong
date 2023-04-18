@@ -4,6 +4,7 @@
 #include <iostream>
 #include "joueur.h"
 #include "balle.h"
+#include "format.h"
 
 const float BORDER_X_SIZE = 5.0;
 const float BORDER_Y_SIZE = 15.0;
@@ -18,6 +19,7 @@ class Terrain
         Joueur joueur_a;
         Joueur joueur_b;
         Balle balle;
+        Format format;
         
         void repousser_x_positif(Joueur &j);
 
@@ -38,7 +40,7 @@ class Terrain
          * \param y : Le joueur 2
          * \param b : La balle
         */
-        Terrain(Joueur x, Joueur y, Balle b);
+        Terrain(Joueur x, Joueur y, Balle b, Format f);
 
         ~Terrain();
 
@@ -58,6 +60,12 @@ class Terrain
         Balle & get_balle();
 
         /**
+         * \brief Retourne le format du match
+        */
+
+        Format get_format();
+
+        /**
          * \brief Modifie le joueur a par le joueur j
          * \param j : Le nouveau joueur
         */
@@ -74,6 +82,12 @@ class Terrain
          * \param b : La nouvelle balle
         */
         void set_balle(Balle b);
+
+        /**
+         * \brief Modifie le format par le format f
+         * \param f : Le nouveau format
+        */
+        void set_format(Format f);
 
         /**
          * \brief Cette fonction teste que le terrain soit bien défini et que celui-ci fonctionne

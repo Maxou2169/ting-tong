@@ -10,7 +10,7 @@
 
 using namespace std;
 
-Terrain::Terrain(Joueur x, Joueur y, Balle b) : joueur_a(x), joueur_b(y), balle(b) {}
+Terrain::Terrain(Joueur x, Joueur y, Balle b, Format f) : joueur_a(x), joueur_b(y), balle(b), format(f) {}
 
 Terrain::~Terrain() {};
 
@@ -29,6 +29,11 @@ Balle& Terrain::get_balle()
     return this->balle;
 }
 
+Format Terrain::get_format()
+{
+    return this->format;
+}
+
 void Terrain::set_joueur_a(Joueur j)
 {
     this->joueur_a = j;
@@ -42,6 +47,11 @@ void Terrain::set_joueur_b(Joueur j)
 void Terrain::set_balle(Balle b)
 {
     this->balle = b;
+}
+
+void Terrain::set_format(Format f)
+{
+    this->format = f;
 }
 
 void Terrain::repousser()
@@ -299,8 +309,9 @@ bool Terrain::test()
     Joueur j2("Djokovic", Vec2(3.0 , 1.0),Score());
     
     Balle b;
+    Format f;
     
-    Terrain t(j1,j2,b);
+    Terrain t(j1,j2,b,f);
     t.repousser();
 
     float new_pos_x_joueur_a = t.joueur_a.get_pos().get_x();

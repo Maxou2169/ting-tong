@@ -18,7 +18,7 @@ int main(void)
     srand(time(NULL));
 
     run_test();
-    Terrain t(Joueur("J1", Vec2(0,8), Score()), Joueur("J2", Vec2(0,-8), Score()), Balle());
+    Terrain t(Joueur("J1", Vec2(0,8), Score()), Joueur("J2", Vec2(0,-8), Score()), Balle(), Format());
     t.service();
     Affichage a(t);
     a.render_loop();
@@ -36,7 +36,7 @@ bool run_test(void)
     Joueur j("J1", Vec2(0, 0), Score());
     j.test();
 
-    Terrain t(Joueur("J1", Vec2(0, 0), Score()), Joueur("J2", Vec2(0, 0), Score()), Balle(Vec2(0, 0), Vec2(0, 0)));
+    Terrain t(Joueur("J1", Vec2(0, 0), Score()), Joueur("J2", Vec2(0, 0), Score()), Balle(Vec2(0, 0), Vec2(0, 0)), Format());
     t.test();
 
     Affichage a(t,1,1);

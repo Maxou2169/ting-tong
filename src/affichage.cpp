@@ -89,6 +89,13 @@ void Affichage::render_loop()
     auto last_time = chrono::high_resolution_clock::now();
     while (!quit)
     {
+        int jeuA = this->terrain.get_joueur_a().get_score().get_jeu();
+        int jeuB = this->terrain.get_joueur_b().get_score().get_jeu();
+        int f = this->terrain.get_format().get_jeux();
+        if(jeuA == f || jeuB == f)
+        {
+            quit = true;
+        }
         while (SDL_PollEvent(&events))
         { // Event loop
             if (events.type == SDL_QUIT)
@@ -359,6 +366,9 @@ void Affichage::draw_terrain()
     // Copie de la texture du logo sur le rendu SDL
     SDL_Rect logoDestRect = {650, 20, logoWidth, logoHeight};
     SDL_RenderCopy(this->sdl_renderer, logoTexture, nullptr, &logoDestRect);
+
+    SDL_FreeSurface(logo);
+    SDL_DestroyTexture(logoTexture);
 }
 
 bool Affichage::test()
