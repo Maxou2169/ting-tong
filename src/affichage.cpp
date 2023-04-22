@@ -673,7 +673,6 @@ void Affichage::draw_terrain()
     }
 
     // Chargemenet du logo
-<<<<<<< src/affichage.cpp
     SDL_Surface* logo = IMG_Load("data/logo_Roland-Garros.svg.png");
     this->logoTexture = SDL_CreateTextureFromSurface(this->sdl_renderer, logo);
     int logoWidth ;
@@ -682,12 +681,6 @@ void Affichage::draw_terrain()
 
     logoWidth /=20;
     logoHeight /=20;
-=======
-    SDL_Surface *logo = IMG_Load("data/logoRG.png");
-    SDL_Texture *logoTexture = SDL_CreateTextureFromSurface(this->sdl_renderer, logo);
-    int logoWidth, logoHeight;
-    SDL_QueryTexture(logoTexture, nullptr, nullptr, &logoWidth, &logoHeight);
->>>>>>> src/affichage.cpp
 
     // Copie de la texture du logo sur le rendu SDL
     SDL_Rect logoDestRect = {650, 20, logoWidth, logoHeight};
