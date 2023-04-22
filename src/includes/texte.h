@@ -7,15 +7,15 @@
 
 class Texte
 {
-    private :
-        Terrain &terrain;
+	private :
+		Terrain &terrain;
 
-    public :
-        Texte(Terrain &t);
+	public :
+		Texte(Terrain &t);
 
-        ~Texte();
+		~Texte();
 
-        void texte();
+		void texte();
 };
 
 #endif

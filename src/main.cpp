@@ -15,40 +15,40 @@ bool run_test(void);
 
 int main(void)
 {
-    srand(time(NULL));
+	srand(time(NULL));
 
-    run_test();
-    Terrain t(Joueur("J1", Vec2(0,8), Score()), Joueur("J2", Vec2(0,-8), Score()), Balle(), Format());
-    t.service();
-    Affichage a(t);
-    a.affichage();
-    return (0);
+	run_test();
+	Terrain t(Joueur("J1", Vec2(0,8), Score()), Joueur("J2", Vec2(0,-8), Score()), Balle(), Format());
+	t.service();
+	Affichage a(t);
+	a.affichage();
+	return (0);
 }
 
 bool run_test(void)
 {
-    Vec2 v(0, 0);
-    v.test();
+	Vec2 v(0, 0);
+	v.test();
 
-    Balle b(Vec2(0, 0), Vec2(0, 0));
-    b.test();
+	Balle b(Vec2(0, 0), Vec2(0, 0));
+	b.test();
 
-    Joueur j("J1", Vec2(0, 0), Score());
-    j.test();
+	Joueur j("J1", Vec2(0, 0), Score());
+	j.test();
 
-    Terrain t(Joueur("J1", Vec2(0, 0), Score()), Joueur("J2", Vec2(0, 0), Score()), Balle(Vec2(0, 0), Vec2(0, 0)), Format());
-    t.test();
+	Terrain t(Joueur("J1", Vec2(0, 0), Score()), Joueur("J2", Vec2(0, 0), Score()), Balle(Vec2(0, 0), Vec2(0, 0)), Format());
+	t.test();
 
-    Affichage a(t,1,1);
-    a.test();
+	Affichage a(t,1,1);
+	a.test();
 
-    Score sc = Score();
-    sc.test();
+	Score sc = Score();
+	sc.test();
 
-    Coup c = Coup(j, b);
-    c.test();
+	Coup c = Coup(j, b);
+	c.test();
 
-    Format f = Format();
-    f.test();
-    return (true);
+	Format f = Format();
+	f.test();
+	return (true);
 }

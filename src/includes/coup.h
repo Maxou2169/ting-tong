@@ -13,49 +13,49 @@
 
 class Coup
 {
-    private : 
-        Joueur & joueur;
-        Balle & balle;
+	private : 
+		Joueur & joueur;
+		Balle & balle;
 
-        /**
-         * \brief Vérifie si le joueur peut effectuer son coup ou non
-        */
-    
-        bool peut_faire_coup();
+		/**
+		 * \brief Vérifie si le joueur peut effectuer son coup ou non
+		*/
+	
+		bool peut_faire_coup();
 
-        /**
-         * \brief Si le joueur peut faire un coup alors la fonction lui permet de le faire
-        */
-        void faire_coup();
+		/**
+		 * \brief Si le joueur peut faire un coup alors la fonction lui permet de le faire
+		*/
+		void faire_coup();
 
-        /**
-         * \brief Cette fonction execute un coup droit
-         * Un coup droit fait partir la balle sur la gauche du joueur qui tire
-        */
-        void coup_droit();
-        /**
-         * \brief Cette fonction execute un coup droit
-         * Un coup droit fait partir la balle sur la gauche du joueur qui tire
-        */
-        void revers();
-       
-    public :
-        
-        /**
-         * \brief Initialise et effectue un coup
-         * \param j : Un joueur
-         * \param b : Une balle
-        */
-        
-        Coup(Joueur & j, Balle &b);
+		/**
+		 * \brief Cette fonction execute un coup droit
+		 * Un coup droit fait partir la balle sur la gauche du joueur qui tire
+		*/
+		void coup_droit();
+		/**
+		 * \brief Cette fonction execute un coup droit
+		 * Un coup droit fait partir la balle sur la gauche du joueur qui tire
+		*/
+		void revers();
+	   
+	public :
+		
+		/**
+		 * \brief Initialise et effectue un coup
+		 * \param j : Un joueur
+		 * \param b : Une balle
+		*/
+		
+		Coup(Joueur & j, Balle &b);
 
-        ~Coup();
+		~Coup();
 
-        /**
-         * \brief Effectue un test des différentes fonctions membres de la classe
-        */
+		/**
+		 * \brief Effectue un test des différentes fonctions membres de la classe
+		*/
 
-        bool test();
+		bool test();
 };
 
 

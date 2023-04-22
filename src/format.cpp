@@ -10,30 +10,30 @@ Format::~Format() {}
 
 Jeux Format::get_jeux() const
 {
-    return this->nb_jeux;
+	return this->nb_jeux;
 }
 
 void Format::set_jeux(Jeux nb_jeux)
 {
-    assert(nb_jeux == UN_JEU || nb_jeux == TROIS_JEUX || nb_jeux == SIX_JEUX);
-    this->nb_jeux = nb_jeux;
+	assert(nb_jeux == UN_JEU || nb_jeux == TROIS_JEUX || nb_jeux == SIX_JEUX);
+	this->nb_jeux = nb_jeux;
 }
 
 bool Format::test()
 {
-    Format format;
-    assert(format.get_jeux() == UN_JEU);
+	Format format;
+	assert(format.get_jeux() == UN_JEU);
 
-    format.set_jeux(SIX_JEUX);
-    assert(format.get_jeux() == SIX_JEUX);
+	format.set_jeux(SIX_JEUX);
+	assert(format.get_jeux() == SIX_JEUX);
 
-    format.set_jeux(TROIS_JEUX);
-    assert(format.get_jeux() == TROIS_JEUX);
+	format.set_jeux(TROIS_JEUX);
+	assert(format.get_jeux() == TROIS_JEUX);
 
-    format.set_jeux(UN_JEU);
-    assert(format.get_jeux() == UN_JEU);
+	format.set_jeux(UN_JEU);
+	assert(format.get_jeux() == UN_JEU);
 
-    format.set_jeux((Jeux)3); // cast d'un entier en enum
-    assert(format.get_jeux() == TROIS_JEUX);
-    return true;
+	format.set_jeux((Jeux)3); // cast d'un entier en enum
+	assert(format.get_jeux() == TROIS_JEUX);
+	return true;
 }
