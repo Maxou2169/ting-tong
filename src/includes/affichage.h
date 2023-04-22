@@ -1,7 +1,8 @@
-#ifndef WINDOW_H
-# define WINDOW_H
+#ifndef AFFICHAGE_H
+# define AFFICHAGE_H
 
 # include <SDL2/SDL.h>
+# include <SDL2/SDL_ttf.h>
 # include <string>
 # include "terrain.h"
 # include "joueur.h"
@@ -20,7 +21,9 @@ class Affichage
 
         SDL_Texture * terrain_texture = nullptr;
 
-        SDL_Texture* logoTexture;
+        SDL_Texture* logoTexture = nullptr;
+
+        TTF_Font * game_font;
 
         Terrain &terrain;
 

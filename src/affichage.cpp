@@ -59,6 +59,9 @@ void Affichage::sdl_init(std::string terrain_path)
         TTF_Quit();
         exit(100);
     }
+
+    this->game_font = TTF_OpenFont("data/arial.ttf", 24);
+
     this->sdl_renderer = SDL_CreateRenderer(this->sdl_window, -1, SDL_RENDERER_ACCELERATED);
     this->sdl_init_terrain(terrain_path);
 }
@@ -92,6 +95,8 @@ void Affichage::sdl_destroy()
     SDL_DestroyRenderer(this->sdl_renderer);
     SDL_DestroyWindow(this->sdl_window);
     SDL_DestroyTexture(this->terrain_texture);
+    SDL_DestroyTexture(this->logoTexture);
+    TTF_CloseFont(this->game_font);
     SDL_Quit();
 }
 
@@ -120,7 +125,6 @@ void Affichage::cb_change_format(std::string nb_jeux)
 
 void Affichage::sous_affichage_menu_terrain()
 {
-    TTF_Font *Sans = TTF_OpenFont("data/arial.ttf", 12);
     SDL_Colour colour_bg = {255, 0, 0, 255};
     SDL_Colour colour_text = {0, 0, 0, 255};
     std::vector<std::string> options;
@@ -137,7 +141,7 @@ void Affichage::sous_affichage_menu_terrain()
     for (auto it = options.begin(); it != options.end(); it++)
     { // it->first for the key, it->second for the value
         int temp_size;
-        TTF_SizeText(Sans, it->data(), &temp_size, nullptr);
+        TTF_SizeText(this->game_font, it->data(), &temp_size, nullptr);
         if (temp_size > max_size)
             max_size = temp_size;
     }
@@ -194,7 +198,7 @@ void Affichage::sous_affichage_menu_terrain()
             SDL_Rect rect = {it->second.x, it->second.y, it->second.w, it->second.h};
             SDL_RenderDrawRect(this->sdl_renderer, &rect);
 
-            SDL_Surface *text_surface = TTF_RenderText_Solid(Sans, it->first.data(), colour_text);
+            SDL_Surface *text_surface = TTF_RenderText_Solid(this->game_font, it->first.data(), colour_text);
             SDL_Texture *text_tex = SDL_CreateTextureFromSurface(this->sdl_renderer, text_surface);
             SDL_RenderCopy(this->sdl_renderer, text_tex, NULL, &rect);
             SDL_FreeSurface(text_surface);
@@ -204,12 +208,10 @@ void Affichage::sous_affichage_menu_terrain()
         // on permute les deux buffers (cette fonction ne doit se faire qu'une seule fois dans la boucle)
         SDL_RenderPresent(this->sdl_renderer);
     }
-    TTF_CloseFont(Sans);
 }
 
 void Affichage::sous_affichage_menu_jeux()
 {
-    TTF_Font *Sans = TTF_OpenFont("data/arial.ttf", 12);
     SDL_Colour colour_bg = {255, 0, 0, 255};
     SDL_Colour colour_text = {0, 0, 0, 255};
 
@@ -226,7 +228,7 @@ void Affichage::sous_affichage_menu_jeux()
     for (auto it = options.begin(); it != options.end(); it++)
     { // it->first for the key, it->second for the value
         int temp_size;
-        TTF_SizeText(Sans, it->data(), &temp_size, nullptr);
+        TTF_SizeText(this->game_font, it->data(), &temp_size, nullptr);
         if (temp_size > max_size)
             max_size = temp_size;
     }
@@ -239,12 +241,10 @@ void Affichage::sous_affichage_menu_jeux()
     std::map<std::string, BoundingBox> objects_to_draw;
     int x = padding_x * (1.0 / 2.0);
     int y = (1 / 2.0) * padding_y;
-    cout << padding_x << " " << padding_y << " " << case_height << " " << space_between << " " << x << " " << y << std::endl;
     for (auto it = options.begin(); it != options.end(); it++)
     {
         objects_to_draw.insert(make_pair(*it, BoundingBox(
                                                   x, y, max_size, case_height)));
-        cout << *it << padding_x << " " << padding_y << " " << case_height << " " << space_between << " " << x << " " << y << std::endl;
         y += (case_height + space_between);
     }
     // Faire la boucle de rendu qui gère les pointeurs sur f()
@@ -285,7 +285,7 @@ void Affichage::sous_affichage_menu_jeux()
             SDL_Rect rect = {it->second.x, it->second.y, it->second.w, it->second.h};
             SDL_RenderDrawRect(this->sdl_renderer, &rect);
 
-            SDL_Surface *text_surface = TTF_RenderText_Solid(Sans, it->first.data(), colour_text);
+            SDL_Surface *text_surface = TTF_RenderText_Solid(this->game_font, it->first.data(), colour_text);
             SDL_Texture *text_tex = SDL_CreateTextureFromSurface(this->sdl_renderer, text_surface);
             SDL_RenderCopy(this->sdl_renderer, text_tex, NULL, &rect);
             SDL_FreeSurface(text_surface);
@@ -297,8 +297,8 @@ void Affichage::sous_affichage_menu_jeux()
     }
     // Menus pour les skins (flemme pour le moment)
 
-    TTF_CloseFont(Sans);
 }
+
 void Affichage::affichage_menu()
 {
     sous_affichage_menu_terrain();
@@ -440,14 +440,13 @@ void Affichage::affichage_vainqueur()
         }
 
         // Render at each frame
-        TTF_Font* Sans = TTF_OpenFont("data/arial.ttf", 24);
         SDL_Color White = {255, 255, 255, 255};
 
         string formulation = " gagne le match contre ";
         string annonce = Vainqueur + formulation + Perdant;
 
         // Create a surface containing the player's name
-        SDL_Surface * Surface = TTF_RenderText_Solid(Sans, annonce.c_str(), White);
+        SDL_Surface * Surface = TTF_RenderText_Solid(this->game_font, annonce.c_str(), White);
         SDL_Texture * Texture = SDL_CreateTextureFromSurface(this->sdl_renderer, Surface);
 
         // Get the dimensions of the texture
@@ -528,21 +527,20 @@ Vec2 Affichage::get_screen_coords(const Vec2 &v, float x_margin, float y_margin)
 void Affichage::draw_score()
 {
 
-    TTF_Font *Sans = TTF_OpenFont("data/arial.ttf", 24);
     SDL_Color White = {0, 0, 0, 0};
 
     // Create a surface containing the player's name
-    SDL_Surface *nameSurface = TTF_RenderText_Solid(Sans, this->terrain.get_joueur_b().get_nom().c_str(), White);
+    SDL_Surface *nameSurface = TTF_RenderText_Solid(this->game_font, this->terrain.get_joueur_b().get_nom().c_str(), White);
     SDL_Texture *nameS = SDL_CreateTextureFromSurface(this->sdl_renderer, nameSurface);
 
-    SDL_Surface *nameSurfaceA = TTF_RenderText_Solid(Sans, this->terrain.get_joueur_a().get_nom().c_str(), White);
+    SDL_Surface *nameSurfaceA = TTF_RenderText_Solid(this->game_font, this->terrain.get_joueur_a().get_nom().c_str(), White);
     SDL_Texture *nameSA = SDL_CreateTextureFromSurface(this->sdl_renderer, nameSurfaceA);
 
     // Create a surface containing the game count
-    SDL_Surface *gameCountSurface = TTF_RenderText_Solid(Sans, std::to_string(this->terrain.get_joueur_b().get_score().get_jeu()).data(), White);
+    SDL_Surface *gameCountSurface = TTF_RenderText_Solid(this->game_font, std::to_string(this->terrain.get_joueur_b().get_score().get_jeu()).data(), White);
     SDL_Texture *gameCS = SDL_CreateTextureFromSurface(this->sdl_renderer, gameCountSurface);
 
-    SDL_Surface *gameCountSurfaceA = TTF_RenderText_Solid(Sans, std::to_string(this->terrain.get_joueur_a().get_score().get_jeu()).data(), White);
+    SDL_Surface *gameCountSurfaceA = TTF_RenderText_Solid(this->game_font, std::to_string(this->terrain.get_joueur_a().get_score().get_jeu()).data(), White);
     SDL_Texture *gameCSA = SDL_CreateTextureFromSurface(this->sdl_renderer, gameCountSurfaceA);
 
     // Create a surface containing the point count
@@ -553,23 +551,23 @@ void Affichage::draw_score()
 
     if (this->terrain.get_joueur_a().get_score().get_avantage() == true)
     {
-        pointCountSurfaceA = TTF_RenderText_Solid(Sans, "A", White);
+        pointCountSurfaceA = TTF_RenderText_Solid(this->game_font, "A", White);
         pointCSA = SDL_CreateTextureFromSurface(this->sdl_renderer, pointCountSurfaceA);
     }
     else
     {
-        pointCountSurfaceA = TTF_RenderText_Solid(Sans, std::to_string(this->terrain.get_joueur_a().get_score().get_points()).data(), White);
+        pointCountSurfaceA = TTF_RenderText_Solid(this->game_font, std::to_string(this->terrain.get_joueur_a().get_score().get_points()).data(), White);
         pointCSA = SDL_CreateTextureFromSurface(this->sdl_renderer, pointCountSurfaceA);
     }
 
     if (this->terrain.get_joueur_b().get_score().get_avantage() == true)
     {
-        pointCountSurface = TTF_RenderText_Solid(Sans, "A", White);
+        pointCountSurface = TTF_RenderText_Solid(this->game_font, "A", White);
         pointCS = SDL_CreateTextureFromSurface(this->sdl_renderer, pointCountSurface);
     }
     else
     {
-        pointCountSurface = TTF_RenderText_Solid(Sans, std::to_string(this->terrain.get_joueur_b().get_score().get_points()).data(), White);
+        pointCountSurface = TTF_RenderText_Solid(this->game_font, std::to_string(this->terrain.get_joueur_b().get_score().get_points()).data(), White);
         pointCS = SDL_CreateTextureFromSurface(this->sdl_renderer, pointCountSurface);
     }
 
@@ -634,8 +632,6 @@ void Affichage::draw_score()
     SDL_DestroyTexture(gameCSA);
     SDL_DestroyTexture(pointCS);
     SDL_DestroyTexture(pointCSA);
-
-    TTF_CloseFont(Sans);
 }
 
 void Affichage::draw_terrain()
