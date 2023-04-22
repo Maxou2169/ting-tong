@@ -18,7 +18,7 @@ class Affichage
         SDL_Window * sdl_window;
         SDL_Renderer * sdl_renderer;
 
-        SDL_Texture * terrain_texture;
+        SDL_Texture * terrain_texture = nullptr;
 
         SDL_Texture* logoTexture;
 
@@ -30,6 +30,7 @@ class Affichage
         float NET_HEIGHT = 0.914f;
 
         void sdl_init(std::string terrain_path);
+        void sdl_init_terrain(std::string terrain_path);
         void sdl_destroy();
 
         /**
@@ -79,7 +80,15 @@ class Affichage
         */
         void draw_circle(int x, int y, int radius, SDL_Color color);
 
+        void cb_change_terrain(std::string terrain_path);
+
+        void cb_change_format(std::string nb_jeux);
+
+        void sous_affichage_menu_terrain();
+        void sous_affichage_menu_jeux();
+
         void affichage_menu();
+        
         /**
          * \brief This function draws inside the SDL Window and handles the events
          * \note This function is "blocking"
@@ -101,6 +110,9 @@ class Affichage
          * \brief Effectue des tests des différentes fonctions
         */
         bool test();
+
+
+
 };
 
 #endif
