@@ -21,7 +21,7 @@ class Affichage
 
 		SDL_Texture * terrain_texture = nullptr;
 
-		SDL_Texture* logoTexture = nullptr;
+		SDL_Texture* logo_texture = nullptr;
 
 		TTF_Font * game_font;
 
@@ -32,8 +32,8 @@ class Affichage
 
 		float NET_HEIGHT = 0.914f;
 
-		void sdl_init(std::string terrain_path);
-		void sdl_init_terrain(std::string terrain_path);
+		void sdl_init(std::string terrain_path, std::string logo_path);
+		void sdl_init_terrain_logo(std::string terrain_path, std::string logo_path);
 		void sdl_destroy();
 
 		/**
@@ -103,7 +103,8 @@ class Affichage
 		Affichage(Terrain &t, 
 			unsigned int window_size_x = 800, 
 			unsigned int window_size_y = 600, 
-			std::string terrain_texture = "data/terrain_RG.png"
+			std::string terrain_path = "data/terrain_RG.png",
+            std::string logo_path = "data/logoRG.png"
 		);
 		~Affichage();
 

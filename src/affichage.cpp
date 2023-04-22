@@ -15,10 +15,10 @@
 #include <vector>
 #include <map>
 
-Affichage::Affichage(Terrain &t, unsigned int x, unsigned int y, std::string terrain_texture)
+Affichage::Affichage(Terrain &t, unsigned int x, unsigned int y, std::string terrain_path, std::string logo_path)
 	: terrain(t), x_size(x), y_size(y)
 {
-	this->sdl_init(terrain_texture);
+	this->sdl_init(terrain_path, logo_path);
 }
 
 Affichage::~Affichage()
@@ -28,7 +28,7 @@ Affichage::~Affichage()
 
 using namespace std;
 
-void Affichage::sdl_init(std::string terrain_path)
+void Affichage::sdl_init(std::string terrain_path, std::string logo_path)
 {
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
@@ -63,13 +63,14 @@ void Affichage::sdl_init(std::string terrain_path)
 	this->game_font = TTF_OpenFont("data/arial.ttf", 24);
 
 	this->sdl_renderer = SDL_CreateRenderer(this->sdl_window, -1, SDL_RENDERER_ACCELERATED);
-	this->sdl_init_terrain(terrain_path);
+	this->sdl_init_terrain_logo(terrain_path, logo_path);
 }
 
-void Affichage::sdl_init_terrain(std::string terrain_path)
+void Affichage::sdl_init_terrain_logo(std::string terrain_path, std::string logo_path)
 {
-	if (!this->terrain_texture)
-		SDL_DestroyTexture(this->terrain_texture);
+	SDL_DestroyTexture(this->terrain_texture);
+	SDL_DestroyTexture(this->logo_texture);
+	
 	SDL_Surface *image_surface = IMG_Load(terrain_path.data());
 	if (image_surface == nullptr)
 	{
@@ -81,10 +82,28 @@ void Affichage::sdl_init_terrain(std::string terrain_path)
 	SDL_FreeSurface(image_surface);
 	image_surface = surfaceCorrectPixelFormat;
 
-	terrain_texture = SDL_CreateTextureFromSurface(this->sdl_renderer, surfaceCorrectPixelFormat);
+	this->terrain_texture = SDL_CreateTextureFromSurface(this->sdl_renderer, surfaceCorrectPixelFormat);
 	if (terrain_texture == nullptr)
 	{
 		cerr << "Error: problem to create the texture of " << terrain_path << endl;
+		exit(1);
+	}
+	SDL_FreeSurface(surfaceCorrectPixelFormat);
+	image_surface = IMG_Load(logo_path.data());
+	if (image_surface == nullptr)
+	{
+		cerr << "Error: cannot load " << logo_path << endl;
+		exit(1);
+	}
+
+	surfaceCorrectPixelFormat = SDL_ConvertSurfaceFormat(image_surface, SDL_PIXELFORMAT_ARGB8888, 0);
+	SDL_FreeSurface(image_surface);
+	image_surface = surfaceCorrectPixelFormat;
+
+	this->logo_texture = SDL_CreateTextureFromSurface(this->sdl_renderer, surfaceCorrectPixelFormat);
+	if (this->logo_texture == nullptr)
+	{
+		cerr << "Error: problem to create the texture of " << logo_path << endl;
 		exit(1);
 	}
 	SDL_FreeSurface(surfaceCorrectPixelFormat);
@@ -95,7 +114,7 @@ void Affichage::sdl_destroy()
 	SDL_DestroyRenderer(this->sdl_renderer);
 	SDL_DestroyWindow(this->sdl_window);
 	SDL_DestroyTexture(this->terrain_texture);
-	SDL_DestroyTexture(this->logoTexture);
+	SDL_DestroyTexture(this->logo_texture);
 	TTF_CloseFont(this->game_font);
 	SDL_Quit();
 }
@@ -103,12 +122,18 @@ void Affichage::sdl_destroy()
 void Affichage::cb_change_terrain(std::string terrain_name)
 {
 	std::map<std::string, std::string> terrain_paths;
-	terrain_paths.insert(make_pair("Open d'Australie", "data/terrain.png"));
-	terrain_paths.insert(make_pair("Wimbledon", "data/terrain.png"));
-	terrain_paths.insert(make_pair("Roland Garros", "data/terrain.png"));
-	terrain_paths.insert(make_pair("US Open", "data/terrain.png"));
+	terrain_paths.insert(make_pair("Open d'Australie", "data/terrain_AO.png"));
+	terrain_paths.insert(make_pair("Wimbledon", "data/terrain_W.png"));
+	terrain_paths.insert(make_pair("Roland Garros", "data/terrain_RG.png"));
+	terrain_paths.insert(make_pair("US Open", "data/terrain_US.png"));
 
-	this->sdl_init_terrain(terrain_paths.find(terrain_name)->second);
+	std::map<std::string, std::string> logo_paths;
+	logo_paths.insert(make_pair("Open d'Australie", "data/logoAO.png"));
+	logo_paths.insert(make_pair("Wimbledon", "data/logoW.png"));
+	logo_paths.insert(make_pair("Roland Garros", "data/logoRG.png"));
+	logo_paths.insert(make_pair("US Open", "data/logoUS.png"));
+
+	this->sdl_init_terrain_logo(terrain_paths.find(terrain_name)->second, logo_paths.find(terrain_name)->second);
 }
 
 void Affichage::cb_change_format(std::string nb_jeux)
@@ -296,7 +321,6 @@ void Affichage::sous_affichage_menu_jeux()
 		SDL_RenderPresent(this->sdl_renderer);
 	}
 	// Menus pour les skins (flemme pour le moment)
-
 }
 
 void Affichage::affichage_menu()
@@ -388,9 +412,8 @@ void Affichage::affichage_vainqueur()
 		{ // Event loop
 			if (events.type == SDL_QUIT)
 				quit = true; // Si l'utilisateur a clique sur la croix de fermeture
-
 		}
-		
+
 		int jeuA = this->terrain.get_joueur_a().get_score().get_jeu();
 		int jeuB = this->terrain.get_joueur_b().get_score().get_jeu();
 
@@ -402,21 +425,21 @@ void Affichage::affichage_vainqueur()
 		string Vainqueur;
 		string Perdant;
 
-		if(jeuA > jeuB)
+		if (jeuA > jeuB)
 		{
 			Vainqueur = this->terrain.get_joueur_a().get_nom();
 			Perdant = this->terrain.get_joueur_b().get_nom();
 		}
 		else if (jeuA == jeuB)
 		{
-			if(PointA > PointB)
+			if (PointA > PointB)
 			{
 				Vainqueur = this->terrain.get_joueur_a().get_nom();
 				Perdant = this->terrain.get_joueur_b().get_nom();
 			}
-			else if(PointA == PointB)
+			else if (PointA == PointB)
 			{
-				if(avA == true)
+				if (avA == true)
 				{
 					Vainqueur = this->terrain.get_joueur_a().get_nom();
 					Perdant = this->terrain.get_joueur_b().get_nom();
@@ -446,8 +469,8 @@ void Affichage::affichage_vainqueur()
 		string annonce = Vainqueur + formulation + Perdant;
 
 		// Create a surface containing the player's name
-		SDL_Surface * Surface = TTF_RenderText_Solid(this->game_font, annonce.c_str(), White);
-		SDL_Texture * Texture = SDL_CreateTextureFromSurface(this->sdl_renderer, Surface);
+		SDL_Surface *Surface = TTF_RenderText_Solid(this->game_font, annonce.c_str(), White);
+		SDL_Texture *Texture = SDL_CreateTextureFromSurface(this->sdl_renderer, Surface);
 
 		// Get the dimensions of the texture
 		int texW = 0;
@@ -458,7 +481,7 @@ void Affichage::affichage_vainqueur()
 		int x = (this->x_size - texW) / 2;
 		int y = (this->y_size - texH) / 2;
 
-		SDL_Rect nameRect = { x, y, Surface->w, Surface->h };
+		SDL_Rect nameRect = {x, y, Surface->w, Surface->h};
 
 		SDL_SetRenderDrawColor(this->sdl_renderer, 100, 100, 100, 255);
 		SDL_RenderClear(this->sdl_renderer);
@@ -668,22 +691,16 @@ void Affichage::draw_terrain()
 		SDL_RenderDrawLine(this->sdl_renderer, x, top_left_net.get_y(), x, bottom_right_net.get_y());
 	}
 
-	// Chargemenet du logo
-	SDL_Surface* logo = IMG_Load("data/logo_Roland-Garros.svg.png");
-	this->logoTexture = SDL_CreateTextureFromSurface(this->sdl_renderer, logo);
-	int logoWidth ;
+	int logoWidth;
 	int logoHeight;
-	SDL_QueryTexture(this->logoTexture, nullptr, nullptr, &logoWidth, &logoHeight);
+	SDL_QueryTexture(this->logo_texture, nullptr, nullptr, &logoWidth, &logoHeight);
 
-	logoWidth /=20;
-	logoHeight /=20;
+	logoWidth /= 20;
+	logoHeight /= 20;
 
 	// Copie de la texture du logo sur le rendu SDL
 	SDL_Rect logoDestRect = {650, 20, logoWidth, logoHeight};
-	SDL_RenderCopy(this->sdl_renderer, this->logoTexture, nullptr, &logoDestRect);
-
-	SDL_FreeSurface(logo);
-	SDL_DestroyTexture(this->logoTexture);
+	SDL_RenderCopy(this->sdl_renderer, this->logo_texture, nullptr, &logoDestRect);
 }
 
 void Affichage::affichage()
