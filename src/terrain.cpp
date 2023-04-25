@@ -171,6 +171,19 @@ bool Terrain::joueur_a_gagne_point()
 
 		if(joueur_a.get_score().get_points() == QUARANTE
 		&& joueur_a.get_score().get_avantage() == false
+		&& joueur_a.get_score().get_egalite() == true
+		&& joueur_b.get_score().get_points() == QUARANTE
+		&& joueur_b.get_score().get_avantage() == false
+		&& joueur_b.get_score().get_egalite() == true)
+		{
+			Score sA = Score(QUARANTE,true,false,jA);
+			Score sB = Score(QUARANTE,false,false,jB);
+			joueur_a.set_score(sA);
+			joueur_b.set_score(sB);
+		}
+
+		else if(joueur_a.get_score().get_points() == QUARANTE
+		&& joueur_a.get_score().get_avantage() == false
 		&& joueur_a.get_score().get_egalite() == false
 		&& joueur_b.get_score().get_points() == QUARANTE
 		&& joueur_b.get_score().get_avantage() == true
@@ -213,16 +226,28 @@ bool Terrain::joueur_b_gagne_point()
 		int jB = joueur_b.get_score().get_jeu();
 		int j_next = jB + 1;
 
-		if(joueur_b.get_score().get_points() == QUARANTE
+		if(joueur_a.get_score().get_points() == QUARANTE
+		&& joueur_a.get_score().get_avantage() == false
+		&& joueur_a.get_score().get_egalite() == true
+		&& joueur_b.get_score().get_points() == QUARANTE
 		&& joueur_b.get_score().get_avantage() == false
-		&& joueur_b.get_score().get_egalite() == false
-		&& joueur_a.get_score().get_points() == QUARANTE
+		&& joueur_b.get_score().get_egalite() == true)
+		{
+			Score sA = Score(QUARANTE,false,false,jA);
+			Score sB = Score(QUARANTE,true,false,jB);
+			joueur_a.set_score(sA);
+			joueur_b.set_score(sB);
+		}
+
+		else if(joueur_a.get_score().get_points() == QUARANTE
 		&& joueur_a.get_score().get_avantage() == true
-		&& joueur_a.get_score().get_egalite() == false)
+		&& joueur_a.get_score().get_egalite() == false
+		&& joueur_b.get_score().get_points() == QUARANTE
+		&& joueur_b.get_score().get_avantage() == false
+		&& joueur_b.get_score().get_egalite() == false)
 		{
 			Score sA = Score(QUARANTE,false,true,jA);
 			Score sB = Score(QUARANTE,false,true,jB);
-
 			joueur_a.set_score(sA);
 			joueur_b.set_score(sB);
 		}
@@ -329,6 +354,34 @@ bool Terrain::test()
 	t.get_balle().set_pos(Vec2(-7.0,-17.0));
 	assert(t.joueur_a_gagne_point() == true);
 	assert(t.get_joueur_a().get_score().get_points() == QUINZE);
+
+	Score sA(QUARANTE,true,false,0);
+	Score sB(QUARANTE,false,false,0);
+
+	t.get_joueur_a().set_score(sA);
+	t.get_joueur_b().set_score(sB);
+
+	if(t.joueur_b_gagne_point() == true)
+	{
+		assert(t.get_joueur_a().get_score().get_avantage() == false);
+		assert(t.get_joueur_a().get_score().get_egalite() == true);
+
+		assert(t.get_joueur_b().get_score().get_avantage() == false);
+		assert(t.get_joueur_b().get_score().get_egalite() == true);
+	}
+
+	t.get_joueur_a().set_score(sB);
+	t.get_joueur_b().set_score(sA);
+
+	if(t.joueur_a_gagne_point() == true)
+	{
+		assert(t.get_joueur_a().get_score().get_avantage() == false);
+		assert(t.get_joueur_a().get_score().get_egalite() == true);
+
+		assert(t.get_joueur_b().get_score().get_avantage() == false);
+		assert(t.get_joueur_b().get_score().get_egalite() == true);
+	}
+	
 
 	return true;
 }
