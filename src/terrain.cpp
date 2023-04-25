@@ -251,9 +251,9 @@ void Terrain::service()
 	{ // Joueur A (en haut) doit servir
 		if (rand() % 2)
 		{ // Le joueur A sert à gauche, le joueur B est à droite
-			Vec2 pos_a(-2.5, 8);
+			Vec2 pos_a(-0.1, 14.5);
 			this->get_joueur_a().set_pos(pos_a);
-			this->get_joueur_b().set_pos(Vec2(2.5, -8));
+			this->get_joueur_b().set_pos(Vec2(5, -14.5));
 			this->get_balle().set_pos(Vec2(
 				pos_a.get_x() - 0.2,
 				pos_a.get_y() - 0.2
@@ -261,9 +261,9 @@ void Terrain::service()
 		}
 		else
 		{
-			Vec2 pos_a(2.5, 8);
+			Vec2 pos_a(0.1, 14.5);
 			this->get_joueur_a().set_pos(pos_a);
-			this->get_joueur_b().set_pos(Vec2(-2.5, -8));
+			this->get_joueur_b().set_pos(Vec2(-5, -14.5));
 			this->get_balle().set_pos(Vec2(
 				pos_a.get_x() + 0.2,
 				pos_a.get_y() - 0.2
@@ -274,8 +274,8 @@ void Terrain::service()
 	{ // Joueur B doit servir
 		if (rand() % 2)
 		{ // Le joueur A est à gauche, le joueur B sert à droite
-			Vec2 pos_b(2.5, -8);
-			this->get_joueur_a().set_pos(Vec2(-2.5, 8));
+			Vec2 pos_b(0.1, -14.5);
+			this->get_joueur_a().set_pos(Vec2(-5, 14.5));
 			this->get_joueur_b().set_pos(pos_b);
 			this->get_balle().set_pos(Vec2(
 				pos_b.get_x() + 0.2,
@@ -284,8 +284,8 @@ void Terrain::service()
 		}
 		else
 		{
-			Vec2 pos_b(-2.5, -8);
-			this->get_joueur_a().set_pos(Vec2(2.5, 8));
+			Vec2 pos_b(-0.1, -14.5);
+			this->get_joueur_a().set_pos(Vec2(5, 14.5));
 			this->get_joueur_b().set_pos(pos_b);
 			this->get_balle().set_pos(Vec2(
 				pos_b.get_x() - 0.2,
