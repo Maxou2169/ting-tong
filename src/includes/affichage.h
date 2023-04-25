@@ -87,8 +87,15 @@ class Affichage
 
 		void cb_change_format(std::string nb_jeux);
 
+		void cb_change_joueur_1(std::string nom_joueur);
+		void cb_change_joueur_2(std::string nom_joueur);
+
+		
+
 		void sous_affichage_menu_terrain();
 		void sous_affichage_menu_jeux();
+		void sous_affichage_menu_joueur_1();
+		void sous_affichage_menu_joueur_2();
 
 		void affichage_menu();
 		
