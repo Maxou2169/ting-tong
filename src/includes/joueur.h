@@ -7,6 +7,9 @@
 
 using namespace std;
 
+/**
+ * \brief Un simple joueur, avec un nom, une position, un score
+*/
 class Joueur
 {
 	private :

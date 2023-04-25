@@ -1,6 +1,10 @@
 #ifndef SCORE_H
 #define SCORE_H
 
+/**
+ * \enum Points
+ * \brief Représente toutes les valeurs possibles pour des points au tennis (0,15,30,40)
+*/
 typedef enum Points 
 {
 	ZERO = 0,
@@ -9,6 +13,10 @@ typedef enum Points
 	QUARANTE = 40
 } Points;
 
+/**
+ * \class Score
+ * \brief Cette classe représente le score d'un joueur, son nombre de points, savoir s'il y a une égalité et s'il y a avantage
+*/
 class Score
 {
 	private : 
@@ -20,7 +28,7 @@ class Score
 	public :
 
 	/**
-	 * \brief Créer un score nul
+	 * \brief Créé un score nul
 	*/
 
 	Score(); 

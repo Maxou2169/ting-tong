@@ -10,9 +10,8 @@ const float BORDER_X_SIZE = 5.0;
 const float BORDER_Y_SIZE = 15.0;
 
 /**
- * \brief Une classe Terrain qui possède deux joueurs et une balle
+ * \brief Le terrain représente la partie de tennis. Elle a 2 joueurs, une balle et un format
 */
-
 class Terrain
 {
 	private :

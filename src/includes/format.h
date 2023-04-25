@@ -3,6 +3,10 @@
 
 #include <iostream>
 
+/**
+ * \enum Jeux
+ * \brief Représente de façon textuelle les différents nombres de jeux possibles, 1,3 ou 6
+*/
 typedef enum Jeux {
 	UN_JEU = 1,
 	TROIS_JEUX = 3,
@@ -10,6 +14,9 @@ typedef enum Jeux {
 } Jeux;
 
 
+/**
+ * \brief Une classe simple pour instancier une variable de type Jeux
+*/
 class Format
 {
 	private :
@@ -40,7 +47,7 @@ class Format
 
 		/**
 		 * \brief Modifie le statut du format de match correspondant aux nombre de jeux
-		 * \param Le nombre de jeux (1,3,6), représenté par l'enum Jeux ou par un cast de types.
+		 * \param nb_jeux : Le nombre de jeux (1,3,6), représenté par l'enum Jeux ou par un cast de types.
 		*/
 		void set_jeux(Jeux nb_jeux);
 
