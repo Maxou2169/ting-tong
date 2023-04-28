@@ -150,12 +150,26 @@ void Affichage::cb_change_format(std::string nb_jeux)
 
 void Affichage::cb_change_joueur_1(std::string nom_joueur)
 {
-	this->terrain.get_joueur_a().set_nom(nom_joueur);
+	if(nom_joueur == "Nadal" || nom_joueur == "Djokovic" || nom_joueur == "Alcaraz" || nom_joueur == "Medvedev")
+	{
+		this->terrain.get_joueur_a().set_nom(nom_joueur);
+	}
+	else
+	{
+		this->terrain.get_joueur_a().set_nom("J1");
+	}		
 }
 
 void Affichage::cb_change_joueur_2(std::string nom_joueur)
 {
-	this->terrain.get_joueur_b().set_nom(nom_joueur);
+	if(nom_joueur == "Nadal" || nom_joueur == "Djokovic" || nom_joueur == "Alcaraz" || nom_joueur == "Medvedev")
+	{
+		this->terrain.get_joueur_b().set_nom(nom_joueur);
+	}
+	else
+	{
+		this->terrain.get_joueur_b().set_nom("J2");
+	}
 }
 
 void Affichage::sous_affichage_menu_terrain()
@@ -226,6 +240,30 @@ void Affichage::sous_affichage_menu_terrain()
 		SDL_RenderClear(this->sdl_renderer);
 		// Here we render
 		SDL_SetRenderDrawColor(this->sdl_renderer, 255, 255, 255, 255);
+
+		// Afficher l'objectif du menu
+	// Render at each frame
+	SDL_Color White = {255, 255, 255, 255};
+
+	// Create a surface containing the player's name
+	SDL_Surface *Surface = TTF_RenderText_Solid(this->game_font, "Selectionner le tournoi", White);
+	SDL_Texture *Texture = SDL_CreateTextureFromSurface(this->sdl_renderer, Surface);
+
+	// Get the dimensions of the texture
+	int texW = 0;
+	int texH = 0;
+	SDL_QueryTexture(Texture, NULL, NULL, &texW, &texH);
+
+	// Calculate the position to center the text
+	int a = (this->x_size - texW) / 2;
+	SDL_Rect nameRect = {a, 0, Surface->w, Surface->h};
+
+	SDL_SetRenderDrawColor(this->sdl_renderer, 100, 100, 100, 255);
+
+	SDL_RenderCopy(this->sdl_renderer, Texture, NULL, &nameRect);
+
+	SDL_FreeSurface(Surface);
+	SDL_DestroyTexture(Texture);
 
 		for (auto it = objects_to_draw.begin(); it != objects_to_draw.end(); it++)
 		{
@@ -313,6 +351,31 @@ void Affichage::sous_affichage_menu_jeux()
 		SDL_RenderClear(this->sdl_renderer);
 		// Here we render
 		SDL_SetRenderDrawColor(this->sdl_renderer, 255, 255, 255, 255);
+
+		// Afficher l'objectif du menu
+	// Render at each frame
+	SDL_Color White = {255, 255, 255, 255};
+
+	// Create a surface containing the player's name
+	SDL_Surface *Surface = TTF_RenderText_Solid(this->game_font, "Selectionner le format du match", White);
+	SDL_Texture *Texture = SDL_CreateTextureFromSurface(this->sdl_renderer, Surface);
+
+	// Get the dimensions of the texture
+	int texW = 0;
+	int texH = 0;
+	SDL_QueryTexture(Texture, NULL, NULL, &texW, &texH);
+
+	// Calculate the position to center the text
+	int a = (this->x_size - texW) / 2;
+	SDL_Rect nameRect = {a, 0, Surface->w, Surface->h};
+
+	SDL_SetRenderDrawColor(this->sdl_renderer, 100, 100, 100, 255);
+
+	SDL_RenderCopy(this->sdl_renderer, Texture, NULL, &nameRect);
+
+	SDL_FreeSurface(Surface);
+	SDL_DestroyTexture(Texture);
+
 
 		for (auto it = objects_to_draw.begin(); it != objects_to_draw.end(); it++)
 		{
@@ -742,11 +805,14 @@ void Affichage::draw_joueur(const Joueur& j)
 	SDL_Surface* surface;
 	SDL_Texture* texture;
 
+	bool jj = false;
+
 	if(j.get_nom() == "Nadal")
 	{
 		// Load the image of Nadal
     	surface = IMG_Load("data/nadal.png");
     	texture = SDL_CreateTextureFromSurface(this->sdl_renderer, surface);
+		jj=true;
 	}
 
 	if(j.get_nom() == "Djokovic")
@@ -754,6 +820,7 @@ void Affichage::draw_joueur(const Joueur& j)
 		// Load the image of Nadal
     	surface = IMG_Load("data/djokovic.png");
     	texture = SDL_CreateTextureFromSurface(this->sdl_renderer, surface);
+		jj=true;
 	}
 
 	if(j.get_nom() == "Alcaraz")
@@ -761,6 +828,7 @@ void Affichage::draw_joueur(const Joueur& j)
 		// Load the image of Nadal
     	surface = IMG_Load("data/alcaraz.png");
     	texture = SDL_CreateTextureFromSurface(this->sdl_renderer, surface);
+		jj=true;
 	}
 
 	if(j.get_nom() == "Medvedev")
@@ -768,11 +836,25 @@ void Affichage::draw_joueur(const Joueur& j)
 		// Load the image of Nadal
     	surface = IMG_Load("data/medvedev.png");
     	texture = SDL_CreateTextureFromSurface(this->sdl_renderer, surface);
+		jj=true;
 	}
 
-    
+	if(j.get_nom() == "J1" || j.get_nom() == "J2")
+	{
+		/*
+	SDL_Rect rect = {(int) j.get_pos().get_x(), (int) j.get_pos().get_y(), (int) j.get_pos().get_x() + 15, (int) j.get_pos().get_y() + 30};
+	*/
+	Vec2 pos_proj = this->get_screen_coords(j.get_pos());
+	SDL_Colour red = {255, 0, 0, 255};
+	SDL_SetRenderDrawColor(this->sdl_renderer, 255, 0, 0, 255);
+	this->draw_circle(pos_proj.get_x(), pos_proj.get_y(), 10, red);
+	// SDL_RenderDrawRect(this->sdl_renderer, &rect);
 
-    // Set the destination rectangle for the image
+	}
+
+    if(jj)
+	{
+		// Set the destination rectangle for the image
     SDL_Rect destRect = {
         (int)pos_proj.get_x() - 50,   // x-coordinate of the top-left corner of the rectangle
         (int)pos_proj.get_y() - 50,   // y-coordinate of the top-left corner of the rectangle
@@ -786,6 +868,9 @@ void Affichage::draw_joueur(const Joueur& j)
     // Free the resources
     SDL_FreeSurface(surface);
     SDL_DestroyTexture(texture);
+	}
+
+    
 }
 
 

@@ -125,6 +125,12 @@ class Terrain
 		 * \brief Cette fonction vérifie si un des joueurs vient de gagner un point et remet un service
 		*/
 		void maj_points_service();
+
+		/**
+		 * \brief Cette fonction renvoie true si le service doit être à droite
+		*/
+
+		bool service_a_droite();
 };
 
 
