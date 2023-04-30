@@ -5,7 +5,6 @@
 
 using namespace std;
 
-# define EPSILON 0.0001
 
 Joueur::Joueur(string n, Vec2 p, Score s) : nom(n), pos(p), score(s) {}
 

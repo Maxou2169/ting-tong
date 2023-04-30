@@ -4,6 +4,7 @@
 # include "vec2.h"
 # include "score.h"
 # include <string>
+# define EPSILON 0.0001
 
 using namespace std;
 
