@@ -68,21 +68,22 @@ void Coup::faire_coup()
 	float vitesse_actuelle = this->balle.get_traj().norm() == 0 ? 3 : this->balle.get_traj().norm();
 	Vec2 pt_arrivee;
 
-	const int y_hauteur_max = vitesse_actuelle == 0 ? 5: BORDER_Y_SIZE;
+	const int y_hauteur_max = vitesse_actuelle == 0 ? 5 : BORDER_Y_SIZE;
+	const int x_largeur_max = vitesse_actuelle == 0 ? 0 : this->joueur.get_pos().get_x();
 	if (this->joueur.get_pos().get_y() > 0)
 	{ // C'est le joueur du haut
 		if (this->balle.get_pos().get_x() > this->joueur.get_pos().get_x())
 		{
 			// Alors la balle est à gauche du joueur - droite de l'écran, c'est un revers
 			pt_arrivee = Vec2(
-				randfloat(-BORDER_X_SIZE, this->balle.get_pos().get_x()),
+				randfloat(-BORDER_X_SIZE, x_largeur_max),
 				randfloat(-y_hauteur_max, -1.0)
 			);
 		}
 		else
 		{
 			pt_arrivee = Vec2(
-				randfloat(this->balle.get_pos().get_x(), BORDER_X_SIZE),
+				randfloat(x_largeur_max, BORDER_X_SIZE),
 				randfloat(-y_hauteur_max, -1.0)
 			);
 		}
@@ -93,14 +94,14 @@ void Coup::faire_coup()
 		{
 		// Alors la balle est à droite, c'est un coup droit
 			pt_arrivee = Vec2(
-				randfloat(-BORDER_X_SIZE, this->balle.get_pos().get_x()),
+				randfloat(-BORDER_X_SIZE, x_largeur_max),
 				randfloat(1.0, y_hauteur_max)
 			);
 		}
 		else
 		{
 			pt_arrivee = Vec2(
-				randfloat(this->balle.get_pos().get_x(), BORDER_X_SIZE),
+				randfloat(x_largeur_max, BORDER_X_SIZE),
 				randfloat(1.0, y_hauteur_max)
 			);
 		}

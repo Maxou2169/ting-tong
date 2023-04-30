@@ -18,7 +18,7 @@ int main(void)
 	srand(time(NULL));
 
 	run_test();
-	Terrain t(Joueur("J1", Vec2(0,8), Score()), Joueur("J2", Vec2(0,-8), Score()), Balle(), Format());
+	Terrain t(Joueur("Alcaraz", Vec2(0,8), Score()), Joueur("Medvedev", Vec2(0,-8), Score()), Balle(), Format());
 	t.service();
 	Affichage a(t);
 	a.affichage();
