@@ -13,16 +13,21 @@ const float HITBOX_Y = 1.0;
 const float COEFF_VITESSE = 1.2;
 
 /**
- * \fn This function is a simple implementation of a python style randfloat
+ * \fn This function is a simple implementation of a python style randint
  * 
  * This function is mainly used in Coup::faire_coup()
 */
-int randfloat(int a, int b)
+int randint(int a, int b)
 {
 	assert (a < b);
 	return a + rand() % (b - a);
 }
 
+/**
+ * \fn This function is a simple implementation of a python style randint, but working with floats
+ * 
+ * This function is mainly used in Coup::faire_coup()
+*/
 float randfloat(float a, float b)
 {
 	assert (a < b);
@@ -55,12 +60,15 @@ bool Coup::peut_faire_coup()
 	); // Simplifie un if (a == true) then true else false en (a)
 }
 
+
+
 void Coup::faire_coup()
 {
 	// On assume que l'on peut faire un coup
 	float vitesse_actuelle = this->balle.get_traj().norm() == 0 ? 3 : this->balle.get_traj().norm();
 	Vec2 pt_arrivee;
 
+	const int y_hauteur_max = vitesse_actuelle == 0 ? 5: BORDER_Y_SIZE;
 	if (this->joueur.get_pos().get_y() > 0)
 	{ // C'est le joueur du haut
 		if (this->balle.get_pos().get_x() > this->joueur.get_pos().get_x())
@@ -68,14 +76,14 @@ void Coup::faire_coup()
 			// Alors la balle est à gauche du joueur - droite de l'écran, c'est un revers
 			pt_arrivee = Vec2(
 				randfloat(-BORDER_X_SIZE, this->balle.get_pos().get_x() -1 ),
-				randfloat(-BORDER_Y_SIZE, -1.0)
+				randfloat(-y_hauteur_max, -1.0)
 			);
 		}
 		else
 		{
 			pt_arrivee = Vec2(
 				randfloat(this->balle.get_pos().get_x() + 1, BORDER_X_SIZE),
-				randfloat(-BORDER_Y_SIZE, -1.0)
+				randfloat(-y_hauteur_max, -1.0)
 			);
 		}
 	}
@@ -86,14 +94,14 @@ void Coup::faire_coup()
 		// Alors la balle est à droite, c'est un coup droit
 			pt_arrivee = Vec2(
 				randfloat(-BORDER_X_SIZE, this->balle.get_pos().get_x() - 1),
-				randfloat(1.0, BORDER_Y_SIZE)
+				randfloat(1.0, y_hauteur_max)
 			);
 		}
 		else
 		{
 			pt_arrivee = Vec2(
 				randfloat(this->balle.get_pos().get_x() + 1, BORDER_X_SIZE),
-				randfloat(1.0, BORDER_Y_SIZE)
+				randfloat(1.0, y_hauteur_max)
 			);
 		}
 	}

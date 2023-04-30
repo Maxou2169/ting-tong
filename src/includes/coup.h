@@ -24,20 +24,14 @@ class Coup
 		bool peut_faire_coup();
 
 		/**
-		 * \brief Si le joueur peut faire un coup alors la fonction lui permet de le faire
+		 * \brief Cette classe fait un coup
+		 * Un coup est formé de la manière suivante : 
+		 *  - selon la position du joueur et de la balle, on décide entre coup droit et revers
+		 *  - on choisit ensuite aléatoirement un point ou la balle doit arriver (dans le coin supérieur droit si le joueur du bas fait un revers)
+		 *  - on limite la hauteur de ce point d'arrivée selon si c'est un service ou non (un service doit forcément passer dans le carré de service [de hauteur 5])
+		 *  - On met le vecteur directeur de la balle de façon à guider la balle vers ce point (point_arrivée - pos_balle)
 		*/
 		void faire_coup();
-
-		/**
-		 * \brief Cette fonction execute un coup droit
-		 * Un coup droit fait partir la balle sur la gauche du joueur qui tire
-		*/
-		void coup_droit();
-		/**
-		 * \brief Cette fonction execute un coup droit
-		 * Un coup droit fait partir la balle sur la gauche du joueur qui tire
-		*/
-		void revers();
 	   
 	public :
 		
