@@ -49,6 +49,10 @@ class Coup
 		
 		Coup(Joueur & j, Balle &b);
 
+		/**
+		 * \brief Destructeur de la classe Coup
+		*/
+
 		~Coup();
 
 		/**

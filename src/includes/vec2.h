@@ -2,7 +2,7 @@
 # define VEC2_H
 
 /**
- * \brief This class implements a simple Vector in 2D.
+ * \brief Classe implémentant un vecteur 2D
  * 
  * This class implmenets arithmetics and representation of Vector/Point
 */
@@ -14,87 +14,102 @@ class Vec2
 		float y;
 	
 	public:
-		Vec2(float x, float y);
-		Vec2();
-		~Vec2();
+	
+	/**
+	 * \brief Initialise un vecteur 2D
+	 * \param x : Abscisse
+	 * \param y : Ordonnée
+	*/
+	Vec2(float x, float y);
 
-		/**
-		 * \brief This function returns the x parameter of this 2D Vector
-		*/
-		float get_x() const;
-		/**
-		 * \brief This function sets the x parameter of this 2D Vector
-		 * \param x : A value representing the x-coordinate of the point
-		*/
-		void set_x(float x);
+	/**
+	 * \brief Constructeur de la classe Vec2D
+	*/
+	Vec2();
 
-		/**
-		 * \brief  This function returns the y parameter of this 2D Vector
-		*/
-		float get_y() const;
-		/**
-		 * \brief This function sets the y coordinate of this Vector
-		 * \param y : The y coordinate of this Vector
-		*/
-		void set_y(float y);
+	/**
+	 * \brief Destructeur de la classe Vec2D
+	*/
+	~Vec2();
 
-		/**
-		 * \brief This function returns the norm of the vector
-		 * \returns The norm of the vector
-		*/
-		float norm() const;
+	/**
+	 * \brief Cette fonction renvoie la coordonnée x de ce vecteur 2D
+	*/
+	float get_x() const;
+	/**
+	 * \brief Cette fonction définit la coordonnée x de ce vecteur 2D
+	 * \param x : Une valeur représentant la coordonnée x du point
+	*/
+	void set_x(float x);
 
-		/**
-		 * \brief Normalise le vecteur
-		*/
-		void normalise();
-		
-		/**
-		 * \brief This function adds a second vector and returns it
-		 * 
-		 * \returns A new Vec2
-		*/
-	   Vec2 operator+(Vec2 const& to_add) const;
+	/**
+	 * \brief Cette fonction renvoie la coordonnée y de ce vecteur 2D
+	*/
+	float get_y() const;
+	/**
+	 * \brief Cette fonction définit la coordonnée y de ce vecteur 2D
+	 * \param y : La coordonnée y de ce vecteur
+	*/
+	void set_y(float y);
 
-		/**
-		 * \brief This function removes a vector from another one
-		 * \returns A new Vec2
-		*/
-	   Vec2 operator-(Vec2 const& to_add) const;
+	/**
+	 * \brief Cette fonction renvoie la norme du vecteur
+	 * \returns La norme du vecteur
+	*/
+	float norm() const;
 
-		/**
-		 * \brief This function multiplies two vectors
-		 * \returns A new Vec2
-		*/
-	   Vec2 operator*(Vec2 const& to_add) const;
+	/**
+	 * \brief Cette fonction normalise le vecteur
+	*/
+	void normalise();
+	
+	/**
+	 * \brief Cette fonction ajoute un second vecteur et le renvoie
+	 * 
+	 * \returns Un nouveau Vec2
+	*/
+   Vec2 operator+(Vec2 const& to_add) const;
 
-		/**
-		 * \brief This function implments the operation * between a scalar and a vector
-		 * \returns A new vec2
-		*/
-		Vec2 operator*(const float f) const;
+	/**
+	 * \brief Cette fonction soustrait un vecteur à un autre
+	 * \returns Un nouveau Vec2
+	*/
+   Vec2 operator-(Vec2 const& to_add) const;
 
-		/**
-		 * \brief This function implments the operation *= between a scalar and a vector
-		*/
-		void operator*=(const float f);
+	/**
+	 * \brief Cette fonction multiplie deux vecteurs
+	 * \returns Un nouveau Vec2
+	*/
+   Vec2 operator*(Vec2 const& to_add) const;
 
-		/**
-		 * \brief This function implements the += operator on two Vec2, it adds separately the x and ys
-		*/
-		void operator+=(Vec2 const& to_add);
+	/**
+	 * \brief Cette fonction implémente l'opération * entre un scalaire et un vecteur
+	 * \returns Un nouveau Vec2
+	*/
+	Vec2 operator*(const float f) const;
 
-		/**
-		 * \brief This function implements the -= operator on two Vec2, it modifies separately the xs and ys
-		*/
-		void operator -=(Vec2 const & to_add);
+	/**
+	 * \brief Cette fonction implémente l'opération *= entre un scalaire et un vecteur
+	*/
+	void operator*=(const float f);
 
-		/**
-		 * \brief This function compares two vectors. Those vectors are equal if x1 = x2 and y1 = y2
-		 * \returns A boolean, representing the (in)equality
-		*/
-		bool operator==(Vec2 const & to_compare) const;
-		bool test();
+	/**
+	 * \brief Cette fonction implémente l'opérateur += sur deux Vec2, elle ajoute séparément les xs et ys
+	*/
+	void operator+=(Vec2 const& to_add);
+
+	/**
+	 * \brief Cette fonction implémente l'opérateur -= sur deux Vec2, elle modifie séparément les xs et ys
+	*/
+	void operator -=(Vec2 const & to_add);
+
+	/**
+	 * \brief Cette fonction compare deux vecteurs. Ces vecteurs sont égaux si x1 = x2 et y1 = y2
+	 * \returns Un booléen, représentant l'(in)égalité
+	*/
+	bool operator==(Vec2 const & to_compare) const;
+	bool test();
+
 };
 
 #endif

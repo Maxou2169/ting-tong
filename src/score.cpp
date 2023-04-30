@@ -76,6 +76,7 @@ void Score::gagner_points()
 				this->points = ZERO;
 				this->jeu++;
 				this->avantage = false;
+				this->egalite = false;
 			}
 			else
 			{

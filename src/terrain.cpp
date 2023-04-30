@@ -169,12 +169,22 @@ bool Terrain::joueur_a_gagne_point()
 		int jB = joueur_b.get_score().get_jeu();
 		int j_next = jA + 1;
 
-		if(joueur_a.get_score().get_points() == QUARANTE
+		if(joueur_a.get_score().get_points() == TRENTE
+		&& joueur_b.get_score().get_points() == QUARANTE) // 30-40 -> 40-40 = EGALITE
+		{
+			Score a(QUARANTE,false,true,jA);
+			Score b(QUARANTE,false,true,jB);
+
+			joueur_a.set_score(a);
+			joueur_b.set_score(b);
+		}
+
+		else if(joueur_a.get_score().get_points() == QUARANTE
 		&& joueur_a.get_score().get_avantage() == false
 		&& joueur_a.get_score().get_egalite() == true
 		&& joueur_b.get_score().get_points() == QUARANTE
 		&& joueur_b.get_score().get_avantage() == false
-		&& joueur_b.get_score().get_egalite() == true)
+		&& joueur_b.get_score().get_egalite() == true) // 40-40 -> AV-40
 		{
 			Score sA = Score(QUARANTE,true,false,jA);
 			Score sB = Score(QUARANTE,false,false,jB);
@@ -187,7 +197,7 @@ bool Terrain::joueur_a_gagne_point()
 		&& joueur_a.get_score().get_egalite() == false
 		&& joueur_b.get_score().get_points() == QUARANTE
 		&& joueur_b.get_score().get_avantage() == true
-		&& joueur_b.get_score().get_egalite() == false)
+		&& joueur_b.get_score().get_egalite() == false) // 40-AV -> 40-40 = EGALITE
 		{
 			Score sA = Score(QUARANTE,false,true,jA);
 			Score sB = Score(QUARANTE,false,true,jB);
@@ -217,7 +227,6 @@ bool Terrain::joueur_a_gagne_point()
 
 bool Terrain::joueur_b_gagne_point()
 {
-	//float pos_balle_x = balle.get_pos().get_x();
 	float pos_balle_y = balle.get_pos().get_y();
 
 	if(pos_balle_y >= BORDER_Y_SIZE)
@@ -226,12 +235,22 @@ bool Terrain::joueur_b_gagne_point()
 		int jB = joueur_b.get_score().get_jeu();
 		int j_next = jB + 1;
 
-		if(joueur_a.get_score().get_points() == QUARANTE
+		if(joueur_b.get_score().get_points() == TRENTE
+		&& joueur_a.get_score().get_points() == QUARANTE) // 40-30 -> 40-40 = EGALITE
+		{
+			Score a(QUARANTE,false,true,jA);
+			Score b(QUARANTE,false,true,jB);
+
+			joueur_a.set_score(a);
+			joueur_b.set_score(b);
+		}
+
+		else if(joueur_a.get_score().get_points() == QUARANTE
 		&& joueur_a.get_score().get_avantage() == false
 		&& joueur_a.get_score().get_egalite() == true
 		&& joueur_b.get_score().get_points() == QUARANTE
 		&& joueur_b.get_score().get_avantage() == false
-		&& joueur_b.get_score().get_egalite() == true)
+		&& joueur_b.get_score().get_egalite() == true) // 40-40 -> 40-AV
 		{
 			Score sA = Score(QUARANTE,false,false,jA);
 			Score sB = Score(QUARANTE,true,false,jB);
@@ -244,7 +263,7 @@ bool Terrain::joueur_b_gagne_point()
 		&& joueur_a.get_score().get_egalite() == false
 		&& joueur_b.get_score().get_points() == QUARANTE
 		&& joueur_b.get_score().get_avantage() == false
-		&& joueur_b.get_score().get_egalite() == false)
+		&& joueur_b.get_score().get_egalite() == false) // AV-40 -> 40-40 = EGALITE
 		{
 			Score sA = Score(QUARANTE,false,true,jA);
 			Score sB = Score(QUARANTE,false,true,jB);
@@ -318,7 +337,7 @@ void Terrain::service()
 			this->get_joueur_a().set_pos(pos_a);
 			this->get_joueur_b().set_pos(Vec2(3.0, -11));
 			this->get_balle().set_pos(Vec2(
-				pos_a.get_x() - 0.2,
+				pos_a.get_x() - 0.5,
 				pos_a.get_y() - 0.2
 			));
 		}
@@ -328,7 +347,7 @@ void Terrain::service()
 			this->get_joueur_a().set_pos(pos_a);
 			this->get_joueur_b().set_pos(Vec2(-3.0, -11));
 			this->get_balle().set_pos(Vec2(
-				pos_a.get_x() + 0.2,
+				pos_a.get_x() + 0.5,
 				pos_a.get_y() - 0.2
 			));
 		}
@@ -341,7 +360,7 @@ void Terrain::service()
 			this->get_joueur_a().set_pos(Vec2(-3.0, 11));
 			this->get_joueur_b().set_pos(pos_b);
 			this->get_balle().set_pos(Vec2(
-				pos_b.get_x() + 0.2,
+				pos_b.get_x() + 0.5,
 				pos_b.get_y() + 0.2
 			));
 		}
@@ -351,7 +370,7 @@ void Terrain::service()
 			this->get_joueur_a().set_pos(Vec2(3.0, 11));
 			this->get_joueur_b().set_pos(pos_b);
 			this->get_balle().set_pos(Vec2(
-				pos_b.get_x() - 0.2,
+				pos_b.get_x() - 0.5,
 				pos_b.get_y() + 0.2
 			));
 		}

@@ -43,6 +43,10 @@ class Score
 
 	Score(Points p, bool av, bool e, int j);
 
+	/**
+	 * \brief Destructeur de la classe Score
+	*/
+
 	~Score();
 
 	/**

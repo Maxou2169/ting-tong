@@ -37,23 +37,23 @@ class Affichage
 		void sdl_destroy();
 
 		/**
-		 * \brief This function takes a Joueur and draws it on the SDL_Window
-		 * \param j : The Joueur to draw
+		 * \brief La fonction prends un joueur et le dessine dans la fenêtre
+		 * \param j : Le joueur a dessiner
 		 * 
 		 * \note Les coordonnées du joueur sont en unités du terrain
 		*/
 		void draw_joueur(const Joueur & j);
 
 		/**
-		 * \brief This function takes a Balle and draws it on the SDL_Window
-		 * \param b : The Balle to draw
+		 * \brief La fonction prends une balle et la dessine dans la fenêtre
+		 * \param b : La balle a dessiner
 		 * 
 		 * \note Les coordonnées du joueur sont en unités du terrain
 		*/
 		void draw_balle(const Balle & b);
 
 		/**
-		 * \brief This displays the terrain texture
+		 * \brief Dessine le terrain
 		*/
 		void draw_terrain();
 
@@ -73,48 +73,98 @@ class Affichage
 		Vec2 get_screen_coords(const Vec2 & v, float x_margin = 0, float y_margin = 0);
 
 		/**
-		 * \brief This function is meant to draw a circle of center (x, y) of radius radius
-		 * \param x : The x-coordinate of the center
-		 * \param y : The y-coordinate of the center
-		 * \param radius : The radius of the circle
-		 * \param color : A SDL_Color of the circle
+		 * \brief Cette fonction est destinée à dessiner un cercle de centre (x, y) de rayon radius
+		 * \param x : La coordonnée x du centre
+		 * \param y : La coordonnée y du centre
+		 * \param radius : Le rayon du cercle
+		 * \param color : Le rayon du cercle
 		 * 
-		 * \note If there was multiple functions of this kind, we might want to switch them to a utils module
+		 * \note Si plusieurs fonctions de ce type existaient, il serait peut-être préférable de les déplacer dans un module utilitaire
 		*/
 		void draw_circle(int x, int y, int radius, SDL_Color color);
-
+		
+		/**
+		 * \brief Change le terrain en fonction du choix effectué dans le menu
+		 * \param terrain_path : Le nom du terrain choisit par l'utilisateur
+		*/
 		void cb_change_terrain(std::string terrain_path);
 
+		/**
+		 * \brief Change le format en fonction du choix effectué dans le menu
+		 * \param nb_jeux : Le format choisit par l'utilisateur
+		*/
 		void cb_change_format(std::string nb_jeux);
 
+		/**
+		 * \brief Change le joueur 1 en fonction du choix effectué dans le menu
+		 * \param nom_joueur : Le nom du joueur choisit par l'utilisateur
+		*/
 		void cb_change_joueur_1(std::string nom_joueur);
-		void cb_change_joueur_2(std::string nom_joueur);
-
 		
-
+		/**
+		 * \brief Change le joueur 2 en fonction du choix effectué dans le menu
+		 * \param nom_joueur : Le nom du joueur choisit par l'utilisateur
+		*/
+		void cb_change_joueur_2(std::string nom_joueur);
+		/**
+		 * \brief Affichage du menu pour le choix du terrain
+		*/
 		void sous_affichage_menu_terrain();
+		
+		/**
+		 * \brief Affichage du menu pour le choix du format
+		*/
 		void sous_affichage_menu_jeux();
+
+		/**
+		 * \brief Affichage du menu pour le choix du joueur 1
+		*/
 		void sous_affichage_menu_joueur_1();
+
+		/**
+		 * \brief Affichage du menu pour le choix du joueur 2
+		*/
 		void sous_affichage_menu_joueur_2();
 
+		/**
+		 * \brief Affiche l'entièreté des menus
+		*/
 		void affichage_menu();
 		
 		/**
-		 * \brief This function draws inside the SDL Window and handles the events
-		 * \note This function is "blocking"
+		 * \brief Affiche le match
 		*/
 		void affichage_jeu();
+
+		/**
+		 * \brief Affiche le vainqueur du match
+		*/
 		void affichage_vainqueur();
 
 	public:
+
+		/**
+		 * \brief Constructeur de la classe terrain
+		 * \param window_size_x : Largeur de la fenêtre
+		 * \param window_size_y : Hauteur de la fenêtre
+		 * \param terrain_path : Le chemin d'accès au fichier image du terrain
+		 * \param logo_path : Le chemin d'accès au fichier image du logo lié au terrain
+		*/
 		Affichage(Terrain &t, 
 			unsigned int window_size_x = 800, 
 			unsigned int window_size_y = 600, 
 			std::string terrain_path = "data/terrain_RG.png",
             std::string logo_path = "data/logoRG.png"
 		);
+
+		/**
+		 * \brief Destructeur de la classe Affichage
+		*/
 		~Affichage();
 
+		/**
+		 * \brief Affiche les elements du jeu
+		*/
 		void affichage();
 
 		/**

@@ -26,6 +26,10 @@ class Joueur
 		*/
 
 		Joueur(string n, Vec2 p,Score s);
+
+		/**
+		 * \brief Destructeur de la classe Joueur
+		*/
 		~Joueur();
 
 		/**

@@ -19,16 +19,41 @@ class Terrain
 		Joueur joueur_b;
 		Balle balle;
 		Format format;
-		
+
+
+		/**
+		 * \brief Repousse le joueur allant trop à droite
+		*/
+
 		void repousser_x_positif(Joueur &j);
+
+		/**
+		 * \brief Repousse le joueur allant trop à gauche
+		*/
 
 		void repousser_x_negatif(Joueur &j);
 
+		/**
+		 * \brief Repousse le joueur allant trop haut
+		*/
+
 		void repousser_y_positif(Joueur &j);
+
+		/**
+		 * \brief Repousse le joueur allant trop bas
+		*/
 
 		void repousser_y_negatif(Joueur &j);
 
+		/**
+		 * \brief Repousse le joueur du haut par rapport au filet
+		*/
+
 		void repousser_filet_joueur_a();
+
+		/**
+		 * \brief Repousse le joueur du bas par rapport au filet
+		*/
 
 		void repousser_filet_joueur_b();
 	
@@ -40,6 +65,10 @@ class Terrain
 		 * \param b : La balle
 		*/
 		Terrain(Joueur x, Joueur y, Balle b, Format f);
+
+		/**
+		 * \brief Desctructeur de la classe Terrain
+		*/
 
 		~Terrain();
 

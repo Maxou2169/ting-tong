@@ -139,11 +139,11 @@ void Affichage::cb_change_terrain(std::string terrain_name)
 void Affichage::cb_change_format(std::string nb_jeux)
 {
 	if (nb_jeux == "1 Jeu")
-		this->terrain.get_format().set_jeux(UN_JEU);
+		this->terrain.set_format(UN_JEU);
 	else if (nb_jeux == "3 Jeux")
-		this->terrain.get_format().set_jeux(TROIS_JEUX);
+		this->terrain.set_format(TROIS_JEUX);
 	else if (nb_jeux == "6 Jeux")
-		this->terrain.get_format().set_jeux(SIX_JEUX);
+		this->terrain.set_format(SIX_JEUX);
 	else // Should not happen but let's protect everything
 		cout << "Else" << endl;
 }

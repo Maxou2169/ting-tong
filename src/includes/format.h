@@ -25,7 +25,7 @@ class Format
 	public :
 
 		/**
-		 * \brief Initalise un format de match à trois jeu
+		 * \brief Initalise un format de match à 1 jeu
 		*/
 		Format();
 
@@ -36,6 +36,10 @@ class Format
 		 * \param six : Booléen pour un match à six jeux
 		*/
 		Format(Jeux nb_jeux);
+
+		/**
+		 * \brief Desctructeur de la classe Format
+		*/
 
 		~Format();
 
