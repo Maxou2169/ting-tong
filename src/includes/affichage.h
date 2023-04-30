@@ -20,8 +20,9 @@ class Affichage
 		SDL_Renderer * sdl_renderer;
 
 		SDL_Texture * terrain_texture = nullptr;
-
 		SDL_Texture* logo_texture = nullptr;
+		SDL_Texture* j1_texture = nullptr;
+		SDL_Texture* j2_texture = nullptr;
 
 		TTF_Font * game_font;
 
@@ -34,6 +35,7 @@ class Affichage
 
 		void sdl_init(std::string terrain_path, std::string logo_path);
 		void sdl_init_terrain_logo(std::string terrain_path, std::string logo_path);
+		void sdl_init_players(std::string j1_path, std::string j2_path);
 		void sdl_destroy();
 
 		/**
@@ -97,15 +99,12 @@ class Affichage
 
 		/**
 		 * \brief Change le joueur 1 en fonction du choix effectué dans le menu
-		 * \param nom_joueur : Le nom du joueur choisit par l'utilisateur
+		 * \param nom_joueur : Le nom du joueur choisi par l'utilisateur
+		 * \param num_joueur : Le numéro du joueur concerné (1 ou 2)
+		 * \note Comportement non garanti si num_joueur != 1 OU 2
 		*/
-		void cb_change_joueur_1(std::string nom_joueur);
+		void cb_change_joueur(std::string nom_joueur, int num_joueur);
 		
-		/**
-		 * \brief Change le joueur 2 en fonction du choix effectué dans le menu
-		 * \param nom_joueur : Le nom du joueur choisit par l'utilisateur
-		*/
-		void cb_change_joueur_2(std::string nom_joueur);
 		/**
 		 * \brief Affichage du menu pour le choix du terrain
 		*/
@@ -117,14 +116,9 @@ class Affichage
 		void sous_affichage_menu_jeux();
 
 		/**
-		 * \brief Affichage du menu pour le choix du joueur 1
+		 * \brief Affichage des menus pour choisir le joueur 1 et 2
 		*/
-		void sous_affichage_menu_joueur_1();
-
-		/**
-		 * \brief Affichage du menu pour le choix du joueur 2
-		*/
-		void sous_affichage_menu_joueur_2();
+		void sous_affichage_menu_joueur();
 
 		/**
 		 * \brief Affiche l'entièreté des menus
