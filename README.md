@@ -42,4 +42,3 @@ Pour quitter le programme, faire ECHAP (ou appuyer sur la croix) en version grap
 
 ### Classe affichage
 - On fait un "scale" entre les coordonnées du terrain et celle de la fenêtre
-- Les 
