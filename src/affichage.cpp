@@ -174,7 +174,7 @@ void Affichage::cb_change_joueur_2(std::string nom_joueur)
 
 void Affichage::sous_affichage_menu_terrain()
 {
-	SDL_Colour colour_bg = {255, 0, 0, 255};
+	SDL_Colour colour_bg = {255, 255, 255, 255};
 	SDL_Colour colour_text = {0, 0, 0, 255};
 	std::vector<std::string> options;
 
@@ -184,29 +184,29 @@ void Affichage::sous_affichage_menu_terrain()
 	options.push_back("US Open");
 	// Menu choix terrain
 
-	int padding_x, case_height, padding_y, space_between;
 	// Trouver le max des cases à afficher
 	int max_size = 0;
 	for (auto it = options.begin(); it != options.end(); it++)
-	{ // it->first for the key, it->second for the value
+	{
 		int temp_size;
 		TTF_SizeText(this->game_font, it->data(), &temp_size, nullptr);
 		if (temp_size > max_size)
 			max_size = temp_size;
 	}
-	padding_x = this->x_size - (max_size + 0.05 * this->x_size);
-	case_height = (this->y_size / (options.size() + 3));
-	padding_y = case_height * 2;
-	space_between = case_height / (options.size() - 1);
+	int case_height = (this->y_size / (options.size() + 3));
 
 	// Créer les bounding_box pour chaque case
 	std::map<std::string, BoundingBox> objects_to_draw;
-	int x = padding_x * (1.0 / 2.0);
-	int y = (1 / 2.0) * padding_y;
+	int case_width = max_size + 0.05 * this->x_size;
+	case_height = (this->y_size / (options.size() + 3));
+	int space_between = case_height / (options.size() - 1);
+	int total_height = (case_height + space_between) * options.size() - space_between;
+	int x = (this->x_size - case_width) / 2;
+	int y = (this->y_size - total_height) / 2;
 	for (auto it = options.begin(); it != options.end(); it++)
 	{
 		objects_to_draw.insert(make_pair(*it, BoundingBox(
-												  x, y, max_size, case_height)));
+			x, y, case_width, case_height)));
 		y += (case_height + space_between);
 	}
 	// Faire la boucle de rendu qui gère les pointeurs sur f()
@@ -242,50 +242,71 @@ void Affichage::sous_affichage_menu_terrain()
 		SDL_SetRenderDrawColor(this->sdl_renderer, 255, 255, 255, 255);
 
 		// Afficher l'objectif du menu
-	// Render at each frame
-	SDL_Color White = {255, 255, 255, 255};
+		// Render at each frame
+		SDL_Color White = {255, 255, 255, 255};
 
-	// Create a surface containing the player's name
-	SDL_Surface *Surface = TTF_RenderText_Solid(this->game_font, "Selectionner le tournoi", White);
-	SDL_Texture *Texture = SDL_CreateTextureFromSurface(this->sdl_renderer, Surface);
+		// Create a surface containing the player's name
+		SDL_Surface *Surface = TTF_RenderText_Solid(this->game_font, "Selectionner le tournoi", White);
+		SDL_Texture *Texture = SDL_CreateTextureFromSurface(this->sdl_renderer, Surface);
 
-	// Get the dimensions of the texture
-	int texW = 0;
-	int texH = 0;
-	SDL_QueryTexture(Texture, NULL, NULL, &texW, &texH);
+		// Get the dimensions of the texture
+		int texW = 0;
+		int texH = 0;
+		SDL_QueryTexture(Texture, NULL, NULL, &texW, &texH);
 
-	// Calculate the position to center the text
-	int a = (this->x_size - texW) / 2;
-	SDL_Rect nameRect = {a, 0, Surface->w, Surface->h};
+		// Calculate the position to center the text
+		int a = (this->x_size - texW) / 2;
+		SDL_Rect nameRect = {a, 0, Surface->w, Surface->h};
 
-	SDL_SetRenderDrawColor(this->sdl_renderer, 100, 100, 100, 255);
+		SDL_SetRenderDrawColor(this->sdl_renderer, 100, 100, 100, 255);
 
-	SDL_RenderCopy(this->sdl_renderer, Texture, NULL, &nameRect);
+		SDL_RenderCopy(this->sdl_renderer, Texture, NULL, &nameRect);
 
-	SDL_FreeSurface(Surface);
-	SDL_DestroyTexture(Texture);
+		SDL_FreeSurface(Surface);
+		SDL_DestroyTexture(Texture);
 
+		// Définir une variable pour la couleur de surbrillance
+		SDL_Color highlight_color = {255, 255, 255, 255};
+
+		// Initialiser selected_item à nullptr
+		auto selected_item = objects_to_draw.end();
+
+		// Boucle pour dessiner les éléments du menu
 		for (auto it = objects_to_draw.begin(); it != objects_to_draw.end(); it++)
 		{
-			SDL_SetRenderDrawColor(this->sdl_renderer, colour_bg.r, colour_bg.g, colour_bg.b, colour_bg.a);
-			SDL_Rect rect = {it->second.x, it->second.y, it->second.w, it->second.h};
-			SDL_RenderDrawRect(this->sdl_renderer, &rect);
+			// Définir la couleur de fond de la case en fonction de si elle est sélectionnée ou non
+			if (it == selected_item)
+			{
+				SDL_SetRenderDrawColor(this->sdl_renderer, highlight_color.r, highlight_color.g, highlight_color.b, highlight_color.a);
+			}
+			else
+			{
+				SDL_SetRenderDrawColor(this->sdl_renderer, colour_bg.r, colour_bg.g, colour_bg.b, colour_bg.a);
+			}
 
+			// Dessiner la case
+			SDL_Rect rect = {it->second.x, it->second.y, it->second.w, it->second.h};
+			SDL_RenderFillRect(this->sdl_renderer, &rect);
+
+			// Centrer le texte dans la case
 			SDL_Surface *text_surface = TTF_RenderText_Solid(this->game_font, it->first.data(), colour_text);
 			SDL_Texture *text_tex = SDL_CreateTextureFromSurface(this->sdl_renderer, text_surface);
-			SDL_RenderCopy(this->sdl_renderer, text_tex, NULL, &rect);
+			int text_w, text_h;
+			SDL_QueryTexture(text_tex, NULL, NULL, &text_w, &text_h);
+			SDL_Rect text_rect = {(it->second.x + (it->second.w - text_w) / 2), (it->second.y + (it->second.h - text_h) / 2), text_w, text_h};
+			SDL_RenderCopy(this->sdl_renderer, text_tex, NULL, &text_rect);
 			SDL_FreeSurface(text_surface);
 			SDL_DestroyTexture(text_tex);
 		}
 
-		// on permute les deux buffers (cette fonction ne doit se faire qu'une seule fois dans la boucle)
-		SDL_RenderPresent(this->sdl_renderer);
+			// on permute les deux buffers (cette fonction ne doit se faire qu'une seule fois dans la boucle)
+			SDL_RenderPresent(this->sdl_renderer);
 	}
 }
 
 void Affichage::sous_affichage_menu_jeux()
 {
-	SDL_Colour colour_bg = {255, 0, 0, 255};
+	SDL_Colour colour_bg = {255, 255, 255, 255};
 	SDL_Colour colour_text = {0, 0, 0, 255};
 
 	// Menu choix nb_jeux-----------------------------------------------------------------------------------------------
@@ -295,29 +316,29 @@ void Affichage::sous_affichage_menu_jeux()
 	options.push_back("3 Jeux");
 	options.push_back("6 Jeux");
 
-	int padding_x, case_height, padding_y, space_between;
 	// Trouver le max des cases à afficher
 	int max_size = 0;
 	for (auto it = options.begin(); it != options.end(); it++)
-	{ // it->first for the key, it->second for the value
+	{
 		int temp_size;
 		TTF_SizeText(this->game_font, it->data(), &temp_size, nullptr);
 		if (temp_size > max_size)
 			max_size = temp_size;
 	}
-	padding_x = this->x_size - (max_size + 0.05 * this->x_size);
-	case_height = (this->y_size / (options.size() + 3));
-	padding_y = case_height * 2;
-	space_between = case_height / (options.size() - 1);
+	int case_height = (this->y_size / (options.size() + 3));
 
 	// Créer les bounding_box pour chaque case
 	std::map<std::string, BoundingBox> objects_to_draw;
-	int x = padding_x * (1.0 / 2.0);
-	int y = (1 / 2.0) * padding_y;
+	int case_width = max_size + 0.05 * this->x_size;
+	case_height = (this->y_size / (options.size() + 3));
+	int space_between = case_height / (options.size() - 1);
+	int total_height = (case_height + space_between) * options.size() - space_between;
+	int x = (this->x_size - case_width) / 2;
+	int y = (this->y_size - total_height) / 2;
 	for (auto it = options.begin(); it != options.end(); it++)
 	{
 		objects_to_draw.insert(make_pair(*it, BoundingBox(
-												  x, y, max_size, case_height)));
+			x, y, case_width, case_height)));
 		y += (case_height + space_between);
 	}
 	// Faire la boucle de rendu qui gère les pointeurs sur f()
@@ -353,39 +374,60 @@ void Affichage::sous_affichage_menu_jeux()
 		SDL_SetRenderDrawColor(this->sdl_renderer, 255, 255, 255, 255);
 
 		// Afficher l'objectif du menu
-	// Render at each frame
-	SDL_Color White = {255, 255, 255, 255};
+		// Render at each frame
+		SDL_Color White = {255, 255, 255, 255};
 
-	// Create a surface containing the player's name
-	SDL_Surface *Surface = TTF_RenderText_Solid(this->game_font, "Selectionner le format du match", White);
-	SDL_Texture *Texture = SDL_CreateTextureFromSurface(this->sdl_renderer, Surface);
+		// Create a surface containing the player's name
+		SDL_Surface *Surface = TTF_RenderText_Solid(this->game_font, "Selectionner le format du match", White);
+		SDL_Texture *Texture = SDL_CreateTextureFromSurface(this->sdl_renderer, Surface);
 
-	// Get the dimensions of the texture
-	int texW = 0;
-	int texH = 0;
-	SDL_QueryTexture(Texture, NULL, NULL, &texW, &texH);
+		// Get the dimensions of the texture
+		int texW = 0;
+		int texH = 0;
+		SDL_QueryTexture(Texture, NULL, NULL, &texW, &texH);
 
-	// Calculate the position to center the text
-	int a = (this->x_size - texW) / 2;
-	SDL_Rect nameRect = {a, 0, Surface->w, Surface->h};
+		// Calculate the position to center the text
+		int a = (this->x_size - texW) / 2;
+		SDL_Rect nameRect = {a, 0, Surface->w, Surface->h};
 
-	SDL_SetRenderDrawColor(this->sdl_renderer, 100, 100, 100, 255);
+		SDL_SetRenderDrawColor(this->sdl_renderer, 100, 100, 100, 255);
 
-	SDL_RenderCopy(this->sdl_renderer, Texture, NULL, &nameRect);
+		SDL_RenderCopy(this->sdl_renderer, Texture, NULL, &nameRect);
 
-	SDL_FreeSurface(Surface);
-	SDL_DestroyTexture(Texture);
+		SDL_FreeSurface(Surface);
+		SDL_DestroyTexture(Texture);
 
 
+		// Définir une variable pour la couleur de surbrillance
+		SDL_Color highlight_color = {255, 255, 255, 255};
+
+		// Initialiser selected_item à nullptr
+		auto selected_item = objects_to_draw.end();
+
+		// Boucle pour dessiner les éléments du menu
 		for (auto it = objects_to_draw.begin(); it != objects_to_draw.end(); it++)
 		{
-			SDL_SetRenderDrawColor(this->sdl_renderer, colour_bg.r, colour_bg.g, colour_bg.b, colour_bg.a);
-			SDL_Rect rect = {it->second.x, it->second.y, it->second.w, it->second.h};
-			SDL_RenderDrawRect(this->sdl_renderer, &rect);
+			// Définir la couleur de fond de la case en fonction de si elle est sélectionnée ou non
+			if (it == selected_item)
+			{
+				SDL_SetRenderDrawColor(this->sdl_renderer, highlight_color.r, highlight_color.g, highlight_color.b, highlight_color.a);
+			}
+			else
+			{
+				SDL_SetRenderDrawColor(this->sdl_renderer, colour_bg.r, colour_bg.g, colour_bg.b, colour_bg.a);
+			}
 
+			// Dessiner la case
+			SDL_Rect rect = {it->second.x, it->second.y, it->second.w, it->second.h};
+			SDL_RenderFillRect(this->sdl_renderer, &rect);
+
+			// Centrer le texte dans la case
 			SDL_Surface *text_surface = TTF_RenderText_Solid(this->game_font, it->first.data(), colour_text);
 			SDL_Texture *text_tex = SDL_CreateTextureFromSurface(this->sdl_renderer, text_surface);
-			SDL_RenderCopy(this->sdl_renderer, text_tex, NULL, &rect);
+			int text_w, text_h;
+			SDL_QueryTexture(text_tex, NULL, NULL, &text_w, &text_h);
+			SDL_Rect text_rect = {(it->second.x + (it->second.w - text_w) / 2), (it->second.y + (it->second.h - text_h) / 2), text_w, text_h};
+			SDL_RenderCopy(this->sdl_renderer, text_tex, NULL, &text_rect);
 			SDL_FreeSurface(text_surface);
 			SDL_DestroyTexture(text_tex);
 		}
@@ -393,12 +435,11 @@ void Affichage::sous_affichage_menu_jeux()
 		// on permute les deux buffers (cette fonction ne doit se faire qu'une seule fois dans la boucle)
 		SDL_RenderPresent(this->sdl_renderer);
 	}
-	// Menus pour les skins (flemme pour le moment)
 }
 
 void Affichage::sous_affichage_menu_joueur_1()
 {
-    SDL_Colour colour_bg = {255, 0, 0, 255};
+    SDL_Colour colour_bg = {255, 255, 255, 255};
     SDL_Colour colour_text = {0, 0, 0, 255};
 
     // Menu choix joueur
@@ -408,31 +449,31 @@ void Affichage::sous_affichage_menu_joueur_1()
     options.push_back("Alcaraz");
     options.push_back("Medvedev");
 
-    int padding_x, case_height, padding_y, space_between;
     // Trouver le max des cases à afficher
-    int max_size = 0;
-    for (auto it = options.begin(); it != options.end(); it++)
-    {
-        int temp_size;
-        TTF_SizeText(this->game_font, it->data(), &temp_size, nullptr);
-        if (temp_size > max_size)
-            max_size = temp_size;
-    }
-    padding_x = this->x_size - (max_size + 0.05 * this->x_size);
-    case_height = (this->y_size / (options.size() + 3));
-    padding_y = case_height * 2;
-    space_between = case_height / (options.size() - 1);
+	int max_size = 0;
+	for (auto it = options.begin(); it != options.end(); it++)
+	{
+		int temp_size;
+		TTF_SizeText(this->game_font, it->data(), &temp_size, nullptr);
+		if (temp_size > max_size)
+			max_size = temp_size;
+	}
+	int case_height = (this->y_size / (options.size() + 3));
 
-    // Créer les bounding_box pour chaque case
-    std::map<std::string, BoundingBox> objects_to_draw;
-    int x = padding_x * (1.0 / 2.0);
-    int y = (1 / 2.0) * padding_y;
-    for (auto it = options.begin(); it != options.end(); it++)
-    {
-        objects_to_draw.insert(make_pair(*it, BoundingBox(
-                                                  x, y, max_size, case_height)));
-        y += (case_height + space_between);
-    }
+	// Créer les bounding_box pour chaque case
+	std::map<std::string, BoundingBox> objects_to_draw;
+	int case_width = max_size + 0.05 * this->x_size;
+	case_height = (this->y_size / (options.size() + 3));
+	int space_between = case_height / (options.size() - 1);
+	int total_height = (case_height + space_between) * options.size() - space_between;
+	int x = (this->x_size - case_width) / 2;
+	int y = (this->y_size - total_height) / 2;
+	for (auto it = options.begin(); it != options.end(); it++)
+	{
+		objects_to_draw.insert(make_pair(*it, BoundingBox(
+			x, y, case_width, case_height)));
+		y += (case_height + space_between);
+	}
 
 	
 
@@ -462,58 +503,79 @@ void Affichage::sous_affichage_menu_joueur_1()
                 }
             }
         }
-	// Render at each frame
-	SDL_SetRenderDrawColor(this->sdl_renderer, 100, 100, 100, 255);
-	SDL_RenderClear(this->sdl_renderer);
-	// Here we render
-	SDL_SetRenderDrawColor(this->sdl_renderer, 255, 255, 255, 255);
+		// Render at each frame
+		SDL_SetRenderDrawColor(this->sdl_renderer, 100, 100, 100, 255);
+		SDL_RenderClear(this->sdl_renderer);
+		// Here we render
+		SDL_SetRenderDrawColor(this->sdl_renderer, 255, 255, 255, 255);
 
-	// Afficher l'objectif du menu
-	// Render at each frame
-	SDL_Color White = {255, 255, 255, 255};
+		// Afficher l'objectif du menu
+		// Render at each frame
+		SDL_Color White = {255, 255, 255, 255};
 
-	// Create a surface containing the player's name
-	SDL_Surface *Surface = TTF_RenderText_Solid(this->game_font, "Selectionner le joueur 1", White);
-	SDL_Texture *Texture = SDL_CreateTextureFromSurface(this->sdl_renderer, Surface);
+		// Create a surface containing the player's name
+		SDL_Surface *Surface = TTF_RenderText_Solid(this->game_font, "Selectionner le joueur 1", White);
+		SDL_Texture *Texture = SDL_CreateTextureFromSurface(this->sdl_renderer, Surface);
 
-	// Get the dimensions of the texture
-	int texW = 0;
-	int texH = 0;
-	SDL_QueryTexture(Texture, NULL, NULL, &texW, &texH);
+		// Get the dimensions of the texture
+		int texW = 0;
+		int texH = 0;
+		SDL_QueryTexture(Texture, NULL, NULL, &texW, &texH);
 
-	// Calculate the position to center the text
-	int a = (this->x_size - texW) / 2;
-	SDL_Rect nameRect = {a, 0, Surface->w, Surface->h};
+		// Calculate the position to center the text
+		int a = (this->x_size - texW) / 2;
+		SDL_Rect nameRect = {a, 0, Surface->w, Surface->h};
 
-	SDL_SetRenderDrawColor(this->sdl_renderer, 100, 100, 100, 255);
+		SDL_SetRenderDrawColor(this->sdl_renderer, 100, 100, 100, 255);
 
-	SDL_RenderCopy(this->sdl_renderer, Texture, NULL, &nameRect);
+		SDL_RenderCopy(this->sdl_renderer, Texture, NULL, &nameRect);
 
-	SDL_FreeSurface(Surface);
-	SDL_DestroyTexture(Texture);
+		SDL_FreeSurface(Surface);
+		SDL_DestroyTexture(Texture);
+
+		// Définir une variable pour la couleur de surbrillance
+		SDL_Color highlight_color = {255, 255, 255, 255};
+
+		// Initialiser selected_item à nullptr
+		auto selected_item = objects_to_draw.end();
+
+		// Boucle pour dessiner les éléments du menu
+		for (auto it = objects_to_draw.begin(); it != objects_to_draw.end(); it++)
+		{
+			// Définir la couleur de fond de la case en fonction de si elle est sélectionnée ou non
+			if (it == selected_item)
+			{
+				SDL_SetRenderDrawColor(this->sdl_renderer, highlight_color.r, highlight_color.g, highlight_color.b, highlight_color.a);
+			}
+			else
+			{
+				SDL_SetRenderDrawColor(this->sdl_renderer, colour_bg.r, colour_bg.g, colour_bg.b, colour_bg.a);
+			}
+
+			// Dessiner la case
+			SDL_Rect rect = {it->second.x, it->second.y, it->second.w, it->second.h};
+			SDL_RenderFillRect(this->sdl_renderer, &rect);
+
+			// Centrer le texte dans la case
+			SDL_Surface *text_surface = TTF_RenderText_Solid(this->game_font, it->first.data(), colour_text);
+			SDL_Texture *text_tex = SDL_CreateTextureFromSurface(this->sdl_renderer, text_surface);
+			int text_w, text_h;
+			SDL_QueryTexture(text_tex, NULL, NULL, &text_w, &text_h);
+			SDL_Rect text_rect = {(it->second.x + (it->second.w - text_w) / 2), (it->second.y + (it->second.h - text_h) / 2), text_w, text_h};
+			SDL_RenderCopy(this->sdl_renderer, text_tex, NULL, &text_rect);
+			SDL_FreeSurface(text_surface);
+			SDL_DestroyTexture(text_tex);
+		}
 
 
-	for (auto it = objects_to_draw.begin(); it != objects_to_draw.end(); it++)
-	{
-		SDL_SetRenderDrawColor(this->sdl_renderer, colour_bg.r, colour_bg.g, colour_bg.b, colour_bg.a);
-		SDL_Rect rect = {it->second.x, it->second.y, it->second.w, it->second.h};
-		SDL_RenderDrawRect(this->sdl_renderer, &rect);
-
-		SDL_Surface *text_surface = TTF_RenderText_Solid(this->game_font, it->first.data(), colour_text);
-		SDL_Texture *text_tex = SDL_CreateTextureFromSurface(this->sdl_renderer, text_surface);
-		SDL_RenderCopy(this->sdl_renderer, text_tex, NULL, &rect);
-		SDL_FreeSurface(text_surface);
-		SDL_DestroyTexture(text_tex);
-	}
-
-	// on permute les deux buffers (cette fonction ne doit se faire qu'une seule fois dans la boucle)
-	SDL_RenderPresent(this->sdl_renderer);
+		// on permute les deux buffers (cette fonction ne doit se faire qu'une seule fois dans la boucle)
+		SDL_RenderPresent(this->sdl_renderer);
 	}
 }
 
 void Affichage::sous_affichage_menu_joueur_2()
 {
-    SDL_Colour colour_bg = {255, 0, 0, 255};
+    SDL_Colour colour_bg = {255, 255, 255, 255};
     SDL_Colour colour_text = {0, 0, 0, 255};
 
     // Menu choix joueur
@@ -523,31 +585,33 @@ void Affichage::sous_affichage_menu_joueur_2()
     options.push_back("Alcaraz");
     options.push_back("Medvedev");
 
-    int padding_x, case_height, padding_y, space_between;
-    // Trouver le max des cases à afficher
-    int max_size = 0;
-    for (auto it = options.begin(); it != options.end(); it++)
-    {
-        int temp_size;
-        TTF_SizeText(this->game_font, it->data(), &temp_size, nullptr);
-        if (temp_size > max_size)
-            max_size = temp_size;
-    }
-    padding_x = this->x_size - (max_size + 0.05 * this->x_size);
-    case_height = (this->y_size / (options.size() + 3));
-    padding_y = case_height * 2;
-    space_between = case_height / (options.size() - 1);
+   	// Trouver le max des cases à afficher
+	int max_size = 0;
+	for (auto it = options.begin(); it != options.end(); it++)
+	{
+		int temp_size;
+		TTF_SizeText(this->game_font, it->data(), &temp_size, nullptr);
+		if (temp_size > max_size)
+			max_size = temp_size;
+	}
+	int case_height = (this->y_size / (options.size() + 3));
 
-    // Créer les bounding_box pour chaque case
-    std::map<std::string, BoundingBox> objects_to_draw;
-    int x = padding_x * (1.0 / 2.0);
-    int y = (1 / 2.0) * padding_y;
-    for (auto it = options.begin(); it != options.end(); it++)
-    {
-        objects_to_draw.insert(make_pair(*it, BoundingBox(
-                                                  x, y, max_size, case_height)));
-        y += (case_height + space_between);
-    }
+	// Créer les bounding_box pour chaque case
+	std::map<std::string, BoundingBox> objects_to_draw;
+	int case_width = max_size + 0.05 * this->x_size;
+	case_height = (this->y_size / (options.size() + 3));
+	int space_between = case_height / (options.size() - 1);
+	int total_height = (case_height + space_between) * options.size() - space_between;
+	int x = (this->x_size - case_width) / 2;
+	int y = (this->y_size - total_height) / 2;
+	for (auto it = options.begin(); it != options.end(); it++)
+	{
+		objects_to_draw.insert(make_pair(*it, BoundingBox(
+			x, y, case_width, case_height)));
+		y += (case_height + space_between);
+	}
+
+
 
     // Faire la boucle de rendu qui gère les pointeurs sur f()
     SDL_Event events;
@@ -575,52 +639,73 @@ void Affichage::sous_affichage_menu_joueur_2()
                 }
             }
         }
-	// Render at each frame
-	SDL_SetRenderDrawColor(this->sdl_renderer, 100, 100, 100, 255);
-	SDL_RenderClear(this->sdl_renderer);
-	// Here we render
-	SDL_SetRenderDrawColor(this->sdl_renderer, 255, 255, 255, 255);
+		// Render at each frame
+		SDL_SetRenderDrawColor(this->sdl_renderer, 100, 100, 100, 255);
+		SDL_RenderClear(this->sdl_renderer);
+		// Here we render
+		SDL_SetRenderDrawColor(this->sdl_renderer, 255, 255, 255, 255);
 
-	// Afficher l'objectif du menu
-	// Render at each frame
-	SDL_Color White = {255, 255, 255, 255};
+		// Afficher l'objectif du menu
+		// Render at each frame
+		SDL_Color White = {255, 255, 255, 255};
 
-	// Create a surface containing the player's name
-	SDL_Surface *Surface = TTF_RenderText_Solid(this->game_font, "Selectionner le joueur 2", White);
-	SDL_Texture *Texture = SDL_CreateTextureFromSurface(this->sdl_renderer, Surface);
+		// Create a surface containing the player's name
+		SDL_Surface *Surface = TTF_RenderText_Solid(this->game_font, "Selectionner le joueur 2", White);
+		SDL_Texture *Texture = SDL_CreateTextureFromSurface(this->sdl_renderer, Surface);
 
-	// Get the dimensions of the texture
-	int texW = 0;
-	int texH = 0;
-	SDL_QueryTexture(Texture, NULL, NULL, &texW, &texH);
+		// Get the dimensions of the texture
+		int texW = 0;
+		int texH = 0;
+		SDL_QueryTexture(Texture, NULL, NULL, &texW, &texH);
 
-	// Calculate the position to center the text
-	int a = (this->x_size - texW) / 2;
-	SDL_Rect nameRect = {a, 0, Surface->w, Surface->h};
+		// Calculate the position to center the text
+		int a = (this->x_size - texW) / 2;
+		SDL_Rect nameRect = {a, 0, Surface->w, Surface->h};
 
-	SDL_SetRenderDrawColor(this->sdl_renderer, 100, 100, 100, 255);
+		SDL_SetRenderDrawColor(this->sdl_renderer, 100, 100, 100, 255);
 
-	SDL_RenderCopy(this->sdl_renderer, Texture, NULL, &nameRect);
+		SDL_RenderCopy(this->sdl_renderer, Texture, NULL, &nameRect);
 
-	SDL_FreeSurface(Surface);
-	SDL_DestroyTexture(Texture);
+		SDL_FreeSurface(Surface);
+		SDL_DestroyTexture(Texture);
 
 
-	for (auto it = objects_to_draw.begin(); it != objects_to_draw.end(); it++)
-	{
-		SDL_SetRenderDrawColor(this->sdl_renderer, colour_bg.r, colour_bg.g, colour_bg.b, colour_bg.a);
-		SDL_Rect rect = {it->second.x, it->second.y, it->second.w, it->second.h};
-		SDL_RenderDrawRect(this->sdl_renderer, &rect);
+		// Définir une variable pour la couleur de surbrillance
+		SDL_Color highlight_color = {255, 255, 255, 255};
 
-		SDL_Surface *text_surface = TTF_RenderText_Solid(this->game_font, it->first.data(), colour_text);
-		SDL_Texture *text_tex = SDL_CreateTextureFromSurface(this->sdl_renderer, text_surface);
-		SDL_RenderCopy(this->sdl_renderer, text_tex, NULL, &rect);
-		SDL_FreeSurface(text_surface);
-		SDL_DestroyTexture(text_tex);
-	}
+		// Initialiser selected_item à nullptr
+		auto selected_item = objects_to_draw.end();
 
-	// on permute les deux buffers (cette fonction ne doit se faire qu'une seule fois dans la boucle)
-	SDL_RenderPresent(this->sdl_renderer);
+		// Boucle pour dessiner les éléments du menu
+		for (auto it = objects_to_draw.begin(); it != objects_to_draw.end(); it++)
+		{
+			// Définir la couleur de fond de la case en fonction de si elle est sélectionnée ou non
+			if (it == selected_item)
+			{
+				SDL_SetRenderDrawColor(this->sdl_renderer, highlight_color.r, highlight_color.g, highlight_color.b, highlight_color.a);
+			}
+			else
+			{
+				SDL_SetRenderDrawColor(this->sdl_renderer, colour_bg.r, colour_bg.g, colour_bg.b, colour_bg.a);
+			}
+
+			// Dessiner la case
+			SDL_Rect rect = {it->second.x, it->second.y, it->second.w, it->second.h};
+			SDL_RenderFillRect(this->sdl_renderer, &rect);
+
+			// Centrer le texte dans la case
+			SDL_Surface *text_surface = TTF_RenderText_Solid(this->game_font, it->first.data(), colour_text);
+			SDL_Texture *text_tex = SDL_CreateTextureFromSurface(this->sdl_renderer, text_surface);
+			int text_w, text_h;
+			SDL_QueryTexture(text_tex, NULL, NULL, &text_w, &text_h);
+			SDL_Rect text_rect = {(it->second.x + (it->second.w - text_w) / 2), (it->second.y + (it->second.h - text_h) / 2), text_w, text_h};
+			SDL_RenderCopy(this->sdl_renderer, text_tex, NULL, &text_rect);
+			SDL_FreeSurface(text_surface);
+			SDL_DestroyTexture(text_tex);
+		}
+
+		// on permute les deux buffers (cette fonction ne doit se faire qu'une seule fois dans la boucle)
+		SDL_RenderPresent(this->sdl_renderer);
 	}
 }
 
