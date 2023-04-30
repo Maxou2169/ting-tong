@@ -31,6 +31,14 @@ Pour quitter le programme, faire ECHAP (ou appuyer sur la croix) en version grap
 - `obj/` : Le dossier qui stockera les différents fichiers étape de compilation (le dossier est créé automatiquement par le Makefile)
 - `src/` : Le dossier des sources, il continent un dossier `includes/` qui contiendra les différents `.h`
 
+### Constantes définies dans le programme
+
+Plusieurs constantes ont été définies dans le programme, elles ont été réfléchies pour garantir une expérrience optimale.
+Ces constantes sont :
+ - `HITBOX_X` dans *coup.cpp* -> La largeur de la hitbox autour d'un joueur, en unités du terrain
+ - `HITBOX_Y` dans *coup.cpp* -> La hauteur de la hitbox autour d'un joueur, en unités du terrain
+ - `COEFF_VITESSE` dans *coup.cpp* -> Le flottant par lequel la vitesse de la balle est multiplié à chaque coup
+ - `EPSILON` dans *joueur.h* -> Une macro définie pour les comparaisons = entre floats
 ### Classe Balle
 - Il y a maintenant des valeurs par défaut sur tous les éléments de la balle, pour éviter les problèmes de division par 0 sur des `Balle::descente` non définis ou autre
 - Il faut donc bien penser à personnaliser ces valeurs à chaque fois
