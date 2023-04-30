@@ -105,7 +105,6 @@ void Terrain::repousser()
 	{
 		repousser_filet_joueur_b();
 	}
-	
 }
 
 void Terrain::repousser_x_positif(Joueur &j)
