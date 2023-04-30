@@ -140,12 +140,12 @@ void Affichage::cb_change_format(std::string nb_jeux)
 {
 	if (nb_jeux == "1 Jeu")
 		this->terrain.get_format().set_jeux(UN_JEU);
-	if (nb_jeux == "3 Jeux")
+	else if (nb_jeux == "3 Jeux")
 		this->terrain.get_format().set_jeux(TROIS_JEUX);
-	if (nb_jeux == "6 Jeux")
+	else if (nb_jeux == "6 Jeux")
 		this->terrain.get_format().set_jeux(SIX_JEUX);
 	else // Should not happen but let's protect everything
-		this->terrain.get_format().set_jeux(UN_JEU);
+		cout << "Else" << endl;
 }
 
 void Affichage::cb_change_joueur_1(std::string nom_joueur)
