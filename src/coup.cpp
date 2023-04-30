@@ -19,7 +19,7 @@ const float COEFF_VITESSE = 1.2;
 */
 int randint(int a, int b)
 {
-	assert (a < b);
+	assert (a <= b);
 	return a + rand() % (b - a);
 }
 
@@ -30,9 +30,9 @@ int randint(int a, int b)
 */
 float randfloat(float a, float b)
 {
-	assert (a < b);
+	assert (a <= b);
 	float res = (a + (rand() % (int) ((b * 1000) - (a * 1000))) / 1000.f);
-	assert (a < res && res < b);
+	assert (a <= res && res <= b);
 	return res;
 }
 
