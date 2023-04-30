@@ -650,7 +650,7 @@ void Affichage::affichage_jeu()
 		{ // Event loop
 			if (events.type == SDL_QUIT)
 				quit = true; // Si l'utilisateur a clique sur la croix de fermeture
-			else if (events.type == SDL_KEYDOWN)
+			else if (events.type == SDL_KEYDOWN || events.type == SDL_KEYUP)
 			{
 				const Uint8 *state = SDL_GetKeyboardState(NULL);
 				if (state[SDL_SCANCODE_ESCAPE])
