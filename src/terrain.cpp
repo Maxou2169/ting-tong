@@ -171,6 +171,19 @@ bool Terrain::joueur_a_gagne_point()
 
 		if(joueur_a.get_score().get_points() == QUARANTE
 		&& joueur_a.get_score().get_avantage() == false
+		&& joueur_a.get_score().get_egalite() == true
+		&& joueur_b.get_score().get_points() == QUARANTE
+		&& joueur_b.get_score().get_avantage() == false
+		&& joueur_b.get_score().get_egalite() == true)
+		{
+			Score sA = Score(QUARANTE,true,false,jA);
+			Score sB = Score(QUARANTE,false,false,jB);
+			joueur_a.set_score(sA);
+			joueur_b.set_score(sB);
+		}
+
+		else if(joueur_a.get_score().get_points() == QUARANTE
+		&& joueur_a.get_score().get_avantage() == false
 		&& joueur_a.get_score().get_egalite() == false
 		&& joueur_b.get_score().get_points() == QUARANTE
 		&& joueur_b.get_score().get_avantage() == true
@@ -213,16 +226,28 @@ bool Terrain::joueur_b_gagne_point()
 		int jB = joueur_b.get_score().get_jeu();
 		int j_next = jB + 1;
 
-		if(joueur_b.get_score().get_points() == QUARANTE
+		if(joueur_a.get_score().get_points() == QUARANTE
+		&& joueur_a.get_score().get_avantage() == false
+		&& joueur_a.get_score().get_egalite() == true
+		&& joueur_b.get_score().get_points() == QUARANTE
 		&& joueur_b.get_score().get_avantage() == false
-		&& joueur_b.get_score().get_egalite() == false
-		&& joueur_a.get_score().get_points() == QUARANTE
+		&& joueur_b.get_score().get_egalite() == true)
+		{
+			Score sA = Score(QUARANTE,false,false,jA);
+			Score sB = Score(QUARANTE,true,false,jB);
+			joueur_a.set_score(sA);
+			joueur_b.set_score(sB);
+		}
+
+		else if(joueur_a.get_score().get_points() == QUARANTE
 		&& joueur_a.get_score().get_avantage() == true
-		&& joueur_a.get_score().get_egalite() == false)
+		&& joueur_a.get_score().get_egalite() == false
+		&& joueur_b.get_score().get_points() == QUARANTE
+		&& joueur_b.get_score().get_avantage() == false
+		&& joueur_b.get_score().get_egalite() == false)
 		{
 			Score sA = Score(QUARANTE,false,true,jA);
 			Score sB = Score(QUARANTE,false,true,jB);
-
 			joueur_a.set_score(sA);
 			joueur_b.set_score(sB);
 		}
@@ -245,15 +270,59 @@ bool Terrain::joueur_b_gagne_point()
 	}
 }
 
+bool Terrain::service_a_droite()
+{
+    Score scoreA = this->get_joueur_a().get_score();
+    Score scoreB = this->get_joueur_b().get_score();
+
+    // On utilise un switch pour gérer les différents cas de score
+    switch (scoreA.get_points()) {
+        case 0:
+            if (scoreB.get_points() == 0 || scoreB.get_points() == 30) 
+			{
+                return true;
+            }
+            break;
+        case 15:
+            if (scoreB.get_points() == 15 || scoreB.get_points() == 40) 
+			{
+                return true;
+            }
+            break;
+        case 30:
+            if (scoreB.get_points() == 30 || scoreB.get_points() == 0) 
+			{
+                return true;
+            }
+            break;
+        case 40:
+            if ((scoreB.get_points() == 40 && scoreB.get_avantage() == false && scoreA.get_avantage() == false) || scoreB.get_points() == 15) 
+			{
+                return true;
+            }
+            break;
+    }
+
+    return false; // Dans tous les autres cas, on doit servir à gauche
+}
+
+
+
 void Terrain::service()
 {
 	if ((this->get_joueur_a().get_score().get_jeu() + this->get_joueur_b().get_score().get_jeu()) % 2)
 	{ // Joueur A (en haut) doit servir
-		if (rand() % 2)
+		if (service_a_droite())
 		{ // Le joueur A sert à gauche, le joueur B est à droite
+<<<<<<< src/terrain.cpp
 			Vec2 pos_a(-0.1, 14.5);
 			this->get_joueur_a().set_pos(pos_a);
 			this->get_joueur_b().set_pos(Vec2(5, -14.5));
+=======
+			Vec2 pos_a(-1.5, 13);
+			this->get_joueur_a().set_pos(pos_a);
+			this->get_joueur_b().set_pos(Vec2(3.0, -11));
+>>>>>>> src/terrain.cpp
 			this->get_balle().set_pos(Vec2(
 				pos_a.get_x() - 0.2,
 				pos_a.get_y() - 0.2
@@ -261,9 +330,15 @@ void Terrain::service()
 		}
 		else
 		{
+<<<<<<< src/terrain.cpp
 			Vec2 pos_a(0.1, 14.5);
 			this->get_joueur_a().set_pos(pos_a);
 			this->get_joueur_b().set_pos(Vec2(-5, -14.5));
+=======
+			Vec2 pos_a(1.5, 13);
+			this->get_joueur_a().set_pos(pos_a);
+			this->get_joueur_b().set_pos(Vec2(-3.0, -11));
+>>>>>>> src/terrain.cpp
 			this->get_balle().set_pos(Vec2(
 				pos_a.get_x() + 0.2,
 				pos_a.get_y() - 0.2
@@ -272,10 +347,15 @@ void Terrain::service()
 	}
 	else 
 	{ // Joueur B doit servir
-		if (rand() % 2)
+		if (service_a_droite())
 		{ // Le joueur A est à gauche, le joueur B sert à droite
+<<<<<<< src/terrain.cpp
 			Vec2 pos_b(0.1, -14.5);
 			this->get_joueur_a().set_pos(Vec2(-5, 14.5));
+=======
+			Vec2 pos_b(1.5, -13);
+			this->get_joueur_a().set_pos(Vec2(-3.0, 11));
+>>>>>>> src/terrain.cpp
 			this->get_joueur_b().set_pos(pos_b);
 			this->get_balle().set_pos(Vec2(
 				pos_b.get_x() + 0.2,
@@ -284,8 +364,13 @@ void Terrain::service()
 		}
 		else
 		{
+<<<<<<< src/terrain.cpp
 			Vec2 pos_b(-0.1, -14.5);
 			this->get_joueur_a().set_pos(Vec2(5, 14.5));
+=======
+			Vec2 pos_b(-1.5, -13);
+			this->get_joueur_a().set_pos(Vec2(3.0, 11));
+>>>>>>> src/terrain.cpp
 			this->get_joueur_b().set_pos(pos_b);
 			this->get_balle().set_pos(Vec2(
 				pos_b.get_x() - 0.2,
@@ -329,6 +414,34 @@ bool Terrain::test()
 	t.get_balle().set_pos(Vec2(-7.0,-17.0));
 	assert(t.joueur_a_gagne_point() == true);
 	assert(t.get_joueur_a().get_score().get_points() == QUINZE);
+
+	Score sA(QUARANTE,true,false,0);
+	Score sB(QUARANTE,false,false,0);
+
+	t.get_joueur_a().set_score(sA);
+	t.get_joueur_b().set_score(sB);
+
+	if(t.joueur_b_gagne_point() == true)
+	{
+		assert(t.get_joueur_a().get_score().get_avantage() == false);
+		assert(t.get_joueur_a().get_score().get_egalite() == true);
+
+		assert(t.get_joueur_b().get_score().get_avantage() == false);
+		assert(t.get_joueur_b().get_score().get_egalite() == true);
+	}
+
+	t.get_joueur_a().set_score(sB);
+	t.get_joueur_b().set_score(sA);
+
+	if(t.joueur_a_gagne_point() == true)
+	{
+		assert(t.get_joueur_a().get_score().get_avantage() == false);
+		assert(t.get_joueur_a().get_score().get_egalite() == true);
+
+		assert(t.get_joueur_b().get_score().get_avantage() == false);
+		assert(t.get_joueur_b().get_score().get_egalite() == true);
+	}
+	
 
 	return true;
 }

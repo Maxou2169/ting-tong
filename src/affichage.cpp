@@ -148,6 +148,30 @@ void Affichage::cb_change_format(std::string nb_jeux)
 		cout << "Else" << endl;
 }
 
+void Affichage::cb_change_joueur_1(std::string nom_joueur)
+{
+	if(nom_joueur == "Nadal" || nom_joueur == "Djokovic" || nom_joueur == "Alcaraz" || nom_joueur == "Medvedev")
+	{
+		this->terrain.get_joueur_a().set_nom(nom_joueur);
+	}
+	else
+	{
+		this->terrain.get_joueur_a().set_nom("J1");
+	}		
+}
+
+void Affichage::cb_change_joueur_2(std::string nom_joueur)
+{
+	if(nom_joueur == "Nadal" || nom_joueur == "Djokovic" || nom_joueur == "Alcaraz" || nom_joueur == "Medvedev")
+	{
+		this->terrain.get_joueur_b().set_nom(nom_joueur);
+	}
+	else
+	{
+		this->terrain.get_joueur_b().set_nom("J2");
+	}
+}
+
 void Affichage::sous_affichage_menu_terrain()
 {
 	SDL_Colour colour_bg = {255, 0, 0, 255};
@@ -216,6 +240,30 @@ void Affichage::sous_affichage_menu_terrain()
 		SDL_RenderClear(this->sdl_renderer);
 		// Here we render
 		SDL_SetRenderDrawColor(this->sdl_renderer, 255, 255, 255, 255);
+
+		// Afficher l'objectif du menu
+	// Render at each frame
+	SDL_Color White = {255, 255, 255, 255};
+
+	// Create a surface containing the player's name
+	SDL_Surface *Surface = TTF_RenderText_Solid(this->game_font, "Selectionner le tournoi", White);
+	SDL_Texture *Texture = SDL_CreateTextureFromSurface(this->sdl_renderer, Surface);
+
+	// Get the dimensions of the texture
+	int texW = 0;
+	int texH = 0;
+	SDL_QueryTexture(Texture, NULL, NULL, &texW, &texH);
+
+	// Calculate the position to center the text
+	int a = (this->x_size - texW) / 2;
+	SDL_Rect nameRect = {a, 0, Surface->w, Surface->h};
+
+	SDL_SetRenderDrawColor(this->sdl_renderer, 100, 100, 100, 255);
+
+	SDL_RenderCopy(this->sdl_renderer, Texture, NULL, &nameRect);
+
+	SDL_FreeSurface(Surface);
+	SDL_DestroyTexture(Texture);
 
 		for (auto it = objects_to_draw.begin(); it != objects_to_draw.end(); it++)
 		{
@@ -304,6 +352,31 @@ void Affichage::sous_affichage_menu_jeux()
 		// Here we render
 		SDL_SetRenderDrawColor(this->sdl_renderer, 255, 255, 255, 255);
 
+		// Afficher l'objectif du menu
+	// Render at each frame
+	SDL_Color White = {255, 255, 255, 255};
+
+	// Create a surface containing the player's name
+	SDL_Surface *Surface = TTF_RenderText_Solid(this->game_font, "Selectionner le format du match", White);
+	SDL_Texture *Texture = SDL_CreateTextureFromSurface(this->sdl_renderer, Surface);
+
+	// Get the dimensions of the texture
+	int texW = 0;
+	int texH = 0;
+	SDL_QueryTexture(Texture, NULL, NULL, &texW, &texH);
+
+	// Calculate the position to center the text
+	int a = (this->x_size - texW) / 2;
+	SDL_Rect nameRect = {a, 0, Surface->w, Surface->h};
+
+	SDL_SetRenderDrawColor(this->sdl_renderer, 100, 100, 100, 255);
+
+	SDL_RenderCopy(this->sdl_renderer, Texture, NULL, &nameRect);
+
+	SDL_FreeSurface(Surface);
+	SDL_DestroyTexture(Texture);
+
+
 		for (auto it = objects_to_draw.begin(); it != objects_to_draw.end(); it++)
 		{
 			SDL_SetRenderDrawColor(this->sdl_renderer, colour_bg.r, colour_bg.g, colour_bg.b, colour_bg.a);
@@ -323,8 +396,238 @@ void Affichage::sous_affichage_menu_jeux()
 	// Menus pour les skins (flemme pour le moment)
 }
 
+void Affichage::sous_affichage_menu_joueur_1()
+{
+    SDL_Colour colour_bg = {255, 0, 0, 255};
+    SDL_Colour colour_text = {0, 0, 0, 255};
+
+    // Menu choix joueur
+    std::vector<std::string> options;
+    options.push_back("Nadal");
+    options.push_back("Djokovic");
+    options.push_back("Alcaraz");
+    options.push_back("Medvedev");
+
+    int padding_x, case_height, padding_y, space_between;
+    // Trouver le max des cases à afficher
+    int max_size = 0;
+    for (auto it = options.begin(); it != options.end(); it++)
+    {
+        int temp_size;
+        TTF_SizeText(this->game_font, it->data(), &temp_size, nullptr);
+        if (temp_size > max_size)
+            max_size = temp_size;
+    }
+    padding_x = this->x_size - (max_size + 0.05 * this->x_size);
+    case_height = (this->y_size / (options.size() + 3));
+    padding_y = case_height * 2;
+    space_between = case_height / (options.size() - 1);
+
+    // Créer les bounding_box pour chaque case
+    std::map<std::string, BoundingBox> objects_to_draw;
+    int x = padding_x * (1.0 / 2.0);
+    int y = (1 / 2.0) * padding_y;
+    for (auto it = options.begin(); it != options.end(); it++)
+    {
+        objects_to_draw.insert(make_pair(*it, BoundingBox(
+                                                  x, y, max_size, case_height)));
+        y += (case_height + space_between);
+    }
+
+	
+
+    // Faire la boucle de rendu qui gère les pointeurs sur f()
+    SDL_Event events;
+    bool quit = false;
+
+    while (!quit)
+    {
+        while (SDL_PollEvent(&events))
+        {
+            if (events.type == SDL_QUIT)
+                quit = true;
+            else if (events.type == SDL_MOUSEBUTTONDOWN)
+            {
+                int mouse_x = 0;
+                int mouse_y = 0;
+                SDL_GetMouseState(&mouse_x, &mouse_y);
+                for (auto it = objects_to_draw.begin(); it != objects_to_draw.end(); it++)
+                {
+                    if (it->second.belong_to(mouse_x, mouse_y))
+                    {
+                        std::string t(it->first);
+                        cb_change_joueur_1(t);
+                        quit = true;
+                    }
+                }
+            }
+        }
+	// Render at each frame
+	SDL_SetRenderDrawColor(this->sdl_renderer, 100, 100, 100, 255);
+	SDL_RenderClear(this->sdl_renderer);
+	// Here we render
+	SDL_SetRenderDrawColor(this->sdl_renderer, 255, 255, 255, 255);
+
+	// Afficher l'objectif du menu
+	// Render at each frame
+	SDL_Color White = {255, 255, 255, 255};
+
+	// Create a surface containing the player's name
+	SDL_Surface *Surface = TTF_RenderText_Solid(this->game_font, "Selectionner le joueur 1", White);
+	SDL_Texture *Texture = SDL_CreateTextureFromSurface(this->sdl_renderer, Surface);
+
+	// Get the dimensions of the texture
+	int texW = 0;
+	int texH = 0;
+	SDL_QueryTexture(Texture, NULL, NULL, &texW, &texH);
+
+	// Calculate the position to center the text
+	int a = (this->x_size - texW) / 2;
+	SDL_Rect nameRect = {a, 0, Surface->w, Surface->h};
+
+	SDL_SetRenderDrawColor(this->sdl_renderer, 100, 100, 100, 255);
+
+	SDL_RenderCopy(this->sdl_renderer, Texture, NULL, &nameRect);
+
+	SDL_FreeSurface(Surface);
+	SDL_DestroyTexture(Texture);
+
+
+	for (auto it = objects_to_draw.begin(); it != objects_to_draw.end(); it++)
+	{
+		SDL_SetRenderDrawColor(this->sdl_renderer, colour_bg.r, colour_bg.g, colour_bg.b, colour_bg.a);
+		SDL_Rect rect = {it->second.x, it->second.y, it->second.w, it->second.h};
+		SDL_RenderDrawRect(this->sdl_renderer, &rect);
+
+		SDL_Surface *text_surface = TTF_RenderText_Solid(this->game_font, it->first.data(), colour_text);
+		SDL_Texture *text_tex = SDL_CreateTextureFromSurface(this->sdl_renderer, text_surface);
+		SDL_RenderCopy(this->sdl_renderer, text_tex, NULL, &rect);
+		SDL_FreeSurface(text_surface);
+		SDL_DestroyTexture(text_tex);
+	}
+
+	// on permute les deux buffers (cette fonction ne doit se faire qu'une seule fois dans la boucle)
+	SDL_RenderPresent(this->sdl_renderer);
+	}
+}
+
+void Affichage::sous_affichage_menu_joueur_2()
+{
+    SDL_Colour colour_bg = {255, 0, 0, 255};
+    SDL_Colour colour_text = {0, 0, 0, 255};
+
+    // Menu choix joueur
+    std::vector<std::string> options;
+    options.push_back("Nadal");
+    options.push_back("Djokovic");
+    options.push_back("Alcaraz");
+    options.push_back("Medvedev");
+
+    int padding_x, case_height, padding_y, space_between;
+    // Trouver le max des cases à afficher
+    int max_size = 0;
+    for (auto it = options.begin(); it != options.end(); it++)
+    {
+        int temp_size;
+        TTF_SizeText(this->game_font, it->data(), &temp_size, nullptr);
+        if (temp_size > max_size)
+            max_size = temp_size;
+    }
+    padding_x = this->x_size - (max_size + 0.05 * this->x_size);
+    case_height = (this->y_size / (options.size() + 3));
+    padding_y = case_height * 2;
+    space_between = case_height / (options.size() - 1);
+
+    // Créer les bounding_box pour chaque case
+    std::map<std::string, BoundingBox> objects_to_draw;
+    int x = padding_x * (1.0 / 2.0);
+    int y = (1 / 2.0) * padding_y;
+    for (auto it = options.begin(); it != options.end(); it++)
+    {
+        objects_to_draw.insert(make_pair(*it, BoundingBox(
+                                                  x, y, max_size, case_height)));
+        y += (case_height + space_between);
+    }
+
+    // Faire la boucle de rendu qui gère les pointeurs sur f()
+    SDL_Event events;
+    bool quit = false;
+
+    while (!quit)
+    {
+        while (SDL_PollEvent(&events))
+        {
+            if (events.type == SDL_QUIT)
+                quit = true;
+            else if (events.type == SDL_MOUSEBUTTONDOWN)
+            {
+                int mouse_x = 0;
+                int mouse_y = 0;
+                SDL_GetMouseState(&mouse_x, &mouse_y);
+                for (auto it = objects_to_draw.begin(); it != objects_to_draw.end(); it++)
+                {
+                    if (it->second.belong_to(mouse_x, mouse_y))
+                    {
+                        std::string t(it->first);
+                        cb_change_joueur_2(t);
+                        quit = true;
+                    }
+                }
+            }
+        }
+	// Render at each frame
+	SDL_SetRenderDrawColor(this->sdl_renderer, 100, 100, 100, 255);
+	SDL_RenderClear(this->sdl_renderer);
+	// Here we render
+	SDL_SetRenderDrawColor(this->sdl_renderer, 255, 255, 255, 255);
+
+	// Afficher l'objectif du menu
+	// Render at each frame
+	SDL_Color White = {255, 255, 255, 255};
+
+	// Create a surface containing the player's name
+	SDL_Surface *Surface = TTF_RenderText_Solid(this->game_font, "Selectionner le joueur 2", White);
+	SDL_Texture *Texture = SDL_CreateTextureFromSurface(this->sdl_renderer, Surface);
+
+	// Get the dimensions of the texture
+	int texW = 0;
+	int texH = 0;
+	SDL_QueryTexture(Texture, NULL, NULL, &texW, &texH);
+
+	// Calculate the position to center the text
+	int a = (this->x_size - texW) / 2;
+	SDL_Rect nameRect = {a, 0, Surface->w, Surface->h};
+
+	SDL_SetRenderDrawColor(this->sdl_renderer, 100, 100, 100, 255);
+
+	SDL_RenderCopy(this->sdl_renderer, Texture, NULL, &nameRect);
+
+	SDL_FreeSurface(Surface);
+	SDL_DestroyTexture(Texture);
+
+
+	for (auto it = objects_to_draw.begin(); it != objects_to_draw.end(); it++)
+	{
+		SDL_SetRenderDrawColor(this->sdl_renderer, colour_bg.r, colour_bg.g, colour_bg.b, colour_bg.a);
+		SDL_Rect rect = {it->second.x, it->second.y, it->second.w, it->second.h};
+		SDL_RenderDrawRect(this->sdl_renderer, &rect);
+
+		SDL_Surface *text_surface = TTF_RenderText_Solid(this->game_font, it->first.data(), colour_text);
+		SDL_Texture *text_tex = SDL_CreateTextureFromSurface(this->sdl_renderer, text_surface);
+		SDL_RenderCopy(this->sdl_renderer, text_tex, NULL, &rect);
+		SDL_FreeSurface(text_surface);
+		SDL_DestroyTexture(text_tex);
+	}
+
+	// on permute les deux buffers (cette fonction ne doit se faire qu'une seule fois dans la boucle)
+	SDL_RenderPresent(this->sdl_renderer);
+	}
+}
+
 void Affichage::affichage_menu()
 {
+	sous_affichage_menu_joueur_1();
+	sous_affichage_menu_joueur_2();
 	sous_affichage_menu_terrain();
 	sous_affichage_menu_jeux();
 }
@@ -391,9 +694,9 @@ void Affichage::affichage_jeu()
 		SDL_SetRenderDrawColor(this->sdl_renderer, 255, 255, 255, 255);
 
 		this->draw_terrain();
-		this->draw_balle(this->terrain.get_balle());
 		this->draw_joueur(this->terrain.get_joueur_a());
 		this->draw_joueur(this->terrain.get_joueur_b());
+		this->draw_balle(this->terrain.get_balle());
 		this->draw_score();
 
 		// on permute les deux buffers (cette fonction ne doit se faire qu'une seule fois dans la boucle)
@@ -495,9 +798,50 @@ void Affichage::affichage_vainqueur()
 	}
 }
 
-void Affichage::draw_joueur(const Joueur &j)
+void Affichage::draw_joueur(const Joueur& j)
 {
-	/*
+    Vec2 pos_proj = this->get_screen_coords(j.get_pos());
+
+	SDL_Surface* surface;
+	SDL_Texture* texture;
+
+	bool jj = false;
+
+	if(j.get_nom() == "Nadal")
+	{
+		// Load the image of Nadal
+    	surface = IMG_Load("data/nadal.png");
+    	texture = SDL_CreateTextureFromSurface(this->sdl_renderer, surface);
+		jj=true;
+	}
+
+	if(j.get_nom() == "Djokovic")
+	{
+		// Load the image of Nadal
+    	surface = IMG_Load("data/djokovic.png");
+    	texture = SDL_CreateTextureFromSurface(this->sdl_renderer, surface);
+		jj=true;
+	}
+
+	if(j.get_nom() == "Alcaraz")
+	{
+		// Load the image of Nadal
+    	surface = IMG_Load("data/alcaraz.png");
+    	texture = SDL_CreateTextureFromSurface(this->sdl_renderer, surface);
+		jj=true;
+	}
+
+	if(j.get_nom() == "Medvedev")
+	{
+		// Load the image of Nadal
+    	surface = IMG_Load("data/medvedev.png");
+    	texture = SDL_CreateTextureFromSurface(this->sdl_renderer, surface);
+		jj=true;
+	}
+
+	if(j.get_nom() == "J1" || j.get_nom() == "J2")
+	{
+		/*
 	SDL_Rect rect = {(int) j.get_pos().get_x(), (int) j.get_pos().get_y(), (int) j.get_pos().get_x() + 15, (int) j.get_pos().get_y() + 30};
 	*/
 	Vec2 pos_proj = this->get_screen_coords(j.get_pos());
@@ -505,7 +849,30 @@ void Affichage::draw_joueur(const Joueur &j)
 	SDL_SetRenderDrawColor(this->sdl_renderer, 255, 0, 0, 255);
 	this->draw_circle(pos_proj.get_x(), pos_proj.get_y(), 10, red);
 	// SDL_RenderDrawRect(this->sdl_renderer, &rect);
+
+	}
+
+    if(jj)
+	{
+		// Set the destination rectangle for the image
+    SDL_Rect destRect = {
+        (int)pos_proj.get_x() - 50,   // x-coordinate of the top-left corner of the rectangle
+        (int)pos_proj.get_y() - 50,   // y-coordinate of the top-left corner of the rectangle
+        100,                          // width of the rectangle
+        100                           // height of the rectangle
+    };
+
+    // Render the texture on the screen
+    SDL_RenderCopy(this->sdl_renderer, texture, NULL, &destRect);
+
+    // Free the resources
+    SDL_FreeSurface(surface);
+    SDL_DestroyTexture(texture);
+	}
+
+    
 }
+
 
 void Affichage::draw_circle(int x, int y, int radius, SDL_Color color)
 {
