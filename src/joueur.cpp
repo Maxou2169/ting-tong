@@ -5,6 +5,8 @@
 
 using namespace std;
 
+const float PAS_X_JOUEUR = 0.17;
+const float PAS_Y_JOUEUR = 0.17;
 
 Joueur::Joueur(string n, Vec2 p, Score s) : nom(n), pos(p), score(s) {}
 
@@ -42,22 +44,22 @@ void Joueur::set_score(const Score s)
 
 void Joueur::haut_joueur()
 {
-	this->pos.set_y(pos.get_y() + 0.1);
+	this->pos.set_y(pos.get_y() + PAS_Y_JOUEUR);
 }
 
 void Joueur::bas_joueur()
 {
-	this->pos.set_y(pos.get_y() - 0.1);
+	this->pos.set_y(pos.get_y() - PAS_Y_JOUEUR);
 }
 
 void Joueur::gauche_joueur()
 {
-	this->pos.set_x(pos.get_x() - 0.1);
+	this->pos.set_x(pos.get_x() - PAS_X_JOUEUR);
 }
 
 void Joueur::droite_joueur()
 {
-	this->pos.set_x(pos.get_x() + 0.1);
+	this->pos.set_x(pos.get_x() + PAS_X_JOUEUR);
 }
 
 bool Joueur::test()
@@ -70,13 +72,13 @@ bool Joueur::test()
 	assert(j_pos_x == 50.0 && j_pos_y == 50.0);
 
 	j.haut_joueur();
-	assert((j.get_pos().get_y() - 50.1) < EPSILON);
+	assert((j.get_pos().get_y() - (50.0 + PAS_Y_JOUEUR) < EPSILON));
 
 	j.bas_joueur();
 	assert((j.get_pos().get_y() - 50.0) < EPSILON);
 
 	j.droite_joueur();
-	assert((j.get_pos().get_x() - 50.1) < EPSILON);
+	assert((j.get_pos().get_x() - (50.1 + PAS_X_JOUEUR) < EPSILON));
 
 	j.gauche_joueur();
 	assert((j.get_pos().get_x() - 50) < EPSILON);

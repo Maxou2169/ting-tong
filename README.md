@@ -39,6 +39,9 @@ Ces constantes sont :
  - `HITBOX_Y` dans *coup.cpp* -> La hauteur de la hitbox autour d'un joueur, en unités du terrain
  - `COEFF_VITESSE` dans *coup.cpp* -> Le flottant par lequel la vitesse de la balle est multiplié à chaque coup
  - `EPSILON` dans *joueur.h* -> Une macro définie pour les comparaisons = entre floats
+ - `PAS_X_JOUEUR` dans *joueur.cpp* -> Le déplacement latéral d'un joueur à chaque pas, en unités du terrain
+ - `PAS_Y_JOUEUR` dans *joueur.cpp* -> Le déplacement vertical d'un joueur à chaque pas, en unités du terrain
+
 ### Classe Balle
 - Il y a maintenant des valeurs par défaut sur tous les éléments de la balle, pour éviter les problèmes de division par 0 sur des `Balle::descente` non définis ou autre
 - Il faut donc bien penser à personnaliser ces valeurs à chaque fois
