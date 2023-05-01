@@ -38,7 +38,7 @@ class Affichage
 
 		float NET_HEIGHT = 0.914f;
 
-		void sdl_init(std::string terrain_path, std::string logo_path);
+		void sdl_init();
 		void sdl_init_terrain_logo(std::string terrain_path, std::string logo_path);
 		void sdl_init_players(std::string j1_path, std::string j2_path);
 		void sdl_destroy();
@@ -151,14 +151,11 @@ class Affichage
 		 * \brief Constructeur de la classe terrain
 		 * \param window_size_x : Largeur de la fenêtre
 		 * \param window_size_y : Hauteur de la fenêtre
-		 * \param terrain_path : Le chemin d'accès au fichier image du terrain
-		 * \param logo_path : Le chemin d'accès au fichier image du logo lié au terrain
 		*/
-		Affichage(Terrain &t, 
+		Affichage(
+			Terrain &t, 
 			unsigned int window_size_x = 800, 
-			unsigned int window_size_y = 600, 
-			std::string terrain_path = "data/terrain_RG.png",
-            std::string logo_path = "data/logoRG.png"
+			unsigned int window_size_y = 600 
 		);
 
 		/**

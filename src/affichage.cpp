@@ -17,11 +17,11 @@
 #include <vector>
 #include <map>
 
-Affichage::Affichage(Terrain &t, unsigned int x, unsigned int y, std::string terrain_path, std::string logo_path)
+Affichage::Affichage(Terrain &t, unsigned int x, unsigned int y)
 	: terrain(t), x_size(x), y_size(y)
 {
 	this->load_config();
-	this->sdl_init(terrain_path, logo_path);
+	this->sdl_init();
 }
 
 Affichage::~Affichage()
@@ -31,7 +31,7 @@ Affichage::~Affichage()
 
 using namespace std;
 
-void Affichage::sdl_init(std::string terrain_path, std::string logo_path)
+void Affichage::sdl_init()
 {
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
@@ -66,7 +66,6 @@ void Affichage::sdl_init(std::string terrain_path, std::string logo_path)
 	this->game_font = TTF_OpenFont("data/arial.ttf", 24);
 
 	this->sdl_renderer = SDL_CreateRenderer(this->sdl_window, -1, SDL_RENDERER_ACCELERATED);
-	this->sdl_init_terrain_logo(terrain_path, logo_path);
 }
 
 void Affichage::sdl_init_terrain_logo(std::string terrain_path, std::string logo_path)
@@ -129,7 +128,7 @@ void Affichage::sdl_init_players(std::string j1_path, std::string j2_path)
 	image_surface = surfaceCorrectPixelFormat;
 
 	this->j1_texture = SDL_CreateTextureFromSurface(this->sdl_renderer, surfaceCorrectPixelFormat);
-	if (terrain_texture == nullptr)
+	if (j1_texture == nullptr)
 	{
 		cerr << "Error: problem to create the texture of " << j2_path << endl;
 		exit(1);
@@ -139,7 +138,7 @@ void Affichage::sdl_init_players(std::string j1_path, std::string j2_path)
 	image_surface = IMG_Load(j2_path.data());
 	if (image_surface == nullptr)
 	{
-		cerr << "Error: cannot load " << j2_path << endl;
+		cerr << "Error: cannot load j2 at " << j2_path << endl;
 		exit(1);
 	}
 
@@ -148,9 +147,9 @@ void Affichage::sdl_init_players(std::string j1_path, std::string j2_path)
 	image_surface = surfaceCorrectPixelFormat;
 
 	this->j2_texture = SDL_CreateTextureFromSurface(this->sdl_renderer, surfaceCorrectPixelFormat);
-	if (this->logo_texture == nullptr)
+	if (this->j2_texture == nullptr)
 	{
-		cerr << "Error: problem to create the texture of " << j2_path << endl;
+		cerr << "Error: problem to create the texture of j2 at " << j2_path << endl;
 		exit(1);
 	}
 	SDL_FreeSurface(surfaceCorrectPixelFormat);
@@ -174,8 +173,12 @@ void Affichage::load_config()
 	std::string name, path;
 	while (players_file >> name >> path)
 		this->joueurs_config.insert(make_pair(name, path));
-	
 	players_file.close();
+
+	// On définit les valeurs par défaut (car J2 doit être défini en même temps que J1 pour le callback)
+	this->terrain.get_joueur_a().set_nom(name);
+	this->terrain.get_joueur_b().set_nom(name);
+
 	std::ifstream terrain_file("data/terrains.cfg");
 	std::string paths_buf, t_path, l_path;
 	while (getline(terrain_file, name, '\n') && getline(terrain_file, paths_buf, '\n'))

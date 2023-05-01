@@ -19,7 +19,7 @@ int main(void)
 
 	run_test();
 	// Cas début de match
-	Terrain t(Joueur("Alcaraz", Vec2(0,8), Score()), Joueur("Medvedev", Vec2(0,-8), Score()), Balle(), Format());
+	Terrain t(Joueur("J1", Vec2(0,0), Score()), Joueur("J2", Vec2(0,0), Score()), Balle(), Format());
 	// Cas égalité au premier jeu
 	//Terrain t(Joueur("Alcaraz", Vec2(0,8), Score(QUARANTE,false,true,0)), Joueur("Medvedev", Vec2(0,-8), Score(QUARANTE,false,true,0)), Balle(), Format());
 	// Cas fin de match
