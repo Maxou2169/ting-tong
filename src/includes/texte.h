@@ -7,15 +7,15 @@
 
 /**
  * \class Texte
- * \brief Cette classe présente une versin intermediaire du jeu en mode texte
+ * \brief Cette classe présente une version intermediaire du jeu en mode texte
 */
 
 class Texte
 {
-	private :
+	private:
 		Terrain &terrain;
 
-	public :
+	public:
 
 		/**
 		 * \brief Constructeur de la classe Texte
