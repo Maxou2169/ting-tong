@@ -10,6 +10,8 @@
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_image.h>
 #include <iostream>
+#include <fstream>
+#include <sstream>
 #include <assert.h>
 #include <string>
 #include <vector>
@@ -18,6 +20,7 @@
 Affichage::Affichage(Terrain &t, unsigned int x, unsigned int y, std::string terrain_path, std::string logo_path)
 	: terrain(t), x_size(x), y_size(y)
 {
+	this->load_config();
 	this->sdl_init(terrain_path, logo_path);
 }
 
@@ -165,21 +168,29 @@ void Affichage::sdl_destroy()
 	SDL_Quit();
 }
 
+void Affichage::load_config()
+{
+	std::ifstream players_file("data/players.cfg");
+	std::string name, path;
+	while (players_file >> name >> path)
+		this->joueurs_config.insert(make_pair(name, path));
+	
+	players_file.close();
+	std::ifstream terrain_file("data/terrains.cfg");
+	std::string paths_buf, t_path, l_path;
+	while (getline(terrain_file, name, '\n') && getline(terrain_file, paths_buf, '\n'))
+	{
+		std::stringstream paths_buf_ss(paths_buf);
+		getline(paths_buf_ss, t_path, ' ');
+		getline(paths_buf_ss, l_path, ' ');
+		this->terrains_config.insert(make_pair(name, make_pair(t_path, l_path)));
+	}
+}
+
 void Affichage::cb_change_terrain(std::string terrain_name)
 {
-	std::map<std::string, std::string> terrain_paths;
-	terrain_paths.insert(make_pair("Open d'Australie", "data/terrain_AO.png"));
-	terrain_paths.insert(make_pair("Wimbledon", "data/terrain_W.png"));
-	terrain_paths.insert(make_pair("Roland Garros", "data/terrain_RG.png"));
-	terrain_paths.insert(make_pair("US Open", "data/terrain_US.png"));
-
-	std::map<std::string, std::string> logo_paths;
-	logo_paths.insert(make_pair("Open d'Australie", "data/logoAO.png"));
-	logo_paths.insert(make_pair("Wimbledon", "data/logoW.png"));
-	logo_paths.insert(make_pair("Roland Garros", "data/logoRG.png"));
-	logo_paths.insert(make_pair("US Open", "data/logoUS.png"));
-
-	this->sdl_init_terrain_logo(terrain_paths.find(terrain_name)->second, logo_paths.find(terrain_name)->second);
+	// On rappelle que la map est de forme "nom" => (terrain_path, logo_path)
+	this->sdl_init_terrain_logo(this->terrains_config.find(terrain_name)->second.first, this->terrains_config.find(terrain_name)->second.second);
 }
 
 void Affichage::cb_change_format(std::string nb_jeux)
@@ -196,20 +207,14 @@ void Affichage::cb_change_format(std::string nb_jeux)
 
 void Affichage::cb_change_joueur(std::string nom_joueur, int num_joueur)
 {
-	std::map<std::string, std::string> joueur_paths;
-	joueur_paths.insert(make_pair("Nadal", "data/nadal.png"));
-	joueur_paths.insert(make_pair("Alcaraz", "data/alcaraz.png"));
-	joueur_paths.insert(make_pair("Medvedev", "data/medvedev.png"));
-	joueur_paths.insert(make_pair("Djokovic", "data/djokovic.png"));
-
 	if (num_joueur == 1)
 		this->terrain.get_joueur_a().set_nom(nom_joueur);
 	else
 		this->terrain.get_joueur_b().set_nom(nom_joueur);
 
 	this->sdl_init_players(
-		joueur_paths.find(this->terrain.get_joueur_a().get_nom())->second,
-		joueur_paths.find(this->terrain.get_joueur_b().get_nom())->second
+		this->joueurs_config.find(this->terrain.get_joueur_a().get_nom())->second,
+		this->joueurs_config.find(this->terrain.get_joueur_b().get_nom())->second
 	);
 }
 
@@ -219,11 +224,10 @@ void Affichage::sous_affichage_menu_terrain()
 	SDL_Colour colour_text = {0, 0, 0, 255};
 	std::vector<std::string> options;
 
-	options.push_back("Open d'Australie");
-	options.push_back("Roland Garros");
-	options.push_back("Wimbledon");
-	options.push_back("US Open");
-	// Menu choix terrain
+	// On charge les options avec les clefs de la config
+	for(auto it = this->terrains_config.begin(); it != this->terrains_config.end(); ++it) {
+		options.push_back(it->first);
+	}
 
 	int padding_x, case_height, padding_y, space_between;
 	// Trouver le max des cases à afficher
@@ -445,11 +449,12 @@ void Affichage::sous_affichage_menu_joueur()
 
     	// Menu choix joueur
     	std::vector<std::string> options;
-    	options.push_back("Nadal");
-    	options.push_back("Djokovic");
-    	options.push_back("Alcaraz");
-    	options.push_back("Medvedev");
-
+		// On charge 
+		for(auto it = this->joueurs_config.begin(); it != this->joueurs_config.end(); ++it) {
+		
+			options.push_back(it->first);
+		
+		}
     	int padding_x, case_height, padding_y, space_between;
     	// Trouver le max des cases à afficher
     	int max_size = 0;
@@ -552,7 +557,6 @@ void Affichage::sous_affichage_menu_joueur()
 		}
 	}
 }	
-
 
 void Affichage::affichage_menu()
 {
@@ -747,7 +751,6 @@ void Affichage::draw_joueur(const Joueur& j)
     // Render the texture on the screen
     SDL_RenderCopy(this->sdl_renderer, player_to_draw, NULL, &destRect);
 }
-
 
 void Affichage::draw_circle(int x, int y, int radius, SDL_Color color)
 {

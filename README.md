@@ -2,9 +2,10 @@
 
 ## Comment s'en servir
 
+Installer avec vore gestionnaire de paquets favori la librairie SDL2 (plus précisément SDL2, SDL2_Image et SDL2_TTF)
 Compiler en faisant `make` à la racine, puis executer en faisant `./bin/ting-tong`
 
-Il faut interragir avec les menus à la souris pour personnaliser avec les différentes 
+Il faut interragir avec les menus à la souris pour personnaliser le jeu avec différents joueurs et terrains
 
 En version texte comme en version graphique, chaque joueur à 5 touches:
  - Joueur 1 (celui du bas)
@@ -25,11 +26,21 @@ Pour quitter le programme, faire ECHAP (ou appuyer sur la croix) en version grap
 ## Quelques notes et points importants
 
 ### Organisation des fichiers
-- `data/` : Les fichiers image du jeu (c'est ici qu'iraient les sauvegardes s'il y en avait)
+- `data/` : Les fichiers image du jeu (c'est ici que sont les fichiers de configuration aussi)
 - `bin/` : Le dossier qui stocke les différents binaires compilés (le dossier sera créé automatique par le Makefile)
 - `doc/` : Le dossier qui stockera les fichiers générés par Doxygen à la création de la doc
 - `obj/` : Le dossier qui stockera les différents fichiers étape de compilation (le dossier est créé automatiquement par le Makefile)
 - `src/` : Le dossier des sources, il continent un dossier `includes/` qui contiendra les différents `.h`
+
+### Fichiers de configuration 
+
+Il y a deux fichiers de configuration pour ce programme, `data/players.cfg` et `data/terrains.cfg`
+Ces fichiers sont l'équivalent d'un format clef-valeurs : `clef` RETOUR A LA LIGNE `valeur`.
+Le fichier `data/players.cfg` prends comme clefs les noms des joueurs (affichés dans les menus et dans le tableau de score), et en valeur l'image à afficher (chemin relatif depuis la racine, type `data/joueur.png`). Exemple avec `Nadal \n data/nadal.png`
+Le fichier `data/terrains.cfg` prends comme clefs les noms des terrains, et en valeurs le chemin de l'image du terrain puis le chemin du logo du tournoi.
+Exemple avec `Wimbledon \n data/wimbledon_terrain.png data/wimbledon_logo.png`
+
+Le comportement du programme n'est pas garanti en cas d'oubli des fichiers de configuration et/ou des images pointées par ceux-ci.
 
 ### Constantes définies dans le programme
 

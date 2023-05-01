@@ -4,6 +4,7 @@
 # include <SDL2/SDL.h>
 # include <SDL2/SDL_ttf.h>
 # include <string>
+# include <map>
 # include "terrain.h"
 # include "joueur.h"
 
@@ -28,8 +29,12 @@ class Affichage
 
 		Terrain &terrain;
 
-		unsigned int x_size;
-		unsigned int y_size;
+		// Une map nom => path vers image
+		std::map<std::string, std::string> joueurs_config;
+		// Une map nom => paire de path (terrain, logo)
+		std::map<std::string, std::pair<std::string, std::string>> terrains_config;
+		unsigned int x_size; /**< La largeur de la fenêtre*/
+		unsigned int y_size; /**< La hauteur de la fenêtre*/
 
 		float NET_HEIGHT = 0.914f;
 
@@ -37,6 +42,11 @@ class Affichage
 		void sdl_init_terrain_logo(std::string terrain_path, std::string logo_path);
 		void sdl_init_players(std::string j1_path, std::string j2_path);
 		void sdl_destroy();
+
+		/**
+		 * \brief Loads the config files to create the menus
+		*/
+		void load_config();
 
 		/**
 		 * \brief La fonction prends un joueur et le dessine dans la fenêtre
