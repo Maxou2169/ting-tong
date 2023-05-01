@@ -441,3 +441,21 @@ bool Terrain::test()
 
 	return true;
 }
+
+bool Terrain::joueur_peut_bouger(const Joueur & j) const
+{
+	if (balle.get_traj().norm() != 0)
+		return true;
+	
+	if (balle.get_pos().get_y() > 0)
+	{ // C'est le joueur du haut
+		if (j.get_pos().get_y() > 0)
+			return false;
+	}
+	else
+	{
+		if (j.get_pos().get_y() < 0)
+			return false;
+	}
+	return true;
+}

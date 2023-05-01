@@ -20,41 +20,34 @@ class Terrain
 		Balle balle;
 		Format format;
 
-
 		/**
 		 * \brief Repousse le joueur allant trop à droite
 		*/
-
 		void repousser_x_positif(Joueur &j);
 
 		/**
 		 * \brief Repousse le joueur allant trop à gauche
 		*/
-
 		void repousser_x_negatif(Joueur &j);
 
 		/**
 		 * \brief Repousse le joueur allant trop haut
 		*/
-
 		void repousser_y_positif(Joueur &j);
 
 		/**
 		 * \brief Repousse le joueur allant trop bas
 		*/
-
 		void repousser_y_negatif(Joueur &j);
 
 		/**
 		 * \brief Repousse le joueur du haut par rapport au filet
 		*/
-
 		void repousser_filet_joueur_a();
 
 		/**
 		 * \brief Repousse le joueur du bas par rapport au filet
 		*/
-
 		void repousser_filet_joueur_b();
 	
 	public:
@@ -158,8 +151,14 @@ class Terrain
 		/**
 		 * \brief Cette fonction renvoie true si le service doit être à droite
 		*/
-
 		bool service_a_droite();
+
+		
+		/**
+		 * \brief Regarde si un joueur a le droit de bouger (comprendre s'il est en train de servir)
+		 * \param num_joueur : Le numéro du joueur, 1 pour joueurA (en haut), 2 pour joueurB (en bas)
+		*/
+		bool joueur_peut_bouger(const Joueur & j) const;
 };
 
 
