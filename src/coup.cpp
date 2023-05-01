@@ -30,10 +30,17 @@ int randint(int a, int b)
 */
 float randfloat(float a, float b)
 {
-	assert (a <= b);
-	float res = (a + (rand() % (int) ((b * 1000) - (a * 1000))) / 1000.f);
-	assert (a <= res && res <= b);
-	return res;
+	if(a == b)
+	{
+		return a;
+	}
+	else
+	{
+		assert (a <= b);
+		float res = (a + (rand() % (int) ((b * 1000) - (a * 1000))) / 1000.f);
+		assert (a <= res && res <= b);
+		return res;
+	}
 }
 
 Coup::Coup(Joueur & j, Balle& b) : joueur(j), balle(b) 
